@@ -1,0 +1,16 @@
+data=/afs/.ir.stanford.edu/users/j/d/jdegen/projects/wh-questions/data/
+results=/afs/.ir.stanford.edu/users/j/d/jdegen/projects/wh-questions/results/
+
+init ID
+
+add StringVar Sentence
+add CategoricalVar ModalPresent=yes:Modal,no:NotModal
+#add StringVar PP1
+#add LengthVar PP1Length=PP1
+#add StringVar PP2
+#add LengthVar PP2Length=PP2
+#add CategoricalVar PNP1cat=fullnp:NP1,pronoun:Pronoun1
+#add CategoricalVar PNP2cat=fullnp:NP1,pronoun:Pronoun2
+#add NodeVar PP1node
+#add NodeVar PP2node
+#add SocialVar ID
