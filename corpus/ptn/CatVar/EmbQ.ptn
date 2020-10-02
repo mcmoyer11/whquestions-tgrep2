@@ -1,1 +1,1 @@
-@WH >> ( /SBAR/ > /^VP/)
+@WH >> ( /SBAR|SBARQ/ > /^VP/)

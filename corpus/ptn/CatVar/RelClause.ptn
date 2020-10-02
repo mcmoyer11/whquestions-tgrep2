@@ -1,0 +1,4 @@
+@WH=wh1 >> /^V/ >> (/SBAR/ > (/^V/ << /^NP/=rch) , =rch) >> =rch
+
+for tell
+@WH=wh1 >> /^V/ >> (/SBAR/ > (/^V/ << /^NP/=rch) , =rch) $ =rch
