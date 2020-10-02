@@ -1,0 +1,28 @@
+1. ssh mcmoyer@myth.stanford.edu
+2. echo $TGREP2ABLE
+3. cd /afs/ir.stanford.edu/data/linguistic-data/Switchboard/
+4. cd 
+5. cd Switchboard/
+
+.....
+cd /afs/ir/data/linguistic-data/Treebank/tgrep2able/
+
+
+
+
+Questions for Judith:
+what does the echo command do?
+
+
+
+setenv TGREP2ABLE /afs/ir/data/linguistic-data/Treebank/tgrep2able/
+setenv TGREP2_CORPUS $TGREP2ABLE/swbd.t2c.gz
+setenv TDTlite /afs/ir/data/linguistic-data/TDTlite/
+setenv TDT_DATABASES /afs/ir/data/linguistic-data/TDTlite/databases
+setenv PATH /afs/ir/data/linguistic-data/TDTlite:$PATH
+export PATH="/afs/ir/data/linguistic-data/bin/linux_2_4/:$PATH"
+
+
+
+
+tgrep2 -afc /afs/ir/data/linguistic-data/Treebank/tgrep2able//swbd.t2c.gz "where" | more
