@@ -1,16 +1,12 @@
-data=/afs/.ir.stanford.edu/users/m/c/mcmoyer/wh-questions/data/
-results=/afs/.ir.stanford.edu/users/m/c/mcmoyer/wh-questions/results/
+data=/afs/.ir.stanford.edu/users/m/c/mcmoyer/projects/whquestions-tgrep2/corpus/data/
+results=/afs/.ir.stanford.edu/users/m/c/mcmoyer/projects/whquestions-tgrep2/corpus/results/
 
 init ID
 
 add StringVar Sentence
 add CategoricalVar ModalPresent=yes:Modal,no:NotModal
-#add StringVar PP1
-#add LengthVar PP1Length=PP1
+add CategoricalVar SentType=root:RootQ,emb:EmbQ
+add StringVar Wh
+
 #add StringVar PP2
 #add LengthVar PP2Length=PP2
-#add CategoricalVar PNP1cat=fullnp:NP1,pronoun:Pronoun1
-#add CategoricalVar PNP2cat=fullnp:NP1,pronoun:Pronoun2
-#add NodeVar PP1node
-#add NodeVar PP2node
-#add SocialVar ID
