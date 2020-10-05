@@ -1,6 +1,6 @@
 # TDTlite test
 
-On `corn.stanford.edu`, follow the instructions below to check that everything is set up for you to use TDTlite.
+On `myth.stanford.edu`, follow the instructions below to check that everything is set up for you to use TDTlite.
 
 Start by copying the example project that's included in TDTlite to your home directory. From your home directory, type:
 
@@ -18,9 +18,9 @@ To test whether everything is running as it should:
 
 This should have the effect of creating a database called `swbd.tab` in `results`. 
 
-# Sociogrammar (LIN 255C) instructions
+# Logging in and setting up a directory
 
-This provides step by step instructions for logging on to the server, setting all the necessary environment variables, and running an example TDTlite project on `corn.stanford.edu`. There are three general steps:
+This provides step by step instructions for logging on to the server, setting all the necessary environment variables, and running an example TDTlite project on `myth.stanford.edu`. There are three general steps:
 
 1. Log on and set environment variables (or check that they are set).
 
@@ -34,7 +34,7 @@ We'll go through each in turn.
 
 Start by logging on to the server:
 
-`$ ssh SUNETID@corn.stanford.edu`
+`$ ssh SUNETID@myth.stanford.edu`
 
 You'll need to enter your password. By default, you will now be in your home directory. The first step is to make sure all your environment variables are set so TDTlite knows where to access the corpora, etc. Check to see whether you have set any of the necessary environment variables. For example:
 
@@ -42,16 +42,17 @@ You'll need to enter your password. By default, you will now be in your home dir
 
 To set environment variables, first open your .cshrc file in the vim editor:
 
-`$ vim .cshrc`
+`$ vim .bash_profile`
 
-Scroll to the bottom by pressing `Shift + G`. Open for editing by pressing `a`. Copy the following lines and paste them into the file:
+Open for editing by pressing `i`. Copy the following lines and paste them into the file:
 
 ```bash
-setenv TGREP2ABLE /afs/ir/data/linguistic-data/Treebank/tgrep2able/
-setenv TGREP2_CORPUS $TGREP2ABLE/swbd.t2c.gz
-setenv TDTlite /afs/ir/data/linguistic-data/TDTlite/
-setenv TDT_DATABASES /afs/ir/data/linguistic-data/TDTlite/databases
-setenv PATH /afs/ir/data/linguistic-data/TDTlite:$PATH
+export TGREP2ABLE /afs/ir/data/linguistic-data/Treebank/tgrep2able/
+export TGREP2_CORPUS $TGREP2ABLE/swbd.t2c.gz
+export TDTlite /afs/ir/data/linguistic-data/TDTlite/
+export TDT_DATABASES /afs/ir/data/linguistic-data/TDTlite/databases
+export PATH /afs/ir/data/linguistic-data/TDTlite:$PATH
+export PATH="/afs/ir/data/linguistic-data/bin/linux_2_4/:$PATH"
 ```
 
 Once the lines are pasted, hit `Esc`, then the combination `Shift+:`. Type `wq` and `Enter`, which saves your work and exits the program. Some explanations of the environment variables you just set:
@@ -66,7 +67,7 @@ The last line adds the TDTlite directory to your `PATH` so you can run the basic
 
 If you just updated your `.cshrc` file, you need to source it in order to actually set the variables:
 
-`$ source .cshrc`
+`$ source .bash_profile`
 
 Now, testing whether your environment variables are set should yield a path to the correct location:
 
