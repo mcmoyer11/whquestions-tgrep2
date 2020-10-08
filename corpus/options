@@ -8,7 +8,7 @@ add CategoricalVar ModalPresent=yes:Modal,no:NotModal
 add CategoricalVar Finite=yes:Finite,no:InfEQ
 add CategoricalVar SentType=root:RootQ,emb:EmbQ,rc:RelClause
 add StringVar Wh
-
+add StringVar MatVerb
 add StringVar Modal
 add StringVar Verb1
 
