@@ -5,6 +5,7 @@ init ID
 
 add StringVar Sentence
 add CategoricalVar ModalPresent=yes:Modal,no:NotModal
+add CategoricalVar Finite=yes:Finite,no:InfEQ
 add CategoricalVar SentType=root:RootQ,emb:EmbQ,rc:RelClause
 add StringVar Wh
 

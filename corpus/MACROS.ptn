@@ -5,4 +5,8 @@
 @ PP            /^PP/;
 @ DISFL         /EDITED|UH|PRN|-UNF/;
 @ PPPP          (@VP=vp1 < (@PP=pp1 !<< -NONE- $.. (@PP=pp2 !<< -NONE- !$ (@PP != =pp1) !,, (@TERMINAL ,, =pp1 !>> (@DISFL >> =vp1)))));
+<<<<<<< HEAD
 @ WH		/WP|WRB|WDT/ !<< -NONE- !<< that
+=======
+@ WH		/WP|WRB|WDT/
+>>>>>>> 4e826bdc2cae7eac0868361b72b20e09bbb6fc57
