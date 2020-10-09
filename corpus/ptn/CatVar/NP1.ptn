@@ -1,1 +1,0 @@
-@VP=vp1 < (@PP=pp1 !<< -NONE- <, IN <- (@NP=print !< PRP) $.. (@PP=pp2 !<< -NONE- !$ (@PP != =pp1) !,, (@TERMINAL ,, =pp1 !>> (@DISFL >> =vp1))))
