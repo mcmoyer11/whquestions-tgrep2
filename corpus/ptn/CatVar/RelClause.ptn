@@ -1,1 +1,1 @@
-@WH >> (/SBAR|SBARQ|SQ/ > /^NP/)
+@WH >> (/^S/ > /^N/)

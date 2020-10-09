@@ -1,1 +1,1 @@
-@WH=print
+@WH < /^w|^h/=print
