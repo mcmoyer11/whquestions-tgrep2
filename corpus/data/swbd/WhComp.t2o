@@ -72,7 +72,6 @@
 12408:13	many
 12440:64	way
 12748:10	kind
-13163:20	day
 13163:33	day
 13343:24	type
 13344:65	types
@@ -106,32 +105,24 @@
 17851:15	time
 17853:18	time
 17964:27	many
-18122:42	various
 18281:5	part
 18394:64	part
 18418:24	type
-18487:41	kind
-18487:60	kind
 18487:77	kind
 18717:10	type
 19100:9	nice
 19245:71	kind
 19614:22	kind
 19633:22	kind
-19916:54	other
 20311:3	state
 21426:70	one
 21875:16	age
-21993:8	degree
 22170:32	steps
 22644:3	funny
 23206:19	affiliate
-23509:45	kind
 23623:17	part
-23758:27	other
 23758:37	dishes
 23927:4	kind
-23998:14	much
 23998:30	much
 24084:142	kind
 24098:98	advice
@@ -167,14 +158,12 @@
 29844:18	Christmas
 29847:23	year
 29930:19	colors
-30580:161	many
 30580:174	many
 30580:225	types
 30587:56	percentage
 30587:85	reason
 30716:18	good
 30862:9	movie
-30901:6	hey
 31419:134	dismissal
 31540:4	limits
 31581:40	rules
@@ -188,7 +177,6 @@
 33118:47	type
 33140:37	much
 33313:67	seasonings
-33603:47	many
 33603:60	many
 34027:4	long
 34251:47	much
@@ -209,7 +197,6 @@
 36748:17	effective
 36985:18	convinced
 37057:27	much
-37069:54	extent
 37402:35	many
 38013:4	processor
 38071:23	group
@@ -218,8 +205,6 @@
 38416:59	courier
 38500:5	kind
 38542:10	kind
-38573:9	oth-
-38733:37	other
 38805:5	kind
 38850:5	types
 39379:4	time
@@ -229,7 +214,6 @@
 40171:15	good
 40648:11	fun
 40691:14	young
-40933:41	re-
 40964:86	many
 40969:101	many
 41009:52	many
@@ -254,7 +238,6 @@
 45634:16	full
 45651:19	tight
 45805:17	kind
-45818:61	bad
 45877:14	good
 46619:5	kind
 46624:3	year
@@ -268,7 +251,6 @@
 47971:10	base
 48026:4	grade
 48276:54	many
-48279:7	many
 48467:4	kind
 48634:4	change
 48650:42	much
@@ -293,7 +275,6 @@
 53313:5	many
 53684:93	way
 53765:17	type
-53837:21	good
 53903:4	much
 55874:19	old
 55881:176	kind
@@ -303,7 +284,6 @@
 56437:36	good
 57801:54	belt
 57820:5	many
-58371:11	exact
 58821:16	safe
 58979:115	many
 59393:22	restrictions
@@ -314,14 +294,12 @@
 60224:16	much
 60392:5	kind
 60427:17	kind
-60573:86	possibilities
 61106:5	kind
 61142:5	kind
 61962:18	much
 62570:4	brand
 62575:19	brand
 62716:43	work
-62726:26	much
 62726:37	much
 63184:9	nice
 63589:5	kind
@@ -338,7 +316,6 @@
 64448:20	type
 64574:7	Oldies
 64894:4	big
-64924:65	long
 65012:4	college
 65407:24	much
 65440:8	much
@@ -366,10 +343,8 @@
 70667:16	way
 70775:50	other
 70795:18	nuclear
-70801:36	amount
 71163:9	wonderful
 71500:4	school
-71724:43	much
 71724:57	much
 71724:91	easy
 71896:16	changes
@@ -384,7 +359,6 @@
 73544:20	point
 73571:4	department
 73592:3	floor
-73737:4	kind
 74108:26	important
 74440:4	kind
 74465:25	part
@@ -419,7 +393,6 @@
 80198:17	brother
 80307:5	kind
 80367:43	kind
-80399:21	kind
 80399:38	kind
 80874:7	movies
 80888:4	old
@@ -431,11 +404,9 @@
 82903:37	easy
 83641:20	much
 83699:10	many
-83708:8	year
 83708:28	old
 83847:6	color
 83882:4	color
-83995:145	many
 84007:89	ones
 84009:10	kind
 84123:5	big
@@ -449,14 +420,12 @@
 86088:50	age
 86438:26	the
 86884:87	reason
-86973:10	many
 86977:5	many
 87576:42	query
 87650:40	one
 87792:6	movies
 88226:7	kinds
 88403:9	wonderful
-88432:9	kind
 88432:23	kind
 88574:4	old
 88730:17	group
@@ -507,7 +476,6 @@
 99672:19	much
 99675:19	many
 99685:22	many
-99692:12	much
 99692:23	much
 99802:103	big
 100218:4	*ICH*-1
@@ -540,7 +508,6 @@
 105329:32	kind
 105540:19	many
 105658:9	great
-105680:3	marvel-
 105707:14	great
 105752:5	part
 105786:9	marvelous
@@ -559,10 +526,8 @@
 106846:4	minuscule
 107243:9	kind
 107342:101	much
-107694:14	much
 107741:4	old
 107783:9	fun
-108057:9	kind
 108057:19	kind
 108123:4	kind
 108343:5	kind
@@ -572,8 +537,6 @@
 108909:28	ones
 108909:47	much
 108914:36	much
-108997:56	much
-108997:104	much
 108997:120	much
 109103:16	grade
 109341:44	kind
@@ -597,7 +560,6 @@
 111782:5	kind
 112203:22	season
 112433:25	many
-112511:9	old
 112511:23	old
 114278:31	car
 114602:4	kind
@@ -610,8 +572,6 @@
 115904:4	school
 115997:4	old
 116003:4	old
-116607:75	night
-116659:8	chan-
 116659:17	station
 116664:4	other
 116787:5	kind
@@ -634,7 +594,6 @@
 120088:5	many
 120457:26	activities
 120903:20	many
-120952:68	kind
 120952:112	level
 120952:139	long
 120957:49	kind
@@ -663,7 +622,6 @@
 125156:61	reliable
 125338:36	topic
 125435:32	kind
-125471:21	many
 125510:96	old
 125667:8	kind
 125683:4	year
@@ -686,7 +644,6 @@
 128343:55	expensive
 128348:4	advice
 128350:3	advice
-128364:23	adjustable
 128373:26	problems
 128397:66	much
 128414:44	expensive
@@ -704,7 +661,6 @@
 130340:16	cold
 130391:10	kind
 130465:25	kind
-130857:9	part
 130857:26	part
 130979:40	high
 131083:4	changes
@@ -726,7 +682,6 @@
 133777:4	kind
 133809:4	color
 134334:217	horrible
-134336:28	bad
 134336:41	bad
 135001:5	big
 135215:47	elaborate
@@ -753,8 +708,6 @@
 137366:9	great
 138090:4	big
 138335:76	equipment
-139216:13	types
-139216:26	type
 139216:40	type
 139441:5	kind
 139477:14	wonderful
@@ -764,7 +717,6 @@
 139909:21	familiar
 139956:9	Hills
 139996:3	year
-140093:24	much
 140119:5	kind
 140459:4	work
 140807:4	old
@@ -773,7 +725,6 @@
 141509:5	kind
 141645:9	neat
 141938:15	basis
-142032:112	news
 142058:5	kind
 142635:4	color
 142646:4	color
@@ -787,7 +738,6 @@
 143382:44	many
 143547:10	kind
 143663:16	form
-143682:20	hard
 143682:30	hard
 144262:98	many
 144357:21	good
@@ -800,7 +750,6 @@
 145482:10	old
 145807:14	benefits
 146316:4	ones
-146802:34	much
 147238:27	much
 147240:156	many
 147404:35	old
@@ -859,7 +808,6 @@
 154752:85	many
 154864:78	old
 154878:5	type
-155318:34	part
 155328:17	many
 155366:8	other
 155400:52	much
@@ -868,10 +816,8 @@
 155514:47	languages
 155633:28	sick
 155667:17	kind
-155888:9	kind
 155888:23	kind
 155951:17	ones
-156087:40	part
 156332:16	newspapers
 156507:37	little
 156650:26	checks
@@ -889,19 +835,15 @@
 158480:73	many
 158480:110	many
 158836:29	kind
-158896:14	kind
 158896:28	kind
-159062:9	kind
 159062:23	kind
 159127:57	many
 159779:9	old
 159795:4	old
-159887:10	kind
 159887:42	songs
 160028:19	company
 160153:138	colleges
 160442:5	kind
-160686:35	kind
 160686:57	kind
 161056:3	kind
 161438:10	kind
@@ -909,10 +851,7 @@
 161550:5	kind
 161634:5	part
 161734:16	major
-161866:9	kind
 161866:22	lake
-162357:30	kind
-162357:56	kind
 162357:108	kind
 162395:5	kind
 162564:20	husband
@@ -927,11 +866,8 @@
 164009:10	kind
 164106:25	much
 164148:42	kind
-164229:9	kind
 164229:22	make
 164280:5	kind
-164310:17	kind
-164310:27	kind
 164659:17	kind
 164682:21	station
 164911:21	approach
@@ -957,14 +893,12 @@
 167709:20	much
 167709:59	much
 167804:13	month
-167928:46	qualified
 168481:4	big
 168701:72	wives
 168863:7	much
 168879:16	old
 168893:13	things
 168902:197	much
-168908:22	much
 168933:102	recourse
 169153:5	part
 169816:24	reason
@@ -992,7 +926,6 @@
 172845:48	much
 173148:21	many
 173337:16	mature
-173775:33	right
 173908:3	many
 173909:3	ages
 174089:19	issue
@@ -1011,9 +944,7 @@
 176956:29	much
 177020:147	system
 177158:8	section
-177365:11	other
 177365:65	unique
-177512:9	sort
 177512:32	other
 177528:19	club
 177532:4	club

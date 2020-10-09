@@ -6,7 +6,7 @@ init ID
 add StringVar Sentence
 add CategoricalVar ModalPresent=yes:Modal,no:NotModal
 add CategoricalVar Finite=yes:Finite,no:InfEQ
-add CategoricalVar SentType=root:RootQ,emb:EmbQ,rc:RelClause,frag:FragQ
+add CategoricalVar SentType=root:RootQ,emb:EmbQ,rc:RelClause
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
 add CategoricalVar ComplexNP=yes:WhNP,no:NotWhNP
 add StringVar MatVerb
@@ -16,4 +16,8 @@ add StringVar MatVerb
 add StringVar Modal
 add StringVar Verb1
 add StringVar Verb2
-add StringVar All
+add CategoricalVar All=yes:All
+add NodeVar WhNode
+add ParseVar WhParse
+add StringVar QuestSent
+add ParseVar SentenceParse
