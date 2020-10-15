@@ -16,8 +16,11 @@ add StringVar MatVerb
 add StringVar Modal
 add StringVar Verb1
 add StringVar Verb2
+add StringVar Quantifier
+add StringVar DeterminerSubj
+add StringVar DeterminerNonSubj
 add CategoricalVar All=yes:All
 add NodeVar WhNode
 add ParseVar WhParse
 add StringVar QuestSent
-add ParseVar SentenceParse
+# add ParseVar SentenceParse
