@@ -1,1 +1,1 @@
-@WH . (/DT/=print !>> /^NP-SBJ/)
+@WH >> (/^S/ << (/DT/=print >> /^VP/))
