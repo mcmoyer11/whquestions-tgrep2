@@ -1,0 +1,109 @@
+---
+title: "Analysis of factive verbs"
+author: "mcmoyer"
+date: "October 14, 2020"
+output: html_document
+---
+  
+## Step 1: select stimuli for experiment
+  
+Set your path here and load some packages that are necessary for visualization 
+(ggplot), tidy data handling (tidyr and dplyr), and mixed effects modeling (lme4:
+                                                                                                                                                               
+```{r}  
+setwd("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/analysis/")
+source("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/analysis/helpers.R")
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(lme4)
+# theme_set(theme_bw())
+```
+
+Read the database into R and explore it.
+```{r}
+d = read.table("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+nrow(d)
+head(d)
+str(d)
+summary(d)
+```
+
+Take a random sample of 200.
+```{r}
+s = sample_n(d, 200)
+View(s)
+
+save it to a csv file and provide an annotation guide for what 
+the different types of features should be
+overleaf
+
+test = subset(d, d$SentType=="")
+View(test)
+
+```
+(SBAR-TMP (WHADVP-1 (WRB when)) 
+          (S  (NP-SBJ (PRP I)) 
+              (VP (VBP 'm) (VP (VBG flying) 
+                                (PP-LOC (IN in) (NP (DT an) (NN airplane)))
+Wh-Adjunct
+
+(TOP (S (NP-SBJ (PRP I)) 
+        (VP (MD would) 
+            (RB n't) 
+            (VP (VP (VB want) 
+                    (S (NP-SBJ (DT any) (NN air) (NN traffic) (NNS controllers)) 
+                        (ADJP-PRD (JJ high)))) 
+                    (CC or) 
+                    (NP-ETC (NP (NN anything)) 
+                            (PP (IN like) (NP (DT that)))) 
+                    (SBAR-TMP (WHADVP-1 (WRB when)) (S (NP-SBJ (PRP I)) (VP (VBP 'm) (VP (VBG flying) (PP-LOC (IN in) (NP (DT an) (NN airplane))) (ADVP-TMP (-NONE- *T*-1)))))))) (. .) (-DFL- E_S)))
+
+
+
+QuestionSubject
+
+"where i work is predominantly male
+(TOP (S (INTJ (UH Um)) 
+    (, ,) 
+    (SBAR-SBJ (WHADVP-1 (WRB where)) 
+              (S (NP-SBJ (PRP I)) 
+                  (VP (VBP work) (ADVP-LOC (-NONE- *T*-1))))) 
+    (VP (VBZ is) (ADJP-PRD (RB predominantly) (NN male))) (. .) (-DFL- E_S)))
+    
+    
+then whenever i have a meeting with a client *t*-4, i'll put a suit on. and then come home and get back into regular clothes again.
+
+(TOP (S (ADVP (RB then)) 
+    (SBAR-TMP (WHADVP-4 (WRB whenever)) 
+              (S (NP-SBJ (PRP I)) (VP (VBP have) (NP (NP (DT a) (NN meeting)) (PP (IN with) (NP (DT a) 
+              
+whereas in this country where everyone respects the closed doors very much *t*-1, if you go out and then act like the lunatic you, you violate the, uh, the norms of social, of, um, public behavior.
+
+(TOP (S (ADVP (IN Whereas)) 
+        (PP-LOC (IN in) (NP (DT this) (NN country))) 
+        (SBAR-LOC (WHADVP-1 (WRB where)) 
+                  (S (NP-SBJ (NN everyone)) (VP (VBZ respects) (NP (DT the) (JJ closed) (NNS doors)) 
+
+
+now the part about where you said 0 the apartment complex puts up signs that *t*-1 says no soliciting *t*-2,
+
+(TOP (FRAG (INTJ (UH Now)) 
+           (NP (NP (DT the) (NN part)) 
+           (PP (IN about) (SBAR (WHADVP-2 (WRB where)) 
+                                (S (NP-SBJ (PRP you)) 
+                                    (VP (VBD said) (SBAR (-NONE- 0) (S (NP-SBJ (DT the) (NN apartment)
+                                    
+                                    
+not what color you are *t*-1, how old you are *t*-2, what you're male or female.
+(TOP (FRAG (RB not) 
+          (SBAR (WHNP-1 (WDT what) (NN color)) 
+                        (S (NP-SBJ (PRP you)) 
+                          (VP (VBP are) 
+                              (NP-PRD (-NONE- *T*-1))))) 
+          (, ,) 
+          (SBAR (WHADJP-2 (WRB how) (JJ old)) (S (NP-SBJ (PRP you)) (VP (VBP are) (ADJP-PRD (-NONE- *T*-2))))) 
+          (, ,) 
+          (SBAR (TYPO (WP what)) (S (NP-SBJ (PRP you)) (VP (VBP 're) (ADJP-PRD (JJ male) (CC or) (JJ female))))) (. .) (-DFL- E_S)))
+
+
