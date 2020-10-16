@@ -5,8 +5,8 @@ init ID
 
 add StringVar Sentence
 add CategoricalVar ModalPresent=yes:Modal,no:NotModal
-add CategoricalVar Finite=yes:Finite,no:Infinite
-add CategoricalVar QuestionType=root:RootQ,emb:EmbQ,rc:RelClause,nom:NominalizedQ,frag:FragmentQ,subj:QuestionSubject,adj:QuestionAdjunct,exclam:ExclamQ
+add CategoricalVar Finite=no:Infinite,yes:Finite
+add CategoricalVar QuestionType=frag:FragmentQ,adj:QuestionAdjunct,root:RootQ,emb:EmbQ,rc:RelClause,nom:NominalizedQ,subj:QuestionSubject,exclam:ExclamQ
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
 add CategoricalVar ComplexWh=yes:ComplexWh,no=MonoWh
 add StringVar MatVerb
@@ -16,10 +16,10 @@ add StringVar Modal
 add StringVar Verb1
 add StringVar Verb2
 add StringVar Quantifier
-add StringVar DeterminerSubj
-add StringVar DeterminerNonSubj
+add StringVar DeterminerSubject
+add StringVar DeterminerNonSubjubject
 add StringVar FullWhPhrase
 add NodeVar WhNode
 add ParseVar WhParse
 add StringVar Question
-# add ParseVar SentenceParse
+add ParseVar SentenceParse
