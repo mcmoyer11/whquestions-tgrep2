@@ -1,1 +1,1 @@
-@WH $ (/^N|^D|^J|^RB|^RP|^PP/)
+@WH $ /^N|^D|^J|^RB|^RP|^PP/
