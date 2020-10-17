@@ -23,7 +23,7 @@ library(lme4)
 Read the database into R and explore it.
 ```{r}
 d = read.table("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
-nrow(d)
+nrow(d) # 10667
 head(d)
 str(d)
 summary(d)
@@ -34,11 +34,11 @@ Take a random sample of 200.
 s = sample_n(d, 200)
 View(s)
 
-save it to a csv file and provide an annotation guide for what 
-the different types of features should be
-overleaf
+# save it to a csv file and provide an annotation guide for what 
+# the different types of features should be
+# overleaf. 
 
-test = subset(d, d$SentType=="")
+test = subset(d, d$QuestionType=="")
 View(test)
 
 ```
@@ -106,4 +106,11 @@ not what color you are *t*-1, how old you are *t*-2, what you're male or female.
           (, ,) 
           (SBAR (TYPO (WP what)) (S (NP-SBJ (PRP you)) (VP (VBP 're) (ADJP-PRD (JJ male) (CC or) (JJ female))))) (. .) (-DFL- E_S)))
 
+
+3006:16
+i'm not sure how long we're supposed *-1 to talk *t*-2.
+
+
+	
+i'm not sure why.
 
