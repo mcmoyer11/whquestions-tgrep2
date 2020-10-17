@@ -22,4 +22,4 @@ add NodeVar WhNode
 add ParseVar WhParse
 add StringVar Question
 add ParseVar SentenceParse
-add CategoricalVar WhPhrase=complex:ComplexWh,simplex:MonoWh
+add CategoricalVar WhPhaseType=complex:ComplexWh,monomorphemic:MonoWh

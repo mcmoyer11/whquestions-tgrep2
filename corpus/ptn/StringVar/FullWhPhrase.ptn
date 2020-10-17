@@ -1,1 +1,1 @@
-@WH > /^W/=print $ /^N/
+@WH > /^W/=print $ /^N|^J|^RB/
