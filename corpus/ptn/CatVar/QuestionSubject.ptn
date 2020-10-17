@@ -1,1 +1,1 @@
-@WH >> /SBAR-SBJ/
+@WH [ >> /SBAR-SBJ/ | >> (/^S/ >> /TOP/)]
