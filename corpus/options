@@ -8,13 +8,16 @@ add CategoricalVar ModalPresent=yes:Modal,no:NotModal
 add CategoricalVar Finite=no:Infinite,yes:Finite
 add CategoricalVar QuestionType=fragment:FragmentQ,subject:QuestionSubject,adjunct:QuestionAdjunct,embadjunct:EmbAdjunct,root:RootQ,embedded:EmbQ,relative:RelClause,nominalized:NominalizedQ,exclamation:ExclamQ
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
+add CategoricalVar SubjectAuxInv=yes:SubjectAux
+add CategoricalVar WhAll=yes:WhAll
+add StringVar QuantifiedSubject
+add StringVar QuantifiedPredicate
 add StringVar MatVerb
 add StringVar Wh
 add StringVar MatVerb
 add StringVar Modal
 add StringVar Verb1
 add StringVar Verb2
-add StringVar Quantifier
 add StringVar DeterminerSubject
 add StringVar DeterminerNonSubject
 add StringVar FullWhPhrase
