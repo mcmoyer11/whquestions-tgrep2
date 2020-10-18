@@ -23,7 +23,7 @@ library(lme4)
 Read the database into R and explore it.
 ```{r}
 d = read.table("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
-nrow(d) # 10667
+nrow(d) # 10667.....10278
 head(d)
 str(d)
 summary(d)
@@ -38,32 +38,63 @@ View(s)
 # the different types of features should be
 # overleaf. 
 
-test = subset(d, d$QuestionType=="")
-nrow(test) # 1016....819
-View(test)
+no_qt = subset(d, d$QuestionType=="")
+nrow(no_qt) # 1016....819....20....18...0!
+View(no_qt)
+
+subj = subset(d, d$QuestionType=="subject")
+View(subj)
 
 ```
 
 
-and which *t*-1 isn't of, always the case in all cultures,
-(TOP (SBAR (EDITED (RM (-DFL- \[)) 
-                  (CC And) 
-                  (IP (-DFL- \+)) 
-                  (RS (-DFL- \]))) 
-            (WHNP-1 (WDT which)) 
-            (S (NP-SBJ (-NONE- *T*-1)) (VP (VBZ is) (RB n't) (EDITED (RM (-DFL- \[)) (PP-UNF (IN of)) (, ,) (IP (-DFL- \+)) (RS (-DFL- \]))) (ADVP-TMP (RB always)) (NP-PRD (DT the) (NN case)) (PP (IN in) (NP (DT all) (NNS cultures))))) (, ,) (-DFL- E_S)))
+	Level 0: 128 values of type 'fragment' were found.
+	Level 1: 10002 values of type 'subject' were found.
+	Level 2: 4471 values of type 'adjunct' were found.
+	Level 3: 2130 values of type 'root' were found.
+	Level 4: 3442 values of type 'embedded' were found.
+	Level 5: 1908 values of type 'relative' were found.
+	Level 6: 1828 values of type 'nominalized' were found.
+	Level 7: 207 values of type 'exclamation' were found.
+
+so that's why i'm planning and, and preparing for the, uh, education of my children, also try and set that money aside *t*-1.
 
 
-RELATIVE CLAUSE
-now the part about where you said 0 the apartment complex puts up signs that *t*-1 says no soliciting *t*-2,
-(TOP (FRAG (INTJ (UH Now)) 
-      (NP (NP (DT the) (NN part)) 
-          (PP (IN about) (SBAR (WHADVP-2 (WRB where)) (S (NP-SBJ (PRP you)) (VP (VBD said) (SBAR (-NONE- 0) (S (NP-SBJ (DT the) (NN apartment) (NN complex)) (VP (VBZ puts) (PRT (RB up)) (NP (NP (NNS signs)) (SBAR (WHNP-1 (WDT that)) (S (NP-SBJ (-NONE- *T*-1)) (VP (VBZ says) (NP-SEZ (DT no) (NN soliciting))))))))) (ADVP (-NONE- *T*-2))))))) (, ,) (-DFL- E_S)))
+and i can't see *-1 getting dressed up and wearing heels and stuff when you have *-2 to carry, you know, boxes of documents around *t*-3,
+(TOP (S (CC and) 
+        (NP-SBJ-1 (PRP I)) 
+        (VP (MD ca) 
+            (RB n't) 
+            (VP (VB see) 
+                (S (NP-SBJ (-NONE- *-1)) 
+                   (VP (VP (VBG getting) 
+                           (VP (VBN dressed) 
+                               (PRT (RP up)))) 
+                       (CC and) 
+                       (VP (VBG wearing) (NP (NNS heels) 
+                           (CC and) (NN stuff))) 
+                       (SBAR-TMP (WHADVP-3 (WRB when)) 
+                                (S (NP-SBJ-2 (PRP you)) (VP (VBP have) (S (NP-SBJ (-NONE- *-2)) (VP (TO to) (VP (VB carry) (PRN (, ,) (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) (NP (NP (NNS boxes)) (PP (IN of) (NP (NNS documents)))) (ADVP (RB around))))) (ADVP-TMP (-NONE- *T*-3))))))))) (, ,) (-DFL- E_S)))
 
 
-INFINITIVE CLAUSE
 
-but, uh, they would be things on like how * to be successful *t*-1 and sort of * talking to yourself. you know ge-, getting your, yourself in gear * to, uh, sort of pull yourself up by your boot straps and do what you really want *-2 to do *t*-3. convincing you that you need *-4 to get on with it.
 
-(TOP (S (CC but) (, ,) (INTJ (UH uh)) (, ,) (NP-SBJ (PRP they)) (VP (MD would) (VP (VB be) (NP-PRD (NP (NNS things)) (PP (IN on) (INTJ (UH like)) (UCP (SBAR (WHADVP-1 (WRB how)) (S (NP-SBJ (-NONE- *)) (VP (TO to) (VP (VB be) (ADJP-PRD (JJ successful)) (ADVP-MNR (-NONE- *T*-1)))))) (CC and) (S-NOM (ADVP (RB sort) (RB of)) (NP-SBJ (-NONE- *)) (VP (VP (VBG talking) (PP (IN to) (NP (PRP yourself)))) (PRN (. .) (S (NP-SBJ (PRP You)) (VP (VBP know)))) (EDITED (RM (-DFL- \[)) (VP-UNF (VBG ge-)) (, ,) (IP (-DFL- \+))) (VP (VBG getting) (RS (-DFL- \])) (EDITED (RM (-DFL- \[)) (NP-UNF (PRP$ your)) (, ,) (IP (-DFL- \+))) (S (NP-SBJ (PRP yourself)) (RS (-DFL- \])) (PP-PRD (IN in) (NP (NN gear)))) (S-PRP (NP-SBJ (-NONE- *)) (VP (TO to) (, ,) (INTJ (UH uh)) (, ,) (ADVP (RB sort) (RB of)) (VP (VP (VB pull) (NP (PRP yourself)) (PRT (RP up)) (PP (IN by) (NP (PRP$ your) (NN boot) (NNS straps)))) (CC and) (VP (VB do) (SBAR-NOM (WHNP-3 (WP what)) (S (NP-SBJ-2 (PRP you)) (ADVP (RB really)) (VP (VBP want) (S (NP-SBJ (-NONE- *-2)) (VP (TO to) (VP (VB do) (NP (-NONE- *T*-3))))))))))))) (. .) (VP (VBG Convincing) (NP (PRP you)) (SBAR (IN that) (S (NP-SBJ-4 (PRP you)) (VP (VBP need) (S (NP-SBJ (-NONE- *-4)) (VP (TO to) (VP (VB get) (PRT (RP on)) (PP (IN with) (NP (PRP it))))))))))))))))) (. .) (-DFL- E_S)))
+		Level 0: 128 values of type 'fragment' were found.
+		Level 1: 10278 values of type 'subject' were found.
+		Level 2: 4471 values of type 'adjunct' were found.
+		Level 3: 2130 values of type 'root' were found.
+		Level 4: 3442 values of type 'embedded' were found.
+		Level 5: 1908 values of type 'relative' were found.
+		Level 6: 1828 values of type 'nominalized' were found.
+		Level 7: 207 values of type 'exclamation' were found.
 
+
+		Level 0: 128 values of type 'fragment' were found.
+		Level 1: 10278 values of type 'subject' were found.
+		Level 2: 4471 values of type 'adjunct' were found.
+		Level 3: 976 values of type 'embadjunct' were found.
+		Level 4: 2130 values of type 'root' were found.
+		Level 5: 3442 values of type 'embedded' were found.
+		Level 6: 1908 values of type 'relative' were found.
+		Level 7: 1828 values of type 'nominalized' were found.
+		Level 8: 207 values of type 'exclamation' were found.
