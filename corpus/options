@@ -6,7 +6,7 @@ init ID
 add StringVar Sentence
 add CategoricalVar ModalPresent=yes:Modal,no:NotModal
 add CategoricalVar Finite=no:Infinite,yes:Finite
-add CategoricalVar QuestionType=fragment:FragmentQ,subject:QuestionSubject,adjunct:QuestionAdjunct,root:RootQ,embedded:EmbQ,relative:RelClause,nominalized:NominalizedQ,exclamation:ExclamQ
+add CategoricalVar QuestionType=fragment:FragmentQ,subject:QuestionSubject,adjunct:QuestionAdjunct,embadjunct:EmbAdjunct,root:RootQ,embedded:EmbQ,relative:RelClause,nominalized:NominalizedQ,exclamation:ExclamQ
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
 add StringVar MatVerb
 add StringVar Wh
