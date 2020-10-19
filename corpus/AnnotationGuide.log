@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  19 OCT 2020 08:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  19 OCT 2020 09:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -130,13 +130,8 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 25.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 25.
-
-Underfull \hbox (badness 10000) in paragraph at lines 27--28
-
- []
-
-LaTeX Font Info:    Trying to load font information for OT1+phv on input line 4
-1.
+LaTeX Font Info:    Trying to load font information for OT1+phv on input line 2
+9.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 
@@ -161,16 +156,16 @@ LaTeX Warning: Font shape declaration has incorrect series value `mc'.
                Found on input line 47.
 
 )
-Underfull \hbox (badness 10000) in paragraph at lines 40--42
+Underfull \hbox (badness 10000) in paragraph at lines 39--41
 
  []
 
 LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 4
-3.
+2.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 54--55
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
 
  []
 
@@ -178,7 +173,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 54--55
 
 {/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 [2]
-Overfull \hbox (32.98235pt too wide) in paragraph at lines 145--148
+Overfull \hbox (32.98235pt too wide) in paragraph at lines 147--150
 \OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m
 /n/10.95 WH/ $\OML/cmm/m/it/10.95 >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^
 $\OT1/ppl/m/n/10.95 S/ $\OML/cmm/m/it/10.95 <  <$ \OT1/ppl/m/n/10.95 (/$\OT1/cm
@@ -192,7 +187,7 @@ m/n/10.95 more$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 most$\OMS/cmsy/m/n/10.9
  []
 
 
-Overfull \hbox (53.90762pt too wide) in paragraph at lines 149--152
+Overfull \hbox (53.90762pt too wide) in paragraph at lines 151--154
 \OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m
 /n/10.95 WH/ $\OML/cmm/m/it/10.95 >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^
 $\OT1/ppl/m/n/10.95 S/ $\OML/cmm/m/it/10.95 <  <$ \OT1/ppl/m/n/10.95 (/$\OT1/cm
@@ -209,11 +204,11 @@ ppl/m/n/10.95 more$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 most$\OMS/cmsy/m/n/
 Here is how much of TeX's memory you used:
  1070 strings out of 480608
  16643 string characters out of 5903631
- 260045 words of memory out of 5000000
+ 261045 words of memory out of 5000000
  16996 multiletter control sequences out of 15000+600000
  542989 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,4n,34p,217b,244s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 30i,4n,34p,210b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvip
 s/base/8r.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -221,7 +216,7 @@ m/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm
 msy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.p
 fb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></us
 r/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on AnnotationGuide.pdf (3 pages, 76069 bytes).
+Output written on AnnotationGuide.pdf (3 pages, 77447 bytes).
 PDF statistics:
  39 PDF objects out of 1000 (max. 8388607)
  27 compressed objects within 1 object stream

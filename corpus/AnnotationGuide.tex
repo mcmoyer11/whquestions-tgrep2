@@ -25,12 +25,11 @@
     /EDITED$|$UH$|$PRN$|$-UNF/
     
     \item \textbf{Wh-Node @ WH:}\\
-
-    /WP$|$WRB$|$WDT/ \\
-    !$<$ /$\string^$t$|\string^$T/ \\
-    !$>\!\!>$ @DISFL \\
-    $>\!\!>$ /$\string^$S/ \\
-    !$>$ /$\string^$N$|\string^$A/
+    /WP$|$WRB$|$WDT/ (The word-level wh-node)\\
+    !$<$ /$\string^$t$|\string^$T/ (that doesn't termininate in a \textsf{that}/\textsf{That})\\
+    !$>\!\!>$ @DISFL (isn't dominated by a disfluency)\\
+    $>\!\!>$ /$\string^$S/ (but is dominated by an S node)\\
+    !$>$ /$\string^$N$|\string^$A/ (isn't parented by any NPs or ADV/ADJPs)
 \end{enumerate}
 
 
@@ -38,41 +37,51 @@
 
 \begin{enumerate}
     \item \textbf{WhPhraseType}: \\
-    Does the Wh-head have a sister? (e.g., \textsf{which children}); `monomorphemic' otherwise (e.g., \textsf{who}).\\
+    Returns ``complex'' if @WH has a sister (e.g., \textsf{which children}); returns ``monomorphemic'' otherwise (e.g., \textsf{who}).
         \begin{enumerate}  
             \item Complex: @WH \$ /$\string^$N$|\string^$D$|\string^$J$|\string^$RB$|\string^$RP$|\string^$PP/
             \item Monomorphemic: @WH !\$ /$\string^$N$|\string^$J$|\string^$RB$|\string^$PP/
         \end{enumerate}
 
-    \item \textbf{ModalPresent}: 
-    (yes/no): is there a modal auxiliary (\textsf{can}, \textsf{could}, \textsf{shall}, \textsf{should}, \textsf{may}, \textsf{might}, \textsf{must}) in the question?
+    \item \textbf{ModalPresent}: \\
+    Returns ``yes'' if there is a modal auxiliary (\textsf{can}, \textsf{could}, \textsf{shall}, \textsf{should}, \textsf{may}, \textsf{might}, \textsf{must}) following @WH (\textsf{where we can find coffee}); Returns ``no'' if there isn't any.
         \begin{enumerate}
             \item Yes: @WH . /MD/
             \item No: @WH !. /MD/
         \end{enumerate}
     
-    \item \textbf{Finite} (yes/no): Does the question have a tensed (non-modal) verb? If yes = Finite, if not= Infinitive.\\
+    \item \textbf{Finite}\\
+    Returns ``finite'' if the question contains a tensed (=non-modal) verb (\textsf{where they found coffee}); returns ``infinite'' if the question contains an infinitival clause (\textsf{where to find coffee})\\
         \begin{enumerate}
             \item Finite: @WH [!. /MD/ $|$ [ !. ($/\string^$-NONE-/ . /TO/)]]
             \item Infinitival: @WH . (/$\string^$-NONE-/ . /TO/)
         \end{enumerate}
     
-    \item \textbf{QuestionType}: what kind of syntactic construction is the question appearing in? The most important ones are ``Embedded'' and ``Root''
+    \item \textbf{QuestionType}\\
+    Categorizes the kind of wh-question. We are mostly interested in Root (\textsf{Where can we find coffee?}) and Embedded (Dana knows where we can find coffee), and possibly Embedded Adjuncts. Embedded Adjuncts may look on the surface like Embedded Clauses, the difference only being whether the wh-clause is a complement to a verb or an adjunct. 
+
         \begin{enumerate}
-            \item Embedded: @WH \\
+            \item \textbf{Embedded}\\ 
+            Wh-clauses that are complements (sisters) to a verb (VB) or an adjective (JJ), OR that are embedded in PP which are complements of verbs or adjectives.
+
+            @WH \\
             $>\!\!>$ ($/\string^$SBAR/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ /$\string^$PP/ \$ /$\string^$JJ$|\string^$VB/]) \\
             !$>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$V $|$JJ/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
 
-            \item Root: @WH \\
-            $>\!\!>$ (/$\string^$SQ$|\string^$SBARQ/ [!\$ /$\string^$VB/ $|$ !$>$ /$\string^$N/]) \\
+            \item Root\\
+            Questions that have interrogative illocutionary force.\\
+            @WH \\
+            $>\!\!>$ (/$\string^$SQ$|\string^$SBARQ/ [!\$ /$\string^$VB$I\string^$JJ/ $|$ !$>$ /$\string^$N/]) \\
             !$>\!\!>$ /SBAR-NOM/
+
+            \item Embadjunct: @WH\\ 
+            $>\!\!>$ (/$\string^$SBAR/ \$ /$\string^$VP$|\string^$AD/ !\$ /$\string^$VB$|\string^$JJ/)
             
             \item Relative: @WH \\
             $>\!\!>$ (/$\string^$S/ [$>$ /$\string^$N/ $|$ $>$ (/$\string^$P/ $>$ /$\string^$N/)]) \\
             !$>\!\!>$ (/SBAR-NOM/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
 
-            \item embadjunct: @WH\\ 
-            $>\!\!>$ (/$\string^$SBAR/ \$ /$\string^$VP$|\string^$AD/ !\$ /$\string^$VB$|\string^$JJ/)
+
 
             \item adjunct: @WH\\
             % i don't know why but i had to put a phantom space before the bracket
@@ -110,43 +119,46 @@
 
 \section{String Variables}
 \begin{enumerate}
-    \item \textbf{MatVerb}\\
-    @WH $>\!\!>$ (/$\string^$S/ \$ /$\string^$VB/=print)
+    \item \textbf{MatVerb}: Print all the matrix predicates who have the wh-clause as complement.\\
+    @WH $>\!\!>$ (/$\string^$S/ \$ /$\string^$VB$|\string^$JJ/=print)
 
-    \item \textbf{Wh}\\
+    \item \textbf{MatVerbPart}: Print the matrix predicates who have questions as complement to PP (e.g., \textsf{surprised by}, \textsf{agree on}, \textsf{depend on}).\\
+    @WH $>\!\!>$ (/$\string^$S/ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/=print))
+
+    \item \textbf{Wh}: Print the wh-word terminal node.\\
     @WH $<$ /$\string^$w$|\string^$h/=print
 
-    \item \textbf{Modal}\\
+    \item \textbf{Modal}: Print any modals following the @WH node.\\
     @WH . /MD/=print
 
-    \item \textbf{Verb1}\\
+    \item \textbf{Verb1}: Print the first verb in the question clause. \\
     @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ $<\!\!<$ /$\string^$VB/=print])
 
-    \item \textbf{Verb2}\\
+    \item \textbf{Verb2}: Print the second verb in the question clause.\\
     @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ [$<$ /$\string^$VP/ $<$ /$\string^$VB/=print]])
     
-    \item \textbf{DeterminerSubject}\\
+    \item \textbf{DeterminerSubject}: Print any determiners in the NP-SBJ.\\
     @WH $>\!\!>$ (/$\string^$S/$<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$NP-SBJ/))
     
-    \item \textbf{DeterminerNonSubject}\\
+    \item \textbf{DeterminerNonSubject}: Print any determiners in the VP.\\
     @WH $>\!\!>$ (/$\string^$S/ $<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$VP/))
 
-    \item \textbf{FullWhPhrase}\\
+    \item \textbf{FullWhPhrase}: Print the full WH-Phrase.\\
     @WH $>$ /$\string^$W/=print \$ /$\string^$N$|\string^$J$|\string^$RB/
 
-    \item \textbf{WhParse}
+    \item \textbf{WhParse}: Print the Wh-phrase with POS.
 
-    \item \textbf{Sentence}\\
+    \item \textbf{Sentence}: Print the full sentence in which the @WH node appears.\\
     @WH $>\!\!>$ (*=print !> *)
 
-    \item \textbf{Question}\\
+    \item \textbf{Question}: Print the full Question.\\
     @WH $>\!\!>$ /$\string^$S/=print
 
-    \item \textbf{QuantifiedPredicate}\\
+    \item \textbf{QuantifiedPredicate}: Print any quantifiers in the question predicate.\\
     @WH \\
     $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
 
-    \item \textbf{QuantifiedSubject}\\
+    \item \textbf{QuantifiedSubject}: Print any quantifiers in the question subject.\\
     @WH \\
     $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$NP-SBJ/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
 

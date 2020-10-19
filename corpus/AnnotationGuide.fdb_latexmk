@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1603122278 "AnnotationGuide.tex" "AnnotationGuide.pdf" "AnnotationGuide" 1603122278
+["pdflatex"] 1603123839 "AnnotationGuide.tex" "AnnotationGuide.pdf" "AnnotationGuide" 1603123839
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/helvetic/phvr7t.tfm" 1136768653 2520 53e01eef820ca829e42c1333c3fd02b9 ""
@@ -45,9 +45,9 @@
   "/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1586288239 4811913 0be9a7e86c70a26e5e3042966bcd7097 ""
   "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1586288259 2432462 fd0fa20e9a3cb5f8169fd0ba1c955158 ""
   "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
-  "AnnotationGuide.aux" 1603122278 309 0cebf07c7472b43e48f897190f8b2e41 "pdflatex"
-  "AnnotationGuide.tex" 1603122275 5741 1ac3eb23658e959262f0f15244e89d11 ""
+  "AnnotationGuide.aux" 1603123839 309 0cebf07c7472b43e48f897190f8b2e41 "pdflatex"
+  "AnnotationGuide.tex" 1603123838 6751 f54040161fba76d1afe059207a961553 ""
   (generated)
+  "AnnotationGuide.aux"
   "AnnotationGuide.pdf"
   "AnnotationGuide.log"
-  "AnnotationGuide.aux"
