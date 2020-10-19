@@ -51,7 +51,7 @@
         \end{enumerate}
     
     \item \textbf{Finite}\\
-    Returns ``finite'' if the question contains a tensed (=non-modal) verb (\textsf{where they found coffee}); returns ``infinite'' if the question contains an infinitival clause (\textsf{where to find coffee})\\
+    Returns ``finite'' if the question contains a tensed (=non-modal) verb (\textsf{where they found coffee}); returns ``infinite'' if the question contains an infinitival clause (\textsf{where to find coffee})
         \begin{enumerate}
             \item Finite: @WH [!. /MD/ $|$ [ !. ($/\string^$-NONE-/ . /TO/)]]
             \item Infinitival: @WH . (/$\string^$-NONE-/ . /TO/)
@@ -60,7 +60,14 @@
     \item \textbf{QuestionType}\\
     Categorizes the kind of wh-question. We are mostly interested in Root (\textsf{Where can we find coffee?}) and Embedded (Dana knows where we can find coffee), and possibly Embedded Adjuncts. Embedded Adjuncts may look on the surface like Embedded Clauses, the difference only being whether the wh-clause is a complement to a verb or an adjunct. 
 
+    \item[] \textbf{\textsc{Critical QuestionTypes}}
         \begin{enumerate}
+            \item Root\\
+            Wh-clauses that have interrogative illocutionary force (e.g., \textsf{Where can I find coffee?}). Are not complements to adjectives/verbs or children of Ns\\
+            @WH \\
+            $>\!\!>$ (/$\string^$SQ$|\string^$SBARQ/ [!\$ /$\string^$VB$|\string^$JJ/ $|$ !$>$ /$\string^$N/]) \\
+            !$>\!\!>$ /SBAR-NOM/
+
             \item \textbf{Embedded}\\ 
             Wh-clauses that are complements (sisters) to a verb (VB) or an adjective (JJ), OR that are embedded in PP which are complements of verbs or adjectives.
 
@@ -68,49 +75,64 @@
             $>\!\!>$ ($/\string^$SBAR/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ /$\string^$PP/ \$ /$\string^$JJ$|\string^$VB/]) \\
             !$>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$V $|$JJ/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
 
-            \item Root\\
-            Questions that have interrogative illocutionary force.\\
-            @WH \\
-            $>\!\!>$ (/$\string^$SQ$|\string^$SBARQ/ [!\$ /$\string^$VB$I\string^$JJ/ $|$ !$>$ /$\string^$N/]) \\
-            !$>\!\!>$ /SBAR-NOM/
-
-            \item Embadjunct: @WH\\ 
+            \item \textbf{EmbAdjunct}\\
+            Wh-clauses that are not complements to a verb/adjective, but linearly follow the verb/adjective (i.e., that look like embedded clauses from a linear perspective).\\
+            @WH\\ 
             $>\!\!>$ (/$\string^$SBAR/ \$ /$\string^$VP$|\string^$AD/ !\$ /$\string^$VB$|\string^$JJ/)
             
-            \item Relative: @WH \\
+            \end{enumerate}
+        \item[] \textbf{\textsc{Non-Critical Question-Types}}\\
+        These are tags meant to weed out spurious root/embedded questions.
+
+        \begin{enumerate}
+            \item \textbf{Relative}\\
+            The Wh-clause modifies a noun. (\textsf{Dana saw the boy who ate Captain Crunsh}).
+            @WH \\
             $>\!\!>$ (/$\string^$S/ [$>$ /$\string^$N/ $|$ $>$ (/$\string^$P/ $>$ /$\string^$N/)]) \\
             !$>\!\!>$ (/SBAR-NOM/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
 
-
-
-            \item adjunct: @WH\\
+            \item \textbf{Adjunct}\\ 
+            Wh-clauses that are neither complements of verbs/adjectives, nor the children of PPs that are complements of verbs/adjectives
+            @WH\\
             % i don't know why but i had to put a phantom space before the bracket
             % to allow the bracket to start the new line
             {}[$>\!\!>$ (/$\string^$SBAR/ [$>$ (/$\string^$PP/ !\$ /$\string^$VB$|\string^$JJ/)] $|$ [!\$ /$\string^$VB$|\string^$JJ/])]
 
-            \item nominalized: @WH \\
+            \item \textbf{Nominalized}\\
+            (this is now redundant with the above)
+            Nominalized wh-clauses that are not complements.\\
+            @WH \\
             $>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$VB$|\string^$JJ/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
 
-            \item subject: @WH \\
+            \item \textbf{Subject}\\
+            Wh-clauses that are subjects.\\
+             @WH \\
             {}[ $>\!\!>$ /SBAR-SBJ/ $|$ $>\!\!>$ (/$\string^$S/ $>\!\!>$ /TOP/)]
 
-            \item fragment: @WH \\
+            \item \textbf{Fragment}\\
+            Wh-clauses that are fragments.
+             @WH \\
             $>\!\!>$ (/$\string^$SBAR/ $>$ /FRAG/)
             
-            \item exclam: @WH\\ 
+            \item \textbf{Exclam} \\
+            Wh-clauses that are exclamatives (don't have a verb), e.g., \textsf{what a meal!}
+            @WH\\ 
             $>\!\!>$ (/$\string^$S/ !$<\!\!<$ /$\string^$V/) \\
             !$>\!\!>$ /$\string^$SBAR-NOM/
         \end{enumerate}
-    \item \textbf{DegreeQ}
+    \item \textbf{DegreeQ}\\
+    Returns `yes' if the wh-clause is a degree-question (\textsf{how many cups of salt do we need?}); returns `no' otherwise.
         \begin{enumerate}
             \item Yes: @WH \$ /$\string^$JJ$|\string^$RB/
             \item No: @WH !\$ /$\string^$JJ$|\string^$RB/
         \end{enumerate}
-    \item \textbf{WhAll}
+    \item \textbf{WhAll}\\
+    Returns `yes' if the wh-phrase contains an \textsf{all}; returns `no' otherwise.
         \begin{enumerate}
             \item Yes: @WH $>\!\!>$ (/$\string^$WH/ $<\!\!<$ (/$\string^$NP/ $<$ /$\string^$DT/ !$<$ /$\string^$N/))
         \end{enumerate}
-    \item \textbf{SubjectAux}: 
+    \item \textbf{SubjectAux}\\
+    Returns `yes' if the wh-clause contains subject-aux-inversion.
         \begin{enumerate}
             \item Yes: @WH $>\!\!>$ (/$\string^$SBAR/ $<\!\!<$ /$\string^$SQ/)
         \end{enumerate}
@@ -122,7 +144,7 @@
     \item \textbf{MatVerb}: Print all the matrix predicates who have the wh-clause as complement.\\
     @WH $>\!\!>$ (/$\string^$S/ \$ /$\string^$VB$|\string^$JJ/=print)
 
-    \item \textbf{MatVerbPart}: Print the matrix predicates who have questions as complement to PP (e.g., \textsf{surprised by}, \textsf{agree on}, \textsf{depend on}).\\
+    \item \textbf{MatVerbPart}: Print the matrix predicates who have wh-clause as complement to PP (e.g., \textsf{surprised by}, \textsf{agree on}, \textsf{depend on}).\\
     @WH $>\!\!>$ (/$\string^$S/ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/=print))
 
     \item \textbf{Wh}: Print the wh-word terminal node.\\
@@ -131,16 +153,16 @@
     \item \textbf{Modal}: Print any modals following the @WH node.\\
     @WH . /MD/=print
 
-    \item \textbf{Verb1}: Print the first verb in the question clause. \\
+    \item \textbf{Verb1}: Print the first verb in the wh-clause. \\
     @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ $<\!\!<$ /$\string^$VB/=print])
 
-    \item \textbf{Verb2}: Print the second verb in the question clause.\\
+    \item \textbf{Verb2}: Print the second verb in the wh-clause.\\
     @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ [$<$ /$\string^$VP/ $<$ /$\string^$VB/=print]])
     
-    \item \textbf{DeterminerSubject}: Print any determiners in the NP-SBJ.\\
+    \item \textbf{DeterminerSubject}: Print any determiners in the wh-clause NP-SBJ.\\
     @WH $>\!\!>$ (/$\string^$S/$<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$NP-SBJ/))
     
-    \item \textbf{DeterminerNonSubject}: Print any determiners in the VP.\\
+    \item \textbf{DeterminerNonSubject}: Print any determiners in the wh-clause VP.\\
     @WH $>\!\!>$ (/$\string^$S/ $<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$VP/))
 
     \item \textbf{FullWhPhrase}: Print the full WH-Phrase.\\
@@ -151,14 +173,14 @@
     \item \textbf{Sentence}: Print the full sentence in which the @WH node appears.\\
     @WH $>\!\!>$ (*=print !> *)
 
-    \item \textbf{Question}: Print the full Question.\\
+    \item \textbf{Question}: Print the full wh-clause.\\
     @WH $>\!\!>$ /$\string^$S/=print
 
-    \item \textbf{QuantifiedPredicate}: Print any quantifiers in the question predicate.\\
+    \item \textbf{QuantifiedPredicate}: Print any quantifiers in the wh-clause predicate.\\
     @WH \\
     $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
 
-    \item \textbf{QuantifiedSubject}: Print any quantifiers in the question subject.\\
+    \item \textbf{QuantifiedSubject}: Print any quantifiers in the wh-clause subject.\\
     @WH \\
     $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$NP-SBJ/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
 

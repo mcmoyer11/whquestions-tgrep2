@@ -1,11 +1,12 @@
 # Fdb version 3
-["pdflatex"] 1603123839 "AnnotationGuide.tex" "AnnotationGuide.pdf" "AnnotationGuide" 1603123839
+["pdflatex"] 1603127810 "AnnotationGuide.tex" "AnnotationGuide.pdf" "AnnotationGuide" 1603127810
   "/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/helvetic/phvr7t.tfm" 1136768653 2520 53e01eef820ca829e42c1333c3fd02b9 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/helvetic/phvr8r.tfm" 1136768653 4712 9ef4d7d106579d4b136e1529e1a4533c ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplb7t.tfm" 1136768653 1616 371d1ee60c04b008c8fd760060cd34f1 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplb8r.tfm" 1136768653 2532 9ad73cf4dd2173a847f2a5f5608e0b9a ""
+  "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplbc7t.tfm" 1136768653 1780 fd721e957be9736ee6ffbad7c9f33f40 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplr7t.tfm" 1136768653 1804 7b5f73028f6509167f47ace9d69509ed ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplr8c.tfm" 1136768653 1348 0e8eb69b4437626c0f6c9bed4a4e373c ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplr8r.tfm" 1136768653 2796 d37c29814a6717720ee1a7c9a0b2c3b8 ""
@@ -27,6 +28,7 @@
   "/usr/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb" 1136849748 52665 661b1e6b26edb5f50dd491f8a701cb57 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/helvetic/phvr7t.vf" 1136768653 1372 dc841a9f00a1a11b1443367ae6c5588e ""
   "/usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/palatino/pplb7t.vf" 1136768653 1380 798ef26de8f0a21f37c9b1147f4fe5d8 ""
+  "/usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/palatino/pplbc7t.vf" 1136768653 1948 485dd8ec492de6ce540ae86439ac3dfc ""
   "/usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/palatino/pplr7t.vf" 1136768653 1380 037725697594405988999f61172f52de ""
   "/usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/palatino/pplr8c.vf" 1136768653 3504 f65f653e1ad318a9d01b4af15300683a ""
   "/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/iftex.sty" 1583617216 6501 4011d89d9621e0b0901138815ba5ff29 ""
@@ -45,9 +47,9 @@
   "/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1586288239 4811913 0be9a7e86c70a26e5e3042966bcd7097 ""
   "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1586288259 2432462 fd0fa20e9a3cb5f8169fd0ba1c955158 ""
   "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
-  "AnnotationGuide.aux" 1603123839 309 0cebf07c7472b43e48f897190f8b2e41 "pdflatex"
-  "AnnotationGuide.tex" 1603123838 6751 f54040161fba76d1afe059207a961553 ""
+  "AnnotationGuide.aux" 1603127810 309 aaaa61773a4cb4f1f7f8fe07fe453998 "pdflatex"
+  "AnnotationGuide.tex" 1603127806 8980 f4653e0968078891342796804b21cb83 ""
   (generated)
-  "AnnotationGuide.aux"
   "AnnotationGuide.pdf"
   "AnnotationGuide.log"
+  "AnnotationGuide.aux"

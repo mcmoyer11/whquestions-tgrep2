@@ -49,6 +49,7 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/helvetic/phvr7t.tfm
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplr8c.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplbc7t.tfm
 OUTPUT AnnotationGuide.pdf
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/palatino/pplb7t.vf
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplb8r.tfm
@@ -65,6 +66,8 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/helvetic/phvr7t.vf
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/helvetic/phvr8r.tfm
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/palatino/pplr8c.vf
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/mathpazo/fplmr.tfm
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/vf/adobe/palatino/pplbc7t.vf
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/adobe/palatino/pplb8r.tfm
 INPUT AnnotationGuide.aux
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
