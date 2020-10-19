@@ -12,9 +12,9 @@ add CategoricalVar SubjectAuxInv=yes:SubjectAux
 add CategoricalVar WhAll=yes:WhAll
 add StringVar QuantifiedSubject
 add StringVar QuantifiedPredicate
-add StringVar MatVerb
 add StringVar Wh
 add StringVar MatVerb
+add StringVar MatVerbPart
 add StringVar Modal
 add StringVar Verb1
 add StringVar Verb2
