@@ -1,0 +1,157 @@
+% \begin{preamble}
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{palatino}
+% \end{preamble}
+
+\begin{document}
+
+% Title
+\noindent \huge \textbf{Wh-Questions Tgrep2 Corpus Annotation Guide}\\
+
+\noindent \Large Morgan Moyer \hfill October 17, 2020
+% Endtitle 
+\normalsize
+
+\bigskip
+\hrule 
+\bigskip
+
+\section{Macros}
+
+\begin{enumerate}
+    \item \textbf{Disfluencies @ DISFL:}\\
+    /EDITED$|$UH$|$PRN$|$-UNF/
+    
+    \item \textbf{Wh-Node @ WH:}\\
+
+    /WP$|$WRB$|$WDT/ \\
+    !$<$ /$\string^$t$|\string^$T/ \\
+    !$>\!\!>$ @DISFL \\
+    $>\!\!>$ /$\string^$S/ \\
+    !$>$ /$\string^$N$|\string^$A/
+\end{enumerate}
+
+
+\section{Categorical Variables}
+
+\begin{enumerate}
+    \item \textbf{WhPhraseType}: \\
+    Does the Wh-head have a sister? (e.g., \textsf{which children}); `monomorphemic' otherwise (e.g., \textsf{who}).\\
+        \begin{enumerate}  
+            \item Complex: @WH \$ /$\string^$N$|\string^$D$|\string^$J$|\string^$RB$|\string^$RP$|\string^$PP/
+            \item Monomorphemic: @WH !\$ /$\string^$N$|\string^$J$|\string^$RB$|\string^$PP/
+        \end{enumerate}
+
+    \item \textbf{ModalPresent}: 
+    (yes/no): is there a modal auxiliary (\textsf{can}, \textsf{could}, \textsf{shall}, \textsf{should}, \textsf{may}, \textsf{might}, \textsf{must}) in the question?
+        \begin{enumerate}
+            \item Yes: @WH . /MD/
+            \item No: @WH !. /MD/
+        \end{enumerate}
+    
+    \item \textbf{Finite} (yes/no): Does the question have a tensed (non-modal) verb? If yes = Finite, if not= Infinitive.\\
+        \begin{enumerate}
+            \item Finite: @WH [!. /MD/ $|$ [ !. ($/\string^$-NONE-/ . /TO/)]]
+            \item Infinitival: @WH . (/$\string^$-NONE-/ . /TO/)
+        \end{enumerate}
+    
+    \item \textbf{QuestionType}: what kind of syntactic construction is the question appearing in? The most important ones are ``Embedded'' and ``Root''
+        \begin{enumerate}
+            \item Embedded: @WH \\
+            $>\!\!>$ ($/\string^$SBAR/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ /$\string^$PP/ \$ /$\string^$JJ$|\string^$VB/]) \\
+            !$>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$V $|$JJ/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
+
+            \item Root: @WH \\
+            $>\!\!>$ (/$\string^$SQ$|\string^$SBARQ/ [!\$ /$\string^$VB/ $|$ !$>$ /$\string^$N/]) \\
+            !$>\!\!>$ /SBAR-NOM/
+            
+            \item Relative: @WH \\
+            $>\!\!>$ (/$\string^$S/ [$>$ /$\string^$N/ $|$ $>$ (/$\string^$P/ $>$ /$\string^$N/)]) \\
+            !$>\!\!>$ (/SBAR-NOM/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
+
+            \item embadjunct: @WH\\ 
+            $>\!\!>$ (/$\string^$SBAR/ \$ /$\string^$VP$|\string^$AD/ !\$ /$\string^$VB$|\string^$JJ/)
+
+            \item adjunct: @WH\\
+            % i don't know why but i had to put a phantom space before the bracket
+            % to allow the bracket to start the new line
+            {}[$>\!\!>$ (/$\string^$SBAR/ [$>$ (/$\string^$PP/ !\$ /$\string^$VB$|\string^$JJ/)] $|$ [!\$ /$\string^$VB$|\string^$JJ/])]
+
+            \item nominalized: @WH \\
+            $>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$VB$|\string^$JJ/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
+
+            \item subject: @WH \\
+            {}[ $>\!\!>$ /SBAR-SBJ/ $|$ $>\!\!>$ (/$\string^$S/ $>\!\!>$ /TOP/)]
+
+            \item fragment: @WH \\
+            $>\!\!>$ (/$\string^$SBAR/ $>$ /FRAG/)
+            
+            \item exclam: @WH\\ 
+            $>\!\!>$ (/$\string^$S/ !$<\!\!<$ /$\string^$V/) \\
+            !$>\!\!>$ /$\string^$SBAR-NOM/
+        \end{enumerate}
+    \item \textbf{DegreeQ}
+        \begin{enumerate}
+            \item Yes: @WH \$ /$\string^$JJ$|\string^$RB/
+            \item No: @WH !\$ /$\string^$JJ$|\string^$RB/
+        \end{enumerate}
+    \item \textbf{WhAll}
+        \begin{enumerate}
+            \item Yes: @WH $>\!\!>$ (/$\string^$WH/ $<\!\!<$ (/$\string^$NP/ $<$ /$\string^$DT/ !$<$ /$\string^$N/))
+        \end{enumerate}
+    \item \textbf{SubjectAux}: 
+        \begin{enumerate}
+            \item Yes: @WH $>\!\!>$ (/$\string^$SBAR/ $<\!\!<$ /$\string^$SQ/)
+        \end{enumerate}
+    
+\end{enumerate}
+
+\section{String Variables}
+\begin{enumerate}
+    \item \textbf{MatVerb}\\
+    @WH $>\!\!>$ (/$\string^$S/ \$ /$\string^$VB/=print)
+
+    \item \textbf{Wh}\\
+    @WH $<$ /$\string^$w$|\string^$h/=print
+
+    \item \textbf{Modal}\\
+    @WH . /MD/=print
+
+    \item \textbf{Verb1}\\
+    @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ $<\!\!<$ /$\string^$VB/=print])
+
+    \item \textbf{Verb2}\\
+    @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ [$<$ /$\string^$VP/ $<$ /$\string^$VB/=print]])
+    
+    \item \textbf{DeterminerSubject}\\
+    @WH $>\!\!>$ (/$\string^$S/$<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$NP-SBJ/))
+    
+    \item \textbf{DeterminerNonSubject}\\
+    @WH $>\!\!>$ (/$\string^$S/ $<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$VP/))
+
+    \item \textbf{FullWhPhrase}\\
+    @WH $>$ /$\string^$W/=print \$ /$\string^$N$|\string^$J$|\string^$RB/
+
+    \item \textbf{WhParse}
+
+    \item \textbf{Sentence}\\
+    @WH $>\!\!>$ (*=print !> *)
+
+    \item \textbf{Question}\\
+    @WH $>\!\!>$ /$\string^$S/=print
+
+    \item \textbf{QuantifiedPredicate}\\
+    @WH \\
+    $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
+
+    \item \textbf{QuantifiedSubject}\\
+    @WH \\
+    $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$NP-SBJ/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
+
+\end{enumerate}
+
+
+
+\end{document}
