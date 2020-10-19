@@ -1,1 +1,1 @@
-@WH >> (/^S/ $ /^VB/=print)
+@WH >> (/^S/ $ /^VB|^JJ/=print)
