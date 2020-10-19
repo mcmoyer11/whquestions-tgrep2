@@ -1,1 +1,1 @@
-@WH >> (/^SQ|^SBARQ/ [!$ /^VB/ | !> /^N/]) !>> /SBAR-NOM/
+@WH >> (/^SQ|^SBARQ/ [!$ /^VB|^JJ/ | !> /^N/]) !>> /SBAR-NOM/
