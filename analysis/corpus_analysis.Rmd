@@ -34,6 +34,9 @@ Take a random sample of 200.
 s = sample_n(d, 200)
 View(s)
 
+# write to CSV
+write.csv(s, "whq_sample_200.csv",row.names = TRUE)
+
 # save it to a csv file and provide an annotation guide for what 
 # the different types of features should be
 # overleaf. 
@@ -42,59 +45,10 @@ no_qt = subset(d, d$QuestionType=="")
 nrow(no_qt) # 1016....819....20....18...0!
 View(no_qt)
 
-subj = subset(d, d$QuestionType=="subject")
+subj = subset(d, d$QuestionType=="nominalized")
 View(subj)
+levels(d$QuestionType)
 
 ```
 
 
-	Level 0: 128 values of type 'fragment' were found.
-	Level 1: 10002 values of type 'subject' were found.
-	Level 2: 4471 values of type 'adjunct' were found.
-	Level 3: 2130 values of type 'root' were found.
-	Level 4: 3442 values of type 'embedded' were found.
-	Level 5: 1908 values of type 'relative' were found.
-	Level 6: 1828 values of type 'nominalized' were found.
-	Level 7: 207 values of type 'exclamation' were found.
-
-so that's why i'm planning and, and preparing for the, uh, education of my children, also try and set that money aside *t*-1.
-
-
-and i can't see *-1 getting dressed up and wearing heels and stuff when you have *-2 to carry, you know, boxes of documents around *t*-3,
-(TOP (S (CC and) 
-        (NP-SBJ-1 (PRP I)) 
-        (VP (MD ca) 
-            (RB n't) 
-            (VP (VB see) 
-                (S (NP-SBJ (-NONE- *-1)) 
-                   (VP (VP (VBG getting) 
-                           (VP (VBN dressed) 
-                               (PRT (RP up)))) 
-                       (CC and) 
-                       (VP (VBG wearing) (NP (NNS heels) 
-                           (CC and) (NN stuff))) 
-                       (SBAR-TMP (WHADVP-3 (WRB when)) 
-                                (S (NP-SBJ-2 (PRP you)) (VP (VBP have) (S (NP-SBJ (-NONE- *-2)) (VP (TO to) (VP (VB carry) (PRN (, ,) (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) (NP (NP (NNS boxes)) (PP (IN of) (NP (NNS documents)))) (ADVP (RB around))))) (ADVP-TMP (-NONE- *T*-3))))))))) (, ,) (-DFL- E_S)))
-
-
-
-
-		Level 0: 128 values of type 'fragment' were found.
-		Level 1: 10278 values of type 'subject' were found.
-		Level 2: 4471 values of type 'adjunct' were found.
-		Level 3: 2130 values of type 'root' were found.
-		Level 4: 3442 values of type 'embedded' were found.
-		Level 5: 1908 values of type 'relative' were found.
-		Level 6: 1828 values of type 'nominalized' were found.
-		Level 7: 207 values of type 'exclamation' were found.
-
-
-		Level 0: 128 values of type 'fragment' were found.
-		Level 1: 10278 values of type 'subject' were found.
-		Level 2: 4471 values of type 'adjunct' were found.
-		Level 3: 976 values of type 'embadjunct' were found.
-		Level 4: 2130 values of type 'root' were found.
-		Level 5: 3442 values of type 'embedded' were found.
-		Level 6: 1908 values of type 'relative' were found.
-		Level 7: 1828 values of type 'nominalized' were found.
-		Level 8: 207 values of type 'exclamation' were found.
