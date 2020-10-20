@@ -4,7 +4,8 @@ results=/afs/.ir.stanford.edu/users/m/c/mcmoyer/projects/whquestions-tgrep2/corp
 init ID
 
 add StringVar Sentence
-add CategoricalVar ModalPresent=yes:Modal,yes:HaveNeed,no:NotModal,no:NotHaveNeed
+add CategoricalVar ModalPresent=yes:Modal,no:NotModal
+add CategoricalVar HaveNeedTo=yes:HaveNeed,no:NotHaveNeed
 add CategoricalVar Finite=no:Infinite,yes:Finite
 add CategoricalVar QuestionType=fragment:FragmentQ,subject:QuestionSubject,adjunct:QuestionAdjunct,embadjunct:EmbAdjunct,root:RootQ,embedded:EmbQ,relative:RelClause,nominalized:NominalizedQ,exclamation:ExclamQ
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
@@ -18,6 +19,7 @@ add StringVar MatVerbPart
 add StringVar Modal
 add StringVar Verb1
 add StringVar Verb2
+add StringVar Verb3
 add StringVar DeterminerSubject
 add StringVar DeterminerNonSubject
 add StringVar FullWhPhrase
