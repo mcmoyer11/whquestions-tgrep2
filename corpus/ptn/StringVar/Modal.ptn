@@ -1,1 +1,1 @@
-@WH . /MD/=print
+@WH > (/^WH/ $ (/^S/ << /MD/=print)) 
