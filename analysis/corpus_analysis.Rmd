@@ -23,15 +23,17 @@ library(lme4)
 Read the database into R and explore it.
 ```{r}
 d = read.table("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
-nrow(d) # 10667.....10278
+nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH/)
 head(d)
 str(d)
 summary(d)
+
+table(d$QuestionType)
 ```
 
 Take a random sample of 200.
 ```{r}
-s = sample_n(d, 200)
+s <- sample_n(d, 200)
 View(s)
 
 # write to CSV
@@ -40,15 +42,70 @@ write.csv(s, "whq_sample_200.csv",row.names = TRUE)
 # save it to a csv file and provide an annotation guide for what 
 # the different types of features should be
 # overleaf. 
+# 
+```
+# some embedded cases aren't printing a matrix verb
+```{r}
+emb <- subset(d, d$QuestionType=="embedded")
+enmv = emb %>%
+  filter(MatVerb %in% c(""))
+nrow(enmv) # 3333.....0! fixed
+View(enmv)
 
+```
+
+
+
+```{r}
 no_qt = subset(d, d$QuestionType=="")
 nrow(no_qt) # 1016....819....20....18...0!
 View(no_qt)
 
-subj = subset(d, d$QuestionType=="nominalized")
-View(subj)
-levels(d$QuestionType)
+mod = subset(d, d$ModalPresent=="yes")
+nrow(mod) # 895
 
+nf2 <- subset(d, d$Finite=="no") # YES THESE ARE ALL GOOD
+nrow(nf2) #190....186?
+View(nf2)
+# sanity check
+nf <- subset(d, d$Finite!="yes") 
+nrow(nf) #186
+View(nf)
+
+# Do these return all the same ?
+all.equal(nf,nf2) # TRUE
+````
+
+
+
+
+````{r}
+notmod = subset(d, d$ModalPresent=="no")
+
+View(notmod)
+
+dd = grepl("can|could|may|might|must|shall|should", d$Sentence)
+View(dd)
+
+mods <- ""
+for (r in d){
+    if (grepl("can|could|may|might|must|shall|should", d$Sentence))
+    mods + r
+  }
 ```
+
+Figuring out the INFINITE  .... this is modal
+
+i don't know how much clearer it can be *t*-1,
+(TOP (S (NP-SBJ (PRP I)) 
+        (VP (VBP do) (RB n't) 
+            (VP (VB know) 
+                (SBAR (WHADJP-1 (WHADVP 
+                                    (WRB how) 
+                                    (RB much)) 
+                                (JJR clearer)) 
+                      (S (NP-SBJ (PRP it)) 
+                        (VP (MD can) 
+                            (VP (VB be) (ADJP-PRD (-NONE- *T*-1)))))))) (, ,) (-DFL- E_S)))
 
 
