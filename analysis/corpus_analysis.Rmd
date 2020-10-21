@@ -88,8 +88,8 @@ dd = grepl("can|could|may|might|must|shall|should", d$Sentence)
 View(dd)
 
 mods <- ""
-for (r in d){
-    if (grepl("can|could|may|might|must|shall|should", d$Sentence))
+for (r in notmod){
+    if (grepl("can|could|may|might|must|shall|should", notmod$Sentence))
     mods + r
   }
 ```

@@ -3,7 +3,13 @@
 \usepackage[margin=1in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{palatino}
+\usepackage{color}
 % \end{preamble}
+
+
+\definecolor{Purple}{RGB}{255,10,140}
+\newcommand{\jd}[1]{\textcolor{Purple}{[jd: #1]}}
+
 
 \begin{document}
 
@@ -29,7 +35,8 @@
     !$<$ /$\string^$t$|\string^$T/ (that doesn't termininate in a \textsf{that}/\textsf{That})\\
     !$>\!\!>$ @DISFL (isn't dominated by a disfluency)\\
     $>\!\!>$ /$\string^$S/ (but is dominated by an S node)\\
-    !$>$ /$\string^$N$|\string^$A/ (isn't parented by any NPs or ADV/ADJPs)
+    !$>$ /$\string^$N$|\string^$A/ (isn't parented by any NPs or ADV/ADJPs)\\
+    $>\!\!>$ /\string^WH/
 \end{enumerate}
 
 
@@ -44,17 +51,26 @@
         \end{enumerate}
 
     \item \textbf{ModalPresent}: \\
-    Returns ``yes'' if there is a modal auxiliary (\textsf{can}, \textsf{could}, \textsf{shall}, \textsf{should}, \textsf{may}, \textsf{might}, \textsf{must}) following @WH (\textsf{where we can find coffee}); Returns ``no'' if there isn't any.
+    Returns ``yes'' if there is a modal auxiliary (\textsf{can}, \textsf{could}, \textsf{shall}, \textsf{should}, \textsf{may}, \textsf{might}, \textsf{must}) following @WH (\textsf{where we can find coffee}); Returns ``no'' if there isn't any. 
         \begin{enumerate}
-            \item Yes: @WH . /MD/
-            \item No: @WH !. /MD/
+            \item Yes: @WH $>\!\!>$ (/$\string^$WH/ \$ (/$\string^$S/ $<\!\!<$ /MD/))
+            \item No: @WH !$>\!\!>$ (/$\string^$WH/ \$ (/$\string^$S/ $<\!\!<$ /MD/))
         \end{enumerate}
-    
+        
+    %     \jd{
+    %     \begin{itemize}
+    %         \item the problem with these patters, ie why it's consistently claiming there are no cases of modals, is that you're asking the modal to directly follow the wh-word, but most cases are such that there is other material intervening, including in the example that you list. once i realized this, i stopped annotating the cases for missing modal, so only some of them are marked.
+    %         \item i did also see a case -- 122760:31 ``what would we do without it" -- that, even though it does have the modal directly following the wh-word, still returned "no". mysterious; figure out what's happening.
+    %         \item there was a case -- 165374:11 ``i know what needs to be done" -- that seems like it should return "yes" because of the "needs to" -- can you include "need/needs/needed to" and "have/has/had to"? others like this?
+    %     \end{itemize}
+    % }
     \item \textbf{Finite}\\
     Returns ``finite'' if the question contains a tensed (=non-modal) verb (\textsf{where they found coffee}); returns ``infinite'' if the question contains an infinitival clause (\textsf{where to find coffee})
         \begin{enumerate}
-            \item Finite: @WH [!. /MD/ $|$ [ !. ($/\string^$-NONE-/ . /TO/)]]
-            \item Infinitival: @WH . (/$\string^$-NONE-/ . /TO/)
+            \item \textbf{Finite}: \\
+            @WH $>\!\!>$ (/$\string^$WH/ !\$ (/$\string^$S/ !\$ /$\string^$VB/ $<$ (/$\string^$NP/ $<$ /-NONE-/ \$. (/$\string^$VP/ $<$ /TO/))))
+            \item \textbf{Infinitival}: \\
+            @WH $>\!\!>$ (/$\string^$WH/ $ (/$\string^$S/ !$ /$\string^$VB/ $<$ (/$\string^$NP/ $<$ /-NONE-/ \$. (/$\string^$VP/ $<$ /TO/))))
         \end{enumerate}
     
     \item \textbf{QuestionType}\\
@@ -62,23 +78,23 @@
 
     \item[] \textbf{\textsc{Critical QuestionTypes}}
         \begin{enumerate}
-            \item Root\\
+            \item \textbf{Root}\\
             Wh-clauses that have interrogative illocutionary force (e.g., \textsf{Where can I find coffee?}). Are not complements to adjectives/verbs or children of Ns\\
             @WH \\
-            $>\!\!>$ (/$\string^$SQ$|\string^$SBARQ/ [!\$ /$\string^$VB$|\string^$JJ/ $|$ !$>$ /$\string^$N/]) \\
+            $>\!\!>$ (/$\string^$SQ$|\string^$SBARQ/ [!\$ /$\string^$VB$|\string^$JJ$|\string^$BE/ $|$ !$>$ /$\string^$N/]) \\
             !$>\!\!>$ /SBAR-NOM/
 
             \item \textbf{Embedded}\\ 
             Wh-clauses that are complements (sisters) to a verb (VB) or an adjective (JJ), OR that are embedded in PP which are complements of verbs or adjectives.
 
             @WH \\
-            $>\!\!>$ ($/\string^$SBAR/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ /$\string^$PP/ \$ /$\string^$JJ$|\string^$VB/]) \\
-            !$>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$V $|$JJ/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
+            $>\!\!>$ ($/\string^$SBAR/ [\$ /$\string^$VB$|\string^$JJ$|\string^$BE/] $|$ [$>$ /$\string^$PP/ \$ /$\string^$JJ$|\string^$VB$|\string^$BE/]) \\
+            !$>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$V $|$\string^JJ$|\string^$BE/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ$|\string^$BE/)])
 
             \item \textbf{EmbAdjunct}\\
             Wh-clauses that are not complements to a verb/adjective, but linearly follow the verb/adjective (i.e., that look like embedded clauses from a linear perspective).\\
             @WH\\ 
-            $>\!\!>$ (/$\string^$SBAR/ \$ /$\string^$VP$|\string^$AD/ !\$ /$\string^$VB$|\string^$JJ/)
+            $>\!\!>$ (/$\string^$SBAR/ \$ /$\string^$VP$|\string^$AD/ !\$ /$\string^$VB$|\string^$JJ$|\string^$BE/)
             
             \end{enumerate}
         \item[] \textbf{\textsc{Non-Critical Question-Types}}\\
@@ -89,20 +105,20 @@
             The Wh-clause modifies a noun. (\textsf{Dana saw the boy who ate Captain Crunsh}).
             @WH \\
             $>\!\!>$ (/$\string^$S/ [$>$ /$\string^$N/ $|$ $>$ (/$\string^$P/ $>$ /$\string^$N/)]) \\
-            !$>\!\!>$ (/SBAR-NOM/ [\$ /$\string^$VB$|\string^$JJ/] $|$ [$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
+            !$>\!\!>$ (/SBAR-NOM/ [\$ /$\string^$VB$|\string^$JJ$|\string^$BE/] $|$ [$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ$|\string^$BE/)])
 
             \item \textbf{Adjunct}\\ 
             Wh-clauses that are neither complements of verbs/adjectives, nor the children of PPs that are complements of verbs/adjectives
             @WH\\
             % i don't know why but i had to put a phantom space before the bracket
             % to allow the bracket to start the new line
-            {}[$>\!\!>$ (/$\string^$SBAR/ [$>$ (/$\string^$PP/ !\$ /$\string^$VB$|\string^$JJ/)] $|$ [!\$ /$\string^$VB$|\string^$JJ/])]
+            {}[$>\!\!>$ (/$\string^$SBAR/ [$>$ (/$\string^$PP/ !\$ /$\string^$VB$|\string^$JJ$|\string^$BE/)] $|$ [!\$ /$\string^$VB$|\string^$JJ$|\string^$BE/])]
 
             \item \textbf{Nominalized}\\
             (this is now redundant with the above)
             Nominalized wh-clauses that are not complements.\\
             @WH \\
-            $>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$VB$|\string^$JJ/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/)])
+            $>\!\!>$ (/SBAR-NOM/ [!\$ /$\string^$VB$|\string^$JJ$|\string^$BE/] $|$ [!$>$ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ$|\string^$BE/)])
 
             \item \textbf{Subject}\\
             Wh-clauses that are subjects.\\
