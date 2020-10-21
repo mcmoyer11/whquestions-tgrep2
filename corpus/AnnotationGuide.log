@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  19 OCT 2020 10:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  21 OCT 2020 07:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -57,6 +57,17 @@ Package: inputenc 2018/08/11 v1.3c Input encoding file
 (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/palatino.sty
 Package: palatino 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2019/11/23 v1.2a Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
 (/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count178
@@ -65,22 +76,22 @@ File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 (./AnnotationGuide.aux)
 \openout1 = `AnnotationGuide.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 8
-.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 1
+4.
 
 (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
@@ -119,19 +130,32 @@ File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 11--12
+(/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count179
+\scratchdimen=\dimen143
+\scratchbox=\box46
+\nofMPsegments=\count180
+\nofMParguments=\count181
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count182
+\MPscratchDim=\dimen144
+\MPnumerator=\count183
+\makeMPintoPDFobject=\count184
+\everyMPtoPDFconversion=\toks20
+)
+Underfull \hbox (badness 10000) in paragraph at lines 17--18
 
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 25.
+(Font)              <10.95> on input line 31.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 25.
+(Font)              <8> on input line 31.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 25.
-LaTeX Font Info:    Trying to load font information for OT1+phv on input line 2
-9.
+(Font)              <6> on input line 31.
+LaTeX Font Info:    Trying to load font information for OT1+phv on input line 3
+5.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 
@@ -157,19 +181,19 @@ LaTeX Warning: Font shape declaration has incorrect series value `mc'.
 
 )
 LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 4
-2.
+9.
  (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 ) [1
 
 {/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (37.49748pt too wide) in paragraph at lines 78--82
+Overfull \hbox (37.49748pt too wide) in paragraph at lines 94--98
 \OT1/ppl/m/n/10.95 Wh-clauses that are not com-ple-ments to a verb/adjective, b
 ut lin-early fol-low the verb/adjective
  []
 
 [2]
-Overfull \hbox (32.98235pt too wide) in paragraph at lines 179--182
+Overfull \hbox (32.98235pt too wide) in paragraph at lines 195--198
 \OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m
 /n/10.95 WH/ $\OML/cmm/m/it/10.95 >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^
 $\OT1/ppl/m/n/10.95 S/ $\OML/cmm/m/it/10.95 <  <$ \OT1/ppl/m/n/10.95 (/$\OT1/cm
@@ -183,7 +207,7 @@ m/n/10.95 more$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 most$\OMS/cmsy/m/n/10.9
  []
 
 [3]
-Overfull \hbox (53.90762pt too wide) in paragraph at lines 183--186
+Overfull \hbox (53.90762pt too wide) in paragraph at lines 199--202
 \OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m
 /n/10.95 WH/ $\OML/cmm/m/it/10.95 >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^
 $\OT1/ppl/m/n/10.95 S/ $\OML/cmm/m/it/10.95 <  <$ \OT1/ppl/m/n/10.95 (/$\OT1/cm
@@ -198,13 +222,13 @@ ppl/m/n/10.95 more$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 most$\OMS/cmsy/m/n/
 
 [4] (./AnnotationGuide.aux) ) 
 Here is how much of TeX's memory you used:
- 1074 strings out of 480608
- 16684 string characters out of 5903631
- 260045 words of memory out of 5000000
- 16998 multiletter control sequences out of 15000+600000
+ 1589 strings out of 480608
+ 23608 string characters out of 5903631
+ 267884 words of memory out of 5000000
+ 17499 multiletter control sequences out of 15000+600000
  544019 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,4n,34p,388b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 30i,5n,34p,412b,240s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvip
 s/base/8r.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -212,7 +236,7 @@ m/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm
 msy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.p
 fb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></us
 r/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on AnnotationGuide.pdf (4 pages, 81609 bytes).
+Output written on AnnotationGuide.pdf (4 pages, 84625 bytes).
 PDF statistics:
  42 PDF objects out of 1000 (max. 8388607)
  29 compressed objects within 1 object stream
