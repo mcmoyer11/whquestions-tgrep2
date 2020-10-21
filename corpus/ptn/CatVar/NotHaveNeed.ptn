@@ -1,1 +1,1 @@
-@WH !>> (/^WH/ $ (/^S/ << (/^VP/ << /need|have/) << /TO/) )
+@WH !>> (/^WH/ $ (/^S/ << (/^VP/ << /need|needs|needed|have|has|had|'ve/) << /TO/) )
