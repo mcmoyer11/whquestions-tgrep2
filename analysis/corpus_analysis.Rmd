@@ -1,7 +1,7 @@
 ---
 title: "Analysis of factive verbs"
 author: "mcmoyer"
-date: "October 14, 2020"
+date: "October 22, 2020"
 output: html_document
 ---
   
@@ -46,10 +46,41 @@ Take a random sample of 200.
 ```{r}
 s <- sample_n(d, 200)
 View(s)
-
+nrow(s)
 # write to CSV
 write.csv(s, "whq_sample_200.csv",row.names = TRUE)
 
+```
+Reproduce the same set
+```{r}
+# the original DF i sent jd
+sa <- read.csv("whq_sample_200_A.csv", header=TRUE)
+
+
+dnew = semi_join(d, sa, by = c("Item_ID"))
+nrow(dnew)
+
+
+sa = sa[order(sa$Item_ID),]
+
+ddnew = semi_join(sa, d, by=c("Item_ID"))
+write.csv(ddnew, "whq_sample_200_neworig.csv",row.names = TRUE)
+
+# try to check if they're the same IDs
+
+ddnew_names = ddnew$Item_ID
+sa_names = sa$Item_ID
+length(sa_names)
+
+all.equal(ddnew_names,sa_names)
+
+View(ddnew)
+
+
+snew = d %>%
+  filter(Item_ID %in% sa$Item_ID)
+
+write.csv(snew, "whq_sample_200_neworig.csv",row.names = TRUE)
 # save it to a csv file and provide an annotation guide for what 
 # the different types of features should be
 # overleaf. 
