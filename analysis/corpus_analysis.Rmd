@@ -23,12 +23,23 @@ library(lme4)
 Read the database into R and explore it.
 ```{r}
 d = read.table("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
-nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH/)
+nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
 head(d)
 str(d)
 summary(d)
 
-table(d$QuestionType)
+View(d[1:26])
+ncol(d)
+names = colnames(d)
+
+for(n in names) {
+   d[n] <- as.factor(d$n)
+    }
+summary(d)
+
+# d = as.factor(d[1:26])
+str(d)
+table(d$ModalPresent)
 ```
 
 Take a random sample of 200.
@@ -64,6 +75,11 @@ View(no_qt)
 mod = subset(d, d$ModalPresent=="yes")
 nrow(mod) # 895
 
+nmod = subset(d, d$ModalPresent=="no")
+nrow(nmod) # 9235
+
+table(d$ModalPresent)
+
 nf2 <- subset(d, d$Finite=="no") # YES THESE ARE ALL GOOD
 nrow(nf2) #190....186?
 View(nf2)
@@ -80,10 +96,24 @@ all.equal(nf,nf2) # TRUE
 
 
 ````{r}
-notmod = subset(d, d$ModalPresent=="no")
-
+notmod = subset(d, d$ModalPresent!="no" & d$ModalPresent!="yes")
+nrow(notmod)
 View(notmod)
+str(d)
+notmodcomp = d %>%
+  filter(!ModalPresent %in% c("yes","no")) %>%
+  filter(WhPhraseType %in% c("complex"))
 
+notmodcomp2 = subset(notmod, notmod$WhPhaseType=="complex")
+nrow(notmodcomp2) # so there are non-complex wh that are failing
+notmodnotcomp = subset(notmod, notmod$WhPhaseType!="complex")
+nrow(notmodnotcomp)
+View(notmodnotcomp)
+
+```
+
+
+```{r}
 dd = grepl("can|could|may|might|must|shall|should", d$Sentence)
 View(dd)
 
@@ -94,18 +124,20 @@ for (r in notmod){
   }
 ```
 
-Figuring out the INFINITE  .... this is modal
+Graphssss
 
-i don't know how much clearer it can be *t*-1,
-(TOP (S (NP-SBJ (PRP I)) 
-        (VP (VBP do) (RB n't) 
-            (VP (VB know) 
-                (SBAR (WHADJP-1 (WHADVP 
-                                    (WRB how) 
-                                    (RB much)) 
-                                (JJR clearer)) 
-                      (S (NP-SBJ (PRP it)) 
-                        (VP (MD can) 
-                            (VP (VB be) (ADJP-PRD (-NONE- *T*-1)))))))) (, ,) (-DFL- E_S)))
+```{r}
+ftable(d$QuestionType,d$ModalPresent)
+
+agr = d %>%
+  group_by(QuestionType,ModalPresent,Finite) %>%
+  mutate(count = count(Sentence), prop_modal= ) %>%
+  
+  ggplot(d, aes(x=as.factor(QuestionType),y=as.factor(Finite), fill = as.factor(ModalPresent))) +
+  geom_bar()
+  
+View(agr)
+
+```
 
 

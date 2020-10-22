@@ -16,7 +16,7 @@
 % Title
 \noindent \huge \textbf{Wh-Questions Tgrep2 Corpus Annotation Guide}\\
 
-\noindent \Large Morgan Moyer \hfill October 17, 2020
+\noindent \Large Morgan Moyer \hfill Version: October 22, 2020
 % Endtitle 
 \normalsize
 
@@ -46,17 +46,28 @@
     \item \textbf{WhPhraseType}: \\
     Returns ``complex'' if @WH has a sister (e.g., \textsf{which children}); returns ``monomorphemic'' otherwise (e.g., \textsf{who}).
         \begin{enumerate}  
-            \item Complex: @WH \$ /$\string^$N$|\string^$D$|\string^$J$|\string^$RB$|\string^$RP$|\string^$PP/
-            \item Monomorphemic: @WH !\$ /$\string^$N$|\string^$J$|\string^$RB$|\string^$PP/
+            \item Complex: @WH [\$ /$\string^$N$|\string^$D$|\string^$J$|\string^$RB$|\string^$RP$|\string^$PP/
+            $|$ $>\!\!>$ (/$\string^$WH/ \$ /$\string^$AD$|\string^$JJ$|\string^$NP$|\string^$PP/)]
+
+            \item Monomorphemic: @WH [!\$ /$\string^$N$|\string^$D$|\string^$J$|\string^$RB$|\string^$RP$|\string^$PP/
+            $|$ !$>\!\!>$ (/$\string^$WH/ \$ /$\string^$AD$|\string^$JJ$|\string^$NP$|\string^$PP/)]
         \end{enumerate}
 
     \item \textbf{ModalPresent}: \\
-    Returns ``yes'' if there is a modal auxiliary (\textsf{can}, \textsf{could}, \textsf{shall}, \textsf{should}, \textsf{may}, \textsf{might}, \textsf{must}) following @WH (\textsf{where we can find coffee}); Returns ``no'' if there isn't any. 
+    Returns ``yes'' if there is a modal auxiliary (\textsf{can}, \textsf{could}, \textsf{shall}, \textsf{should}, \textsf{may}, \textsf{might}, \textsf{must}) in the clause that is sister to the WH-phrase node that dominates the @WH (\textsf{where we can find coffee}); Returns ``no'' if there isn't any. 
         \begin{enumerate}
-            \item Yes: @WH $>\!\!>$ (/$\string^$WH/ \$ (/$\string^$S/ $<\!\!<$ /MD/))
-            \item No: @WH !$>\!\!>$ (/$\string^$WH/ \$ (/$\string^$S/ $<\!\!<$ /MD/))
+            \item Yes: @WH $>\!\!>$ (/$\string^$WH/ $>\!\!>$ /$\string^$S/ \$ (/S$|$SQ/ $<\!\!<$ /MD/))
+            \item No: @WH !$>\!\!>$ (/$\string^$WH/  $>\!\!>$ /$\string^$S/ \$ (/S$|$SQ/ $<\!\!<$ /MD/))
         \end{enumerate}
         
+    \item \textbf{HaveNeed}:\\
+    Returns 'yes' if there's a \textsf{have to} or \textsf{need to} construction. Returns 'no' otherwise.
+        \begin{enumerate}
+            \item Yes: @WH $>\!\!>$ (/$\string^$WH/ \$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/ $<\!\!<$ /need$|$needs$|$needed$|$have$|$has$|$had$|$'ve$|$'d/) $<\!\!<$ /TO/ ))
+
+            \item No: @WH !$>\!\!>$ (/$\string^$WH/ \$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/ $<\!\!<$ /need$|$needs$|$needed$|$have$|$has$|$had$|$'ve$|$'d/) $<\!\!<$ /TO/) )
+
+        \end{enumerate}
     %     \jd{
     %     \begin{itemize}
     %         \item the problem with these patters, ie why it's consistently claiming there are no cases of modals, is that you're asking the modal to directly follow the wh-word, but most cases are such that there is other material intervening, including in the example that you list. once i realized this, i stopped annotating the cases for missing modal, so only some of them are marked.
@@ -145,7 +156,7 @@
     \item \textbf{WhAll}\\
     Returns `yes' if the wh-phrase contains an \textsf{all}; returns `no' otherwise.
         \begin{enumerate}
-            \item Yes: @WH $>\!\!>$ (/$\string^$WH/ $<\!\!<$ (/$\string^$NP/ $<$ /$\string^$DT/ !$<$ /$\string^$N/))
+            \item Yes: @WH $>\!\!>$ (/$\string^$WH/ $<\!\!<$ (/$\string^$NP/ $<$ (/$\string^$DT/ $<$ /all/) !$<$ /$\string^$N/))
         \end{enumerate}
     \item \textbf{SubjectAux}\\
     Returns `yes' if the wh-clause contains subject-aux-inversion.
@@ -158,22 +169,28 @@
 \section{String Variables}
 \begin{enumerate}
     \item \textbf{MatVerb}: Print all the matrix predicates who have the wh-clause as complement.\\
-    @WH $>\!\!>$ (/$\string^$S/ \$ /$\string^$VB$|\string^$JJ/=print)
+    @WH $>\!\!>$ (/$\string^$S/ \$ /$\string^$VB$|\string^$JJ$|\string^$BE/=print)
 
     \item \textbf{MatVerbPart}: Print the matrix predicates who have wh-clause as complement to PP (e.g., \textsf{surprised by}, \textsf{agree on}, \textsf{depend on}).\\
-    @WH $>\!\!>$ (/$\string^$S/ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ/=print))
+    @WH $>\!\!>$ (/$\string^$S/ (/$\string^$PP/ \$ /$\string^$VB$|\string^$JJ$|\string^$BE/=print))
 
     \item \textbf{Wh}: Print the wh-word terminal node.\\
     @WH $<$ /$\string^$w$|\string^$h/=print
 
     \item \textbf{Modal}: Print any modals following the @WH node.\\
-    @WH . /MD/=print
+    @WH $>\!\!>$ (/$\string^$WH/ $>\!\!>$ /$\string^$S/ \$ (/S$|$SQ/ $<\!\!<$ /MD/=print))
+    
+    \item \textsf{HaveNeed}: Print any \textsf{have to} / \textsf{need to} modal constructions
+    @WH $>\!\!>$ (/$\string^$WH/ \$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/ $<\!\!<$ /need$|$needs$|$needed$|$have$|$has$|$had$|$'ve$|$'d/=print) $<\!\!<$ /TO/ ))
 
     \item \textbf{Verb1}: Print the first verb in the wh-clause. \\
-    @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ $<\!\!<$ /$\string^$VB/=print])
+    @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ $<\!\!<$ /$\string^$VB$|\string^$JJ$|\string^$BE/=print])
 
-    \item \textbf{Verb2}: Print the second verb in the wh-clause.\\
-    @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ [$<$ /$\string^$VP/ $<$ /$\string^$VB/=print]])
+    \item \textbf{Verb2}: Print the second verb/predicate in the wh-clause.\\
+    @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ [$<$ /$\string^$VP/ $<$ /$\string^$VB$|\string^$JJ$|\string^$BE/=print]])
+    
+    \item \textbf{Verb3}: Print the third verb/predicate in the wh-clause.\\
+    @WH $>\!\!>$ (/$\string^$S/ [$<\!\!<$ /$\string^$VP/ [$<\!\!<$ /$\string^$VP/ [$<$ /$\string^$VP/ $<$ /$\string^$VB$|\string^$JJ$|\string^$BE/=print]]])
     
     \item \textbf{DeterminerSubject}: Print any determiners in the wh-clause NP-SBJ.\\
     @WH $>\!\!>$ (/$\string^$S/$<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$NP-SBJ/))
@@ -182,23 +199,25 @@
     @WH $>\!\!>$ (/$\string^$S/ $<\!\!<$ (/DT/=print $>\!\!>$ /$\string^$VP/))
 
     \item \textbf{FullWhPhrase}: Print the full WH-Phrase.\\
-    @WH $>$ /$\string^$W/=print \$ /$\string^$N$|\string^$J$|\string^$RB/
+    @WH $>\!\!>$ (/$\string^$WH/=print \$ /S$|$SQ/ $>\!\!>$ /$\string^$S/ $>\!\!>$ /$\string^$N$|\string^$J$|\string^$RB$|\string^$PP$|\string^$A/)
 
     \item \textbf{WhParse}: Print the Wh-phrase with POS.
 
     \item \textbf{Sentence}: Print the full sentence in which the @WH node appears.\\
-    @WH $>\!\!>$ (*=print !> *)
+    @WH $>\!\!>$ ($\ast$=print !$>$ $\ast$)
 
     \item \textbf{Question}: Print the full wh-clause.\\
     @WH $>\!\!>$ /$\string^$S/=print
 
     \item \textbf{QuantifiedPredicate}: Print any quantifiers in the wh-clause predicate.\\
     @WH \\
-    $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
+    $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$VP/\\
+    $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
 
     \item \textbf{QuantifiedSubject}: Print any quantifiers in the wh-clause subject.\\
     @WH \\
-    $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$NP-SBJ/ $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
+    $>\!\!>$ (/$\string^$WH/ $>$ (/$\string^$S/ $<\!\!<$ (/$\string^$NP-SBJ/\\
+    $<\!\!<$ /all$|$every$|$some$|$one$|$any$|$most$|$least$|$more$|$most$|$much/=print)))
 
 \end{enumerate}
 
