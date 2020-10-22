@@ -28,3 +28,5 @@ add ParseVar WhParse
 add StringVar Question
 add ParseVar SentenceParse
 add CategoricalVar WhPhaseType=complex:ComplexWh,monomorphemic:MonoWh
+add ContextVar 10-b
+add ContextVar 10-a
