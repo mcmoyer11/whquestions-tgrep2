@@ -77,7 +77,6 @@
 35733:108	one
 37402:35	somebody
 37463:43	baseball
-37463:100	baseball
 37466:40	baseball
 37490:54	baseball
 37522:41	most
@@ -130,6 +129,7 @@
 59446:30	one
 59469:61	someone
 60533:18	one
+60886:20	somebody
 60932:41	one
 61711:13	someone
 63344:16	one
@@ -229,6 +229,7 @@
 119528:59	somebody
 120101:4	most
 120903:5	one
+120903:20	one
 122158:21	some
 122460:85	money
 123026:18	one
@@ -258,8 +259,8 @@
 138690:33	everyone
 139019:33	all
 139019:47	all
+140070:34	all
 140339:15	some
-140833:28	all
 141308:59	one
 141435:14	all
 144081:90	somebody
@@ -275,7 +276,6 @@
 151643:56	someone
 151665:7	somebody
 151763:51	everyone
-152519:37	most
 153958:24	anybody
 154312:26	money
 154318:26	all

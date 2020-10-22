@@ -503,6 +503,7 @@
 59663:44	eventually
 60826:4	called
 60864:32	some
+60886:20	something
 60940:7	much
 60953:11	called
 61086:94	done
@@ -750,7 +751,6 @@
 93329:17	money
 93449:34	more
 93563:84	any
-93696:121	something
 94048:16	call
 94116:16	one
 94236:35	one
@@ -876,7 +876,7 @@
 107456:95	someone
 107462:37	really
 107462:64	really
-107499:50	one
+107499:50	balloting
 107540:18	some
 107569:49	somebody
 107654:104	someone
@@ -983,6 +983,7 @@
 120722:13	called
 120766:11	done
 120903:5	many
+120903:20	much
 120952:112	much
 120952:139	much
 121130:19	all
@@ -1116,6 +1117,7 @@
 139812:38	something
 139825:22	really
 140049:21	anywhere
+140070:34	somewhere
 140322:16	one
 140339:15	more
 140557:6	somebody
