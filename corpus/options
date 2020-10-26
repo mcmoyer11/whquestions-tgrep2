@@ -24,6 +24,8 @@ add StringVar Verb3
 add StringVar DeterminerSubject
 add StringVar DeterminerNonSubject
 add StringVar FullWhPhrase
+add CategoricalVar DeterminerSubjPresent=yes:DeterminerSubject,no=NotDeterminerSubject
+add CategoricalVar DeterminerNonSubjPresent=yes:DeterminerNonSubject,no=NotDeterminerNonSubject
 add NodeVar WhNode
 add ParseVar WhParse
 add StringVar Question
