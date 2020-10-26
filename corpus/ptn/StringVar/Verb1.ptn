@@ -1,1 +1,1 @@
-@WH >> (/^WH/ $ (/^S/ < (/^VP/ << /^VB|^BE/=print)))
+@WH >> (/^WH/ $ (/^S/ << (/^VB|^BE/=print !, /^VB|^BE/)))
