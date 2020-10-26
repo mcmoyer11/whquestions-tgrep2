@@ -14,7 +14,8 @@ add CategoricalVar WhAll=yes:WhAll
 add StringVar QuantifiedSubject
 add StringVar QuantifiedPredicate
 add StringVar Wh
-add StringVar MatVerb
+add StringVar MatrixPred1
+add StringVar MatrixPred2
 add StringVar MatVerbPart
 add StringVar Modal
 add StringVar Verb1
