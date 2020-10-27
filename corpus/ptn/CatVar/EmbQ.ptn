@@ -1,1 +1,1 @@
-@WH >> (/^SBAR/ [$ /^VB|^JJ|^BE/] | [> /^PP/ $ /^JJ|^VB|^BE/]) !>> (/SBAR-NOM/ [!$ /^VB|JJ|^BE/] | [!> (/^PP/ $ /^VB|^JJ|^BE/)] !>> /TOP/)
+@WH >> (/^SBAR/ [$ /^VB|^JJ|^BE/] | [> /^PP/ $ /^JJ|^VB|^BE/]) !>> (/SBAR-NOM/ [!$ /^VB|JJ|^BE/] | [!> (/^PP/ $ /^VB|^JJ|^BE/)] !>> /TOP/) ,, /^VP/
