@@ -11,8 +11,8 @@ Set your path here and load some packages that are necessary for visualization
 (ggplot), tidy data handling (tidyr and dplyr), and mixed effects modeling (lme4:
                                                                                                                                                                
 ```{r}  
-setwd("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/analysis/")
-source("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/analysis/helpers.R")
+setwd("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/")
+source("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/helpers.R")
 library(ggplot2)
 library(tidyr)
 library(dplyr)
@@ -22,7 +22,7 @@ library(lme4)
 
 Read the database into R and explore it.
 ```{r}
-d = read.table("/Users/morganmoyer/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+d = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
 nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
 head(d)
 str(d)
