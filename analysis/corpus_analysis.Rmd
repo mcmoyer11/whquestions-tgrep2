@@ -39,7 +39,13 @@ summary(d)
 
 # d = as.factor(d[1:26])
 str(d)
-table(d$ModalPresent)
+table(d$QuestionType)
+
+nonya <- subset(s, s$QuestionType=="")
+View(nonya)
+
+nonya2 <- subset(d, d$QuestionType=="")
+View(nonya2)
 ```
 
 Take a random sample of 200.
@@ -62,6 +68,7 @@ https://github.com/thegricean/corpus_implicatures/blob/master/some/experiments/m
 https://raw.githubusercontent.com/leylakursat/some_without_context/master/experiment/corpora/corpus1.txt
 
 https://thegricean.github.io/corpus_implicatures/or/experiments/4_implicature_exp/experiments/02_main/experiment_00/index.html
+
 
 Reproduce the same set
 ```{r}
