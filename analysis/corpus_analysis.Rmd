@@ -44,13 +44,19 @@ table(d$ModalPresent)
 
 Take a random sample of 200.
 ```{r}
+set.seed(123)
 s <- sample_n(d, 200)
 View(s)
 nrow(s)
 # write to CSV
+
 write.csv(s, "whq_sample_200.csv",row.names = TRUE)
 
+s_emb = subset(s, s$QuestionType=="embedded")
+View(s_emb)
+
 ```
+
 Reproduce the same set
 ```{r}
 # the original DF i sent jd
@@ -89,13 +95,31 @@ write.csv(snew, "whq_sample_200_neworig.csv",row.names = TRUE)
 # some embedded cases aren't printing a matrix verb
 ```{r}
 emb <- subset(d, d$QuestionType=="embedded")
+nrow(emb)
+
+
 enmv = emb %>%
-  filter(MatVerb %in% c(""))
+  filter(MatrixPred1 %in% c(""))
 nrow(enmv) # 3333.....0! fixed
 View(enmv)
 
 ```
 
+but it says 0 when the conversation is over *t*-1 * just say your good-byes and hang up.
+(TOP (S (CC but) 
+        (NP-SBJ (PRP it)) 
+        (VP (VBZ says) 
+            (SBAR (-NONE- 0) 
+                  (S-IMP-SEZ (SBAR-TMP (WHADVP-1 (WRB when)) 
+                                      (S (NP-SBJ (DT the) (NN conversation)) (VP (VBZ is) (ADVP-PRD (RP over)) (ADVP-TMP (-NONE- *T*-1))))) (NP-SBJ (-NONE- *)) (ADVP (RB just)) (VP (VP (VB say) (NP (PRP$ your) (NNS good-byes))) (CC and) (VP (VB hang) (PRT (RP up))))))) (. .) (-DFL- E_S)))
+
+
+
+(TOP (S (CC And) (NP-SBJ (PRP I)) 
+                  (VP (VBP think) 
+                      (SBAR (IN that) 
+                            (S (SBAR-TMP (WHADVP-1 (WRB when)) 
+                                (S (NP-SBJ (PRP she)) (VP (VBD passed) (ADVP (RB away)) (ADVP-TMP (-NONE- *T*-1))))) (NP-SBJ (PRP it)) (VP (VBD was) (ADVP (RB probably)) (NP-PRD (NP (CD one)) (PP (IN of) (NP-UNF (DT the) (JJS greatest)))))))) (, ,) (-DFL- N_S)))
 
 
 ```{r}
