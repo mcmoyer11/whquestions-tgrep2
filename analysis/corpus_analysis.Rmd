@@ -56,6 +56,12 @@ s_emb = subset(s, s$QuestionType=="embedded")
 View(s_emb)
 
 ```
+https://github.com/thegricean/corpus_implicatures/tree/master/or/experiments/4_implicature_exp/experiments/02_main/experiment_00/js
+
+https://github.com/thegricean/corpus_implicatures/blob/master/some/experiments/main_experiments/speaker_knowledge/experiment_01/public/js/stimuli.js
+https://raw.githubusercontent.com/leylakursat/some_without_context/master/experiment/corpora/corpus1.txt
+
+https://thegricean.github.io/corpus_implicatures/or/experiments/4_implicature_exp/experiments/02_main/experiment_00/index.html
 
 Reproduce the same set
 ```{r}
