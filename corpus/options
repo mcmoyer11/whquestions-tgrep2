@@ -32,4 +32,4 @@ add StringVar Question
 add ParseVar SentenceParse
 add CategoricalVar WhPhaseType=complex:ComplexWh,monomorphemic:MonoWh
 # add StringVar Prev-Context=10-b
-# add StringVar FollowingContext=10-a
+add StringVar FollowingContext=10-a
