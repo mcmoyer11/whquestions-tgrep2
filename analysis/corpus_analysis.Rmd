@@ -22,7 +22,12 @@ library(lme4)
 
 Read the database into R and explore it.
 ```{r}
-d = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+# d = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+
+# Load in the .csv with the contexts removed
+d = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/swbd_nocntxt.csv",header=T)
+View(d)
+# old
 nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
 head(d)
 str(d)
@@ -105,6 +110,20 @@ write.csv(snew, "whq_sample_200_neworig.csv",row.names = TRUE)
 # overleaf. 
 # 
 ```
+
+(TOP (S (INTJ (UH Uh)) 
+        (, ,) 
+        (NP-SBJ (NP (CD one)) 
+                (PP (IN of) (NP (PRP$ its) (JJ great) (NNS slogans)))) 
+        (VP (VBZ is) (SBAR-PRD (-NONE- 0) 
+        (S (SBAR-ADV (IN if) (S (NP-SBJ (PRP you)) (VP (VBP 're) (RB not) (VP (VBG serving) (NP (DT the) (NN customer)))))) 
+        (, ,) (NP-SBJ (PRP you)) (ADVP (RBR better)) 
+        (VP (VB be) (VP (VBG serving) 
+                        (NP (NP (NN someone)) 
+                            (SBAR (WHNP-1 (WP who)) 
+                                  (S (NP-SBJ (-NONE- *T*-1)) (VP (VBZ is) (NP-PRD (-NONE- *?*))))))))))) (. .) (-DFL- E_S)))
+
+
 # some embedded cases aren't printing a matrix verb
 ```{r}
 emb <- subset(d, d$QuestionType=="embedded")
