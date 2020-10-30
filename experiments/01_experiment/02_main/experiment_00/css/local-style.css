@@ -9,6 +9,11 @@
 .unhidden { 
     display: block; }
 
+.grid-container {
+    text-align: left; 
+    /* display: grid; */
+}
+
 .arcButton {
     background-color: white; /* Green */
     border: none;

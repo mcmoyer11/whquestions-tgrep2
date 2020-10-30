@@ -79,7 +79,10 @@
 
   <div class="slide" id="i0">
     <img src="alps_lab.png" alt="Alps Lab" style="width:400;height:192px;">
-    <p id="instruct-text" align="left">You will read short conversations. These are transcriptions of real conversations real people had over the phone. The last sentence of each conversation will be marked in red and you will see a blue sentence below the conversation. <strong>Your task is to answer a question about the red sentence to the best of your ability. </strong><br><br>The HIT will take approximately 15 minutes. Let's start with two examples!</p>
+    <p id="instruct-text" align="left">You will read short conversations. These are transcriptions of real conversations
+      real people had over the phone. The last sentence of each conversation will be marked in red and you will see a
+      blue sentence below the conversation. <strong>Your task is to answer a question about the red sentence to the best
+        of your ability. </strong><br><br>The HIT will take approximately 15 minutes. Let's start with two examples!</p>
     <!--     <p id="instruct-text" align="left">You will read short conversations. These are transcriptions of real conversations that real people had over the phone. The last sentence of each conversation will be marked in red and you will see a blue sentence below the conversation. <strong>Your task is to answer a question about the red sentence to the best of your ability.</strong><br><br>The HIT will take approximately 10 minutes. Let's start with two examples!</p> -->
     <button id="start_button" type="button">Start Experiment</button>
     <p id="instruct-text" align="left"><i><small><small><strong><br><br><br>LEGAL INFORMATION</strong>:<br>We invite
@@ -106,7 +109,7 @@
     <h3>Practice Trial 1</h3>
     <p class="context" style="text-align: left;"></p>
     <p style="color:blue;text-align:left" class="BestResponse"></p>
-    
+
     <div id="intruction1" class="instruction"><i>How similar is the statement in blue (with 'but not both') to the
         statement in red (without 'but not both')?</i></div>
 
@@ -144,7 +147,8 @@
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
     <div class="err">
       <br>
-      <p2>In your rating, consider whether the sentence with 'but not both' expresses the same thing as the red sentence. In this example the two sentences are very similar.</p2>
+      <p2>In your rating, consider whether the sentence with 'but not both' expresses the same thing as the red
+        sentence. In this example the two sentences are very similar.</p2>
     </div>
   </div>
 
@@ -188,15 +192,23 @@
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
     <div class="err">
       <br>
-      <p2>In your rating, consider whether the sentence with 'but not both' expresses the same thing as the red sentence. In this example the two sentences are very different.</p2>
+      <p2>In your rating, consider whether the sentence with 'but not both' expresses the same thing as the red
+        sentence. In this example the two sentences are very different.</p2>
     </div>
   </div>
 
   <div class="slide" id="startExp">
-    <br><br><p id="instruct-text" align="left">Great! Now we can start the real experiment. <br><br> You will now read 30 conversations. 
-    You won't always need to read the whole conversation to decide whether the blue and the red sentence have the same meaning or not.
-    <br><br>Sometimes, the sentence with "but not both" will sound strange. In this case, set the slider to the best of your ability, 
-    but also click the checkbox next to "The blue sentence sounds strange". <br><br> Note: these are transcripts of real phone conversations so sometimes the text will be a little jumbled. If that happens, respond to the best of your ability. But don't get too frustrated! If it seems impossible to give an answer, give a low rating, click the checkbox next to "The blue sentence sounds strange", and move on to the next one.
+    <br><br>
+    <p id="instruct-text" align="left">Great! Now we can start the real experiment. <br><br> You will now read 30
+      conversations.
+      You won't always need to read the whole conversation to decide whether the blue and the red sentence have the same
+      meaning or not.
+      <br><br>Sometimes, the sentence with "but not both" will sound strange. In this case, set the slider to the best
+      of your ability,
+      but also click the checkbox next to "The blue sentence sounds strange". <br><br> Note: these are transcripts of
+      real phone conversations so sometimes the text will be a little jumbled. If that happens, respond to the best of
+      your ability. But don't get too frustrated! If it seems impossible to give an answer, give a low rating, click the
+      checkbox next to "The blue sentence sounds strange", and move on to the next one.
     </p>
     <br><br>
     <!-- <p id="instruct-text" align="left">Great! Now we can start the real experiment. You will now read 20 sentences. Your
@@ -210,40 +222,17 @@
 
   <div class="slide" id="generateEntities">
     <p class="context" style="text-align: left;"></p>
-    <p style="color:blue;text-align:left" class="AResponse"></p>
-    <p></p>
-    <div id="intruction3" class="instruction"><i>How similar is the statement in blue (with 'but not both') to the
-        statement in red (without 'but not both')?</i></div>
-    <table class="likertscale">
-      <tr>
-        <td>
-          <font color=#424242>very different meaning</font>
-        </td>
-        <td><input type="radio" name="number" value="1" /></td>
-        <td><input type="radio" name="number" value="2" /></td>
-        <td><input type="radio" name="number" value="3" /></td>
-        <td><input type="radio" name="number" value="4" /></td>
-        <td><input type="radio" name="number" value="5" /></td>
-        <td><input type="radio" name="number" value="6" /></td>
-        <td><input type="radio" name="number" value="7" /></td>
-        <td>
-          <font color=#424242>same meaning</font>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td></td>
-      </tr>
-    </table>
+    <div id="intruction3" class="instruction"><i>Select the paraphrase that is most similar to what the speaker
+        asked.</i></div>
+    <!-- add the dynamic button-ing here -->
+    <div class="grid-container" id='paraphrase-holder'>
+      <div class="loc1"></div>
+      <div class="loc2"></div>
+      <div class="loc3"></div>
+      <div class="loc4"></div>
+    </div>
     <br><br>
-    <font color=#424242> The blue sentence sounds strange: <input type="checkbox" id="strange"></font>
+    <font color=#424242> None of these paraphrases sound right: <input type="checkbox" id="strange"></font>
     <br>
     <br>
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>

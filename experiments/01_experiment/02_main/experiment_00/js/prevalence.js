@@ -67,13 +67,13 @@ function make_slides(f) {
 
       var contexthtml = "<b>Speaker #1</b>: I'm so hungry, let's order some food. I want a double cheeseburger, fries and a large shake. <br> <b>Speaker #2</b>: I'm not that hungry, "
       var entirehtml = "<font color=#FF0000> " + "I'll either get a burger or fries."
-      contexthtml = contexthtml+entirehtml
+      contexthtml = contexthtml + entirehtml
       var besthtml = "<font color=#0000FF> " + "I'll either get a burger or fries <b>but not both</b>."
 
       $(".context").html(contexthtml);
       $(".BestResponse").html(besthtml);
       $(".err").hide();
-   
+
     },
 
     button: function () {
@@ -107,13 +107,13 @@ function make_slides(f) {
 
       var contexthtml = "<b>Speaker #1</b>: Do your employees speak any language besides English? <br> <b>Speaker #2</b>: "
       var entirehtml = "<font color=#FF0000> " + "All our employees also speak at least French or Spanish."
-      contexthtml = contexthtml+entirehtml
+      contexthtml = contexthtml + entirehtml
       var besthtml = "<font color=#0000FF> " + "All our employees also speak at least French or Spanish <b>but not both</b>."
 
       $(".context").html(contexthtml);
       $(".BestResponse").html(besthtml);
       $(".err").hide();
- 
+
     },
     button: function () {
       this.radio = $("input[name='number']:checked").val();
@@ -168,19 +168,29 @@ function make_slides(f) {
       this.generic = generic;
       this.response = response = false;
 
-      var contexthtml = generic.PreceedingContext;
-      // var contexthtml = this.format_context(generic.PreceedingContext);
+      // var contexthtml = generic.PreceedingContext;
+      var contexthtml = this.format_context(generic.PreceedingContext);
       var entirehtml = "<font color=#FF0000> " + generic.EntireSentence
-      contexthtml = contexthtml+entirehtml
-      var indefhtml = generic.AResponse // This is where you might have to replace things
+      contexthtml = contexthtml + entirehtml
 
+      // var aParaphrase = generic.AResponse
+      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>'+generic.TheResponse+'</label>'
+      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>'+generic.AResponse+'</label>'
+      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>'+generic.SomeResponse+'</label>'
+      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>'+generic.AllResponse+'</label>'
+  
+  
       $(".context").html(contexthtml);
-      $(".AResponse").html(indefhtml);
+      $(".loc1").html(theParaphrase);
+      $(".loc2").html(aParaphrase);
+      $(".loc3").html(allParaphrase);
+      $(".loc4").html(someParaphrase);
+
       $(".err").hide();
 
       this.counter++;
 
-      var checkbox = document.createElement('input'); 
+      var checkbox = document.createElement('input');
       checkbox.setAttribute('align', 'center');
       exp.checkbox = document.getElementById("strange");
 
@@ -190,37 +200,18 @@ function make_slides(f) {
 
     // speakers 1 and 2 
     format_context: function (context) {
-      contexthtml = "<br><b>Speaker #1:</b>" + contexthtml;
-      contexthtml = contexthtml.replace(/###/g, "");
+      // remove all ### standing alone
+      contexthtml = context.replace(/###/g, " ");
       // replace first three ## with Speaker 1
-      // contexthtml = contexthtml.replace($###/g, " "); Initial Speaker A
-      contexthtml = context.replace("#+speakera(\d+).#+", "<br><b>Speaker #A:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
-      contexthtml = contexthtml.replace("#+speakerb(\d+).#+", "<br><b>Speaker #B:</b>"); // ###SpeakerA53*t53
-      // contexthtml = contexthtml.replace(/###SpeakerA(\d+)?-(\d+)?\*t(\d+)?-(\d+)? ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
-      // contexthtml = contexthtml.replace(/###SpeakerANaN\*t(\d+)-(\d+) ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerANaN*t55-1
-      // contexthtml = contexthtml.replace(/###SpeakerB(\d+).t(\d+) ./g, "<br><b>Speaker #2:</b>"); // ###SpeakerB0*t60 
-      // contexthtml = contexthtml.replace(/###SpeakerB(\d+)?\*t(\d+)? ./g, "<br><b>Speaker #2:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
-      // contexthtml = contexthtml.replace(/###SpeakerB(\d+)?-(\d+)?\*t(\d+)?-(\d+)? ./g, "<br><b>Speaker #2:</b>"); // 
-      // contexthtml = contexthtml.replace(/###SpeakerBNaN\*t(\d+)-(\d+) ./g, "<br><b>Speaker #2:</b>"); //###SpeakerBNaN*t57-2
-      // contexthtml = contexthtml.replace(/E_S/g, "");
-      // contexthtml = contexthtml.replace(/(\\\[| \\\+|\\\])/g, "");
-      // contexthtml = contexthtml.replace(/-N((\d+)|[A-Z]+)+/g, "");
-      
-      
-      // contexthtml = contexthtml.replace(/ ,/g, ",");
-      // contexthtml = contexthtml.replace(/ \./g, ".");
+      contexthtml = contexthtml.replace(/speakera(\d+)./g, "<br><b>Speaker #1: </b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
+      contexthtml = contexthtml.replace(/speakerb(\d+)./g, "<br><b>Speaker #2: </b>"); // ###SpeakerA53*t53
+      // remove the traces
+      contexthtml = contexthtml.replace(/\*t*\**\-(\d+)/g, "");
+      // remove random asterisks
+      contexthtml = contexthtml.replace(/\*/g, "");
 
-      // This should help with getting the speaker ordering right
-      // intended logic:
 
-      // if (contexthtml.startsWith("<br><b>Speaker A")) {
-        // Switch all instances of Speaker A with Speaker 2
-        // and speaker B with Speaker 1
-      // }
-      //  elif (contexthtml.startsWith("<br><b>Speaker B")) {
-            // switch all instances of Speaker B with Speaker 2
-            // and Speaker A with Speaker 1
-      //  }
+      // this just deals with the first instance of speaker
       if (!contexthtml.startsWith("<br><b>Speaker #")) {
         var ssi = contexthtml.indexOf("Speaker #");
         switch (contexthtml[ssi + "Speaker #".length]) {
@@ -238,13 +229,13 @@ function make_slides(f) {
     },
 
     button: function () {
-      this.radio = $("input[name='number']:checked").val();
+      this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
       if (this.radio) {
         this.log_responses();
         $(this.radio).prop('checked', false);
         exp.checkbox.checked = false;
         //this.checked = false;
-        _stream.apply(this);
+        _stream.apply(this); //go to the next element
       }
       else {
         $('.err').show();
@@ -255,9 +246,9 @@ function make_slides(f) {
     log_responses: function () {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
-        "tgrep_id": this.generic.TGrep,
+        "tgrep_id": this.generic.TGrepID,
         "response": [this.radio, exp.checkbox.checked],
-        "sentence": this.generic.BestResponse,
+        // "sentence": this.generic.BestResponse,
       });
     },
 
@@ -295,7 +286,7 @@ function make_slides(f) {
       };
       setTimeout(function () { proliferate.submit(exp.data); }, 1000);
 
-      
+
 
     }
   });
