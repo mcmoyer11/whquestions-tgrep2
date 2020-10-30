@@ -156,9 +156,9 @@ function make_slides(f) {
 
   slides.generateEntities = slide({
     name: "generateEntities",
-    present: exp.stimuli,
+    present: exp.stimuli, // This the array generated from stimuli.js
 
-    present_handle: function (stim) {
+    present_handle: function (stim) { // this function is called bascially on exp.stim (more or less)
 
       $("input[name='number']:checked").prop('checked', false);
 
@@ -168,13 +168,14 @@ function make_slides(f) {
       this.generic = generic;
       this.response = response = false;
 
-      var contexthtml = this.format_context(generic.context);
+      var contexthtml = generic.PreceedingContext;
+      // var contexthtml = this.format_context(generic.PreceedingContext);
       var entirehtml = "<font color=#FF0000> " + generic.EntireSentence
       contexthtml = contexthtml+entirehtml
-      var besthtml = generic.BestResponse.replace("but not both", "<b>but not both</b>")
+      var indefhtml = generic.AResponse // This is where you might have to replace things
 
       $(".context").html(contexthtml);
-      $(".BestResponse").html(besthtml);
+      $(".AResponse").html(indefhtml);
       $(".err").hide();
 
       this.counter++;
@@ -187,22 +188,39 @@ function make_slides(f) {
 
     },
 
+    // speakers 1 and 2 
     format_context: function (context) {
-      contexthtml = context.replace(/###SpeakerA(\d+).(\d+)?t(\d+)(.\d+)? ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
-      contexthtml = contexthtml.replace(/###SpeakerA(\d+)?\*t(\d+)? ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerA53*t53
-      contexthtml = contexthtml.replace(/###SpeakerA(\d+)?-(\d+)?\*t(\d+)?-(\d+)? ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
-      contexthtml = contexthtml.replace(/###SpeakerANaN\*t(\d+)-(\d+) ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerANaN*t55-1
-      contexthtml = contexthtml.replace(/###SpeakerB(\d+).t(\d+) ./g, "<br><b>Speaker #2:</b>"); // ###SpeakerB0*t60 
-      contexthtml = contexthtml.replace(/###SpeakerB(\d+)?\*t(\d+)? ./g, "<br><b>Speaker #2:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
-      contexthtml = contexthtml.replace(/###SpeakerB(\d+)?-(\d+)?\*t(\d+)?-(\d+)? ./g, "<br><b>Speaker #2:</b>"); // 
-      contexthtml = contexthtml.replace(/###SpeakerBNaN\*t(\d+)-(\d+) ./g, "<br><b>Speaker #2:</b>"); //###SpeakerBNaN*t57-2
-      contexthtml = contexthtml.replace(/E_S/g, "");
-      contexthtml = contexthtml.replace(/(\\\[| \\\+|\\\])/g, "");
-      contexthtml = contexthtml.replace(/-N((\d+)|[A-Z]+)+/g, "");
+      contexthtml = "<br><b>Speaker #1:</b>" + contexthtml;
       contexthtml = contexthtml.replace(/###/g, "");
-      contexthtml = contexthtml.replace(/ ,/g, ",");
-      contexthtml = contexthtml.replace(/ \./g, ".");
+      // replace first three ## with Speaker 1
+      // contexthtml = contexthtml.replace($###/g, " "); Initial Speaker A
+      contexthtml = context.replace("#+speakera(\d+).#+", "<br><b>Speaker #A:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
+      contexthtml = contexthtml.replace("#+speakerb(\d+).#+", "<br><b>Speaker #B:</b>"); // ###SpeakerA53*t53
+      // contexthtml = contexthtml.replace(/###SpeakerA(\d+)?-(\d+)?\*t(\d+)?-(\d+)? ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
+      // contexthtml = contexthtml.replace(/###SpeakerANaN\*t(\d+)-(\d+) ./g, "<br><b>Speaker #1:</b>"); // ###SpeakerANaN*t55-1
+      // contexthtml = contexthtml.replace(/###SpeakerB(\d+).t(\d+) ./g, "<br><b>Speaker #2:</b>"); // ###SpeakerB0*t60 
+      // contexthtml = contexthtml.replace(/###SpeakerB(\d+)?\*t(\d+)? ./g, "<br><b>Speaker #2:</b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
+      // contexthtml = contexthtml.replace(/###SpeakerB(\d+)?-(\d+)?\*t(\d+)?-(\d+)? ./g, "<br><b>Speaker #2:</b>"); // 
+      // contexthtml = contexthtml.replace(/###SpeakerBNaN\*t(\d+)-(\d+) ./g, "<br><b>Speaker #2:</b>"); //###SpeakerBNaN*t57-2
+      // contexthtml = contexthtml.replace(/E_S/g, "");
+      // contexthtml = contexthtml.replace(/(\\\[| \\\+|\\\])/g, "");
+      // contexthtml = contexthtml.replace(/-N((\d+)|[A-Z]+)+/g, "");
+      
+      
+      // contexthtml = contexthtml.replace(/ ,/g, ",");
+      // contexthtml = contexthtml.replace(/ \./g, ".");
 
+      // This should help with getting the speaker ordering right
+      // intended logic:
+
+      // if (contexthtml.startsWith("<br><b>Speaker A")) {
+        // Switch all instances of Speaker A with Speaker 2
+        // and speaker B with Speaker 1
+      // }
+      //  elif (contexthtml.startsWith("<br><b>Speaker B")) {
+            // switch all instances of Speaker B with Speaker 2
+            // and Speaker A with Speaker 1
+      //  }
       if (!contexthtml.startsWith("<br><b>Speaker #")) {
         var ssi = contexthtml.indexOf("Speaker #");
         switch (contexthtml[ssi + "Speaker #".length]) {
