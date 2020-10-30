@@ -1,6 +1,6 @@
 
-// var path = 'https://raw.githubusercontent.com/mcmoyer11/whquestions-tgrep2/experiments/01_experiment/better_bnb_korpus/korpus3_0.txt'
-var path = 'Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/01_experiment/better_bnb_korpus/korpus3_0.txt'
+var path = 'https://raw.githubusercontent.com/mcmoyer11/whquestions-tgrep2/experiments/01_experiment/clean_corpus/textfile.txt'
+// var path = 'Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/01_experiment/better_bnb_korpus/korpus3_0.txt'
 console.log(path);
  
 function get_data(fullpath) {
@@ -20,18 +20,19 @@ function generate_stim() {
         var rows = raw.split('\n');
  
         var data = [];
-        headings = rows[0].split('\t');
+        // headings = rows[0].split('\t');
         var total = rows.length - 1;
 
-        headings = ["TGrep","EntireSentence", "context", "BestResponse"]
+        headings = ["TGrepID","EntireSentence", "context", "BestResponse", "AResponse","SomeResponse","AllResponse","TheResponse"]
         //old headings TGrepID EntireSentence context BestReponse
         //var total = rows.length; //CHANGED
-   	     
+            
+        // Push every item from the text file into the array, split on the tab (or whatever split)
         for (var i = 1; i < total; i++) {		
                 data.push(rows[i].split('\t'));
             } 
 
-        // console.log("data: ",data);
+        console.log("data: ",data);
  
         var stim = data.map(function(row) {
             return row.reduce(function(result, field, index) {

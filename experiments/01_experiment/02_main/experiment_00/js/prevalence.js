@@ -296,7 +296,7 @@ function init() {
   exp.all_names = [];
   exp.trials = [];
   exp.catch_trials = [];
-  var stimuli = generate_stim();
+  var stimuli = generate_stim(); // this calls a function in stimuli.js
 
   console.log(stimuli.length);
   //exp.stimuli = _.shuffle(stimuli).slice(0, 15);
@@ -317,12 +317,12 @@ function init() {
   };
   //blocks of the experiment:
   exp.structure = [
-    "bot",
-    "i0",
+    // "bot",
+    // "i0",
     "example1",
     "example2",
     "startExp",
-    "generateEntities",
+    "generateEntities", // This is where the test trials come in.
     //"priors",
     "subj_info",
     "thanks"
