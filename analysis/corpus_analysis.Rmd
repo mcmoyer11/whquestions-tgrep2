@@ -22,10 +22,10 @@ library(lme4)
 
 Read the database into R and explore it.
 ```{r}
-# d = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+d = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
 
 # Load in the .csv with the contexts removed
-d = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/swbd_nocntxt.csv",header=T)
+# d = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/swbd_nocntxt.csv",header=T)
 View(d)
 # old
 nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
@@ -33,21 +33,21 @@ head(d)
 str(d)
 summary(d)
 
-View(d[1:26])
-ncol(d)
-names = colnames(d)
-
-for(n in names) {
-   d[n] <- as.factor(d$n)
-    }
-summary(d)
+# View(d[1:26])
+# ncol(d)
+# names = colnames(d)
+# 
+# for(n in names) {
+#    d[n] <- as.factor(d$n)
+#     }
+# summary(d)
 
 # d = as.factor(d[1:26])
 str(d)
 table(d$QuestionType)
 # Make sure there are none without a tag
-nonya <- subset(s, s$QuestionType=="")
-View(nonya)
+nonya <- subset(d, d$QuestionType=="")
+nrow(nonya)
 
 # randomly sample an embedded clause
 d_emb = subset(d, d$QuestionType=="embedded")
@@ -55,53 +55,15 @@ set.seed(234)
 se <- sample(d_emb,30)
 View(se)
 
-d[d["Item_ID"] == "331:188"]
+d[d["Item_ID"] == "331:188"] # shouldn't be embedded
+d[d["Item_ID"] == "72099:29"]
 ```
-<!-- df[df["Item_ID"] == "331:188"].SentenceParse -->
-(TOP (S (CC But) 
-        (, ,) 
-        (INTJ (UH uh)) 
-        (, ,) 
-        (EDITED (RM (-DFL- [)) 
-                (EDITED (RM (-DFL- [)) 
-                        (NP-SBJ (PRP I)) 
-                        (, ,) 
-                        (IP (-DFL- +))) 
-                (NP-SBJ (PRP I)) 
-                (, ,) 
-                (RS (-DFL- \])) 
-                (IP (-DFL- \+))) 
-        (NP-SBJ (PRP I)) 
-        (RS (-DFL- \])) 
-        (VP (VBP think) 
-            (SBAR (IN that) 
-                  (PRN (, ,) 
-                        (S (NP-SBJ (PRP you)) (VP (VBP know))) 
-                        (, ,)) 
-                  (S (EDITED (RM (-DFL- [)) 
-                              (S-UNF (NP-SBJ (PRP we)) (ADVP-TMP (RB always))) 
-                                     (, ,) 
-                                     (IP (-DFL- \+)) (RS (-DFL- \]))) 
-                     (INTJ (UH uh)) 
-                     (PRN (, ,) 
-                          (S (NP-SBJ (PRP I)) (VP (VBP mean))) 
-                          (, ,)) 
-                    (EDITED (RM (-DFL- [)) 
-                            (S (NP-SBJ (PRP I)) (VP-UNF (VBP 've))) 
-                            (, ,) 
-                            (IP (-DFL- \+))) 
-                    (NP-SBJ (PRP I)) (VP (VBP 've) (RS (-DFL- \])) (VP (VBN had) (NP (NP (DT a) (NN lot)) (PP (IN of) 
-                    (NP (NP (JJ good) (NNS experiences)) 
-                        (EDITED (RM (-DFL- [)) (PP-UNF (IN with)) (, ,) (IP (-DFL- \+))) 
-                        (INTJ (UH uh)) 
-                        (, ,) 
-                        (PP (IN with) (RS (-DFL- ])) 
-                            (EDITED (RM (-DFL- [)) (NP-UNF (JJ many)) (IP (-DFL- +))) 
-                            (NP (NP (JJ many) (RS (-DFL- ])) (NNS people)) 
-                                (SBAR (ADVP (RB especially)) 
-                                      (WHADVP-1 (WRB where)) (S (NP-SBJ (PRP they)) (VP (VBP 've) (VP (VBN had) (, ,) (INTJ (UH uh)) (, ,) (NP (JJ extended) (NN family)) (ADVP (-NONE- *T*-1)))))))))))))))) (. .) (-DFL- E_S)))
 
-
+(TOP (SBARQ (CC but) (PRN (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) 
+(WHNP-1 (WDT whatever)) 
+(SQ (NP-SBJ (-NONE- *T*-1)) 
+    (VP (VBD became) 
+        (PP (IN of) (NP (NNP Peter) (NNP Frampton))))) (. .) (-DFL- E_S)))
 
 
 
@@ -138,13 +100,11 @@ Reproduce the same set
 sa <- read.csv("whq_sample_200_A.csv", header=TRUE)
 
 
-dnew = semi_join(d, sa, by = c("Item_ID"))
-nrow(dnew)
-
-
 sa = sa[order(sa$Item_ID),]
 
 ddnew = semi_join(sa, d, by=c("Item_ID"))
+# drop that first column
+ddnew = ddnew[-c(1)]
 write.csv(ddnew, "whq_sample_200_neworig.csv",row.names = TRUE)
 
 # try to check if they're the same IDs
