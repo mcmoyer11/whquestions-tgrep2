@@ -23,10 +23,6 @@ function generate_stim() {
         headings = rows[0].split('\t');
         var total = rows.length - 1;
 
-        // headings = ["TGrepID","EntireSentence", "context", "BestResponse", "AResponse","SomeResponse","AllResponse","TheResponse"]
-        //old headings TGrepID EntireSentence context BestReponse
-        //var total = rows.length; //CHANGED
-            
         // Push every item from the text file into the array, split on the tab (or whatever split)
         for (var i = 1; i < total; i++) {		
                 data.push(rows[i].split('\t'));
