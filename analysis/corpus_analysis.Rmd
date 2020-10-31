@@ -45,13 +45,70 @@ summary(d)
 # d = as.factor(d[1:26])
 str(d)
 table(d$QuestionType)
-
+# Make sure there are none without a tag
 nonya <- subset(s, s$QuestionType=="")
 View(nonya)
 
-nonya2 <- subset(d, d$QuestionType=="")
-View(nonya2)
+# randomly sample an embedded clause
+d_emb = subset(d, d$QuestionType=="embedded")
+set.seed(234)
+se <- sample(d_emb,30)
+View(se)
+
+d[d["Item_ID"] == "331:188"]
 ```
+<!-- df[df["Item_ID"] == "331:188"].SentenceParse -->
+(TOP (S (CC But) 
+        (, ,) 
+        (INTJ (UH uh)) 
+        (, ,) 
+        (EDITED (RM (-DFL- [)) 
+                (EDITED (RM (-DFL- [)) 
+                        (NP-SBJ (PRP I)) 
+                        (, ,) 
+                        (IP (-DFL- +))) 
+                (NP-SBJ (PRP I)) 
+                (, ,) 
+                (RS (-DFL- \])) 
+                (IP (-DFL- \+))) 
+        (NP-SBJ (PRP I)) 
+        (RS (-DFL- \])) 
+        (VP (VBP think) 
+            (SBAR (IN that) 
+                  (PRN (, ,) 
+                        (S (NP-SBJ (PRP you)) (VP (VBP know))) 
+                        (, ,)) 
+                  (S (EDITED (RM (-DFL- [)) 
+                              (S-UNF (NP-SBJ (PRP we)) (ADVP-TMP (RB always))) 
+                                     (, ,) 
+                                     (IP (-DFL- \+)) (RS (-DFL- \]))) 
+                     (INTJ (UH uh)) 
+                     (PRN (, ,) 
+                          (S (NP-SBJ (PRP I)) (VP (VBP mean))) 
+                          (, ,)) 
+                    (EDITED (RM (-DFL- [)) 
+                            (S (NP-SBJ (PRP I)) (VP-UNF (VBP 've))) 
+                            (, ,) 
+                            (IP (-DFL- \+))) 
+                    (NP-SBJ (PRP I)) (VP (VBP 've) (RS (-DFL- \])) (VP (VBN had) (NP (NP (DT a) (NN lot)) (PP (IN of) 
+                    (NP (NP (JJ good) (NNS experiences)) 
+                        (EDITED (RM (-DFL- [)) (PP-UNF (IN with)) (, ,) (IP (-DFL- \+))) 
+                        (INTJ (UH uh)) 
+                        (, ,) 
+                        (PP (IN with) (RS (-DFL- ])) 
+                            (EDITED (RM (-DFL- [)) (NP-UNF (JJ many)) (IP (-DFL- +))) 
+                            (NP (NP (JJ many) (RS (-DFL- ])) (NNS people)) 
+                                (SBAR (ADVP (RB especially)) 
+                                      (WHADVP-1 (WRB where)) (S (NP-SBJ (PRP they)) (VP (VBP 've) (VP (VBN had) (, ,) (INTJ (UH uh)) (, ,) (NP (JJ extended) (NN family)) (ADVP (-NONE- *T*-1)))))))))))))))) (. .) (-DFL- E_S)))
+
+
+
+
+
+
+
+
+
 
 Take a random sample of 200.
 ```{r}
