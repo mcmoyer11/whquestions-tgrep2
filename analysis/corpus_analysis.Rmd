@@ -102,6 +102,7 @@ sa <- read.csv("whq_sample_200_A.csv", header=TRUE)
 
 sa = sa[order(sa$Item_ID),]
 
+# this will remove any columns that aren't shared 
 ddnew = semi_join(sa, d, by=c("Item_ID"))
 # drop that first column
 ddnew = ddnew[-c(1)]
@@ -117,10 +118,11 @@ all.equal(ddnew_names,sa_names)
 
 View(ddnew)
 
-
+# this doesn't remove any columns that aren't in sa
 snew = d %>%
   filter(Item_ID %in% sa$Item_ID)
 
+View(snew)
 write.csv(snew, "whq_sample_200_neworig.csv",row.names = TRUE)
 # save it to a csv file and provide an annotation guide for what 
 # the different types of features should be
