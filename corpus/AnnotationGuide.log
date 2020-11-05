@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  22 OCT 2020 09:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  5 NOV 2020 07:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -180,79 +180,87 @@ LaTeX Warning: Font shape declaration has incorrect series value `mc'.
                Found on input line 47.
 
 )
-LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 5
+0.
  (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
-)
-Overfull \hbox (22.98288pt too wide) in paragraph at lines 52--54
-[]\OT1/ppl/m/n/10.95 Monomorphemic: @WH [!\TS1/ppl/m/n/10.95 $ \OT1/ppl/m/n/10.
-95 /$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 N$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/
-n/10.95 ^$\OT1/ppl/m/n/10.95 D$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/p
-pl/m/n/10.95 J$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 RB$
-\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 RP$\OMS/cmsy/m/n/1
-0.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 PP/ $\OMS/cmsy/m/n/10.95 j$ \OT1/
-ppl/m/n/10.95 !$\OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10
-.95 ^$\OT1/ppl/m/n/10.95 WH/ \TS1/ppl/m/n/10.95 $ \OT1/ppl/m/n/10.95 /$\OT1/cmr
-/m/n/10.95 ^$\OT1/ppl/m/n/10.95 AD$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\O
-T1/ppl/m/n/10.95 JJ$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.9
-5 NP$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 PP/)] 
- []
-
-
-Overfull \hbox (9.67773pt too wide) in paragraph at lines 66--67
-[]\OT1/ppl/m/n/10.95 Yes: @WH $\OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$
-\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 WH/ \TS1/ppl/m/n/10.95 $ \OT1/ppl/m/n/1
-0.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 S/ $\OML/cmm/m/it/10.95 <  <$ \
-OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 VP/ $\OML/cmm/m/it
-/10.95 <  <$ \OT1/ppl/m/n/10.95 /need$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 
-needs$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 needed$\OMS/cmsy/m/n/10.95 j$\OT
-1/ppl/m/n/10.95 have$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 has$\OMS/cmsy/m/n
-/10.95 j$\OT1/ppl/m/n/10.95 had$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 've$\O
-MS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 'd/)
- []
-
-
-Overfull \hbox (11.61575pt too wide) in paragraph at lines 68--69
-[]\OT1/ppl/m/n/10.95 No: @WH !$\OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$
-\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 WH/ \TS1/ppl/m/n/10.95 $ \OT1/ppl/m/n/1
-0.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 S/ $\OML/cmm/m/it/10.95 <  <$ \
-OT1/ppl/m/n/10.95 (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 VP/ $\OML/cmm/m/it
-/10.95 <  <$ \OT1/ppl/m/n/10.95 /need$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 
-needs$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 needed$\OMS/cmsy/m/n/10.95 j$\OT
-1/ppl/m/n/10.95 have$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 has$\OMS/cmsy/m/n
-/10.95 j$\OT1/ppl/m/n/10.95 had$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 've$\O
-MS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 'd/)
- []
-
-[1
+) [1
 
 {/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (37.49748pt too wide) in paragraph at lines 105--109
+Overfull \hbox (37.49748pt too wide) in paragraph at lines 115--121
 \OT1/ppl/m/n/10.95 Wh-clauses that are not com-ple-ments to a verb/adjective, b
 ut lin-early fol-low the verb/adjective
  []
 
-[2] [3] [4] (./AnnotationGuide.aux) ) 
+
+Overfull \hbox (0.50633pt too wide) in paragraph at lines 123--128
+\OT1/ppl/m/n/10.95 [$\OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/cmr/m
+/n/10.95 ^$\OT1/ppl/m/n/10.95 SBAR/ [$\OML/cmm/m/it/10.95 >$ \OT1/ppl/m/n/10.95
+ (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 PP/ !\TS1/ppl/m/n/10.95 $ \OT1/ppl/
+m/n/10.95 /$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 VB$\OMS/cmsy/m/n/10.95 j\OT
+1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 JJ$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95
+ ^$\OT1/ppl/m/n/10.95 BE$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n
+/10.95 RB/)] $\OMS/cmsy/m/n/10.95 j$ \OT1/ppl/m/n/10.95 [!\TS1/ppl/m/n/10.95 $ 
+\OT1/ppl/m/n/10.95 /$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 VB$\OMS/cmsy/m/n/1
+0.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 JJ$\OMS/cmsy/m/n/10.95 j\OT1/cmr/
+m/n/10.95 ^$\OT1/ppl/m/n/10.95 BE$\OMS/cmsy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT
+1/ppl/m/n/10.95 RB/]) $\OMS/cmsy/m/n/10.95 j$ $\OML/cmm/m/it/10.95 >  >$ \OT1/p
+pl/m/n/10.95 /SBAR-
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 177--178
+
+ []
+
+
+Overfull \hbox (7.31622pt too wide) in paragraph at lines 179--181
+\OT1/ppl/m/n/10.95 @WH $\OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/cm
+r/m/n/10.95 ^$\OT1/ppl/m/n/10.95 WH/ \TS1/ppl/m/n/10.95 $ \OT1/ppl/m/n/10.95 (/
+$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 S/=s1 $\OML/cmm/m/it/10.95 <  <$ \OT1/
+ppl/m/n/10.95 (/'s$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 'm$\OMS/cmsy/m/n/10
+.95 j$\OT1/ppl/m/n/10.95 're$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 am$\OMS/c
+msy/m/n/10.95 j$\OT1/ppl/m/n/10.95 is$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 
+are$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 was$\OMS/cmsy/m/n/10.95 j$\OT1/ppl
+/m/n/10.95 were/=vb1 !.. (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 VB$\OMS/cms
+y/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 JJ$\OMS/cmsy/m/n/10.95 j\O
+T1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 RB/
+ []
+
+[3]
+Overfull \hbox (10.36021pt too wide) in paragraph at lines 181--183
+\OT1/ppl/m/n/10.95 @WH !$\OML/cmm/m/it/10.95 >  >$ \OT1/ppl/m/n/10.95 (/$\OT1/c
+mr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 WH/ \TS1/ppl/m/n/10.95 $ \OT1/ppl/m/n/10.95 (
+/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 S/=s1 $\OML/cmm/m/it/10.95 <  <$ \OT1
+/ppl/m/n/10.95 (/'s$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 'm$\OMS/cmsy/m/n/1
+0.95 j$\OT1/ppl/m/n/10.95 're$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 am$\OMS/
+cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 is$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95
+ are$\OMS/cmsy/m/n/10.95 j$\OT1/ppl/m/n/10.95 was$\OMS/cmsy/m/n/10.95 j$\OT1/pp
+l/m/n/10.95 were/=vb1 !.. (/$\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 VB$\OMS/cm
+sy/m/n/10.95 j\OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 JJ$\OMS/cmsy/m/n/10.95 j\
+OT1/cmr/m/n/10.95 ^$\OT1/ppl/m/n/10.95 RB/
+ []
+
+[4] [5] (./AnnotationGuide.aux) ) 
 Here is how much of TeX's memory you used:
  1589 strings out of 480608
  23608 string characters out of 5903631
- 267884 words of memory out of 5000000
+ 268884 words of memory out of 5000000
  17499 multiletter control sequences out of 15000+600000
  544019 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,5n,34p,412b,258s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2020/texmf-dist/fonts/
-enc/dvips/base/8r.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/
-uhvr8a.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplb8a.
-pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on AnnotationGuide.pdf (4 pages, 85805 bytes).
+ 30i,5n,34p,388b,256s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/
+dvips/base/8r.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvr
+8a.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb>
+</usr/local/texlive/2020/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
+Output written on AnnotationGuide.pdf (5 pages, 85637 bytes).
 PDF statistics:
- 42 PDF objects out of 1000 (max. 8388607)
- 29 compressed objects within 1 object stream
+ 45 PDF objects out of 1000 (max. 8388607)
+ 31 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
