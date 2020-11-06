@@ -108,39 +108,27 @@
   <div class="slide" id="example1">
     <h3>Practice Trial 1</h3>
     <p class="context" style="text-align: left;"></p>
-    <p style="color:blue;text-align:left" class="BestResponse"></p>
+    <!-- <p style="color:blue;text-align:left" class="BestResponse"></p> -->
 
-    <div id="intruction1" class="instruction"><i>How similar is the statement in blue (with 'but not both') to the
-        statement in red (without 'but not both')?</i></div>
-
-    <table class="likertscale">
-      <tr>
-        <td>
-          <font color=#424242>very different meaning</font>
-        </td>
-        <td><input type="radio" name="number" value="1" /></td>
-        <td><input type="radio" name="number" value="2" /></td>
-        <td><input type="radio" name="number" value="3" /></td>
-        <td><input type="radio" name="number" value="4" /></td>
-        <td><input type="radio" name="number" value="5" /></td>
-        <td><input type="radio" name="number" value="6" /></td>
-        <td><input type="radio" name="number" value="7" /></td>
-        <td>
-          <font color=#424242>same meaning</font>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td></td>
-      </tr>
-    </table>
+    <div id="intruction1" class="instruction"><i>Based on the question in red, which of the following 
+      does the speaker want to know?</i></div>
+    <!-- add the dynamic button-ing here -->
+    <div class="grid-container" id='paraphrase-holder'>
+      <div class="loc1"></div>
+      <div class="loc2"></div>
+      <div class="loc3"></div>
+      <div class="loc4"></div>
+    </div>
+    <br><br>
+    <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
+    <br>
+    <br>
+    <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+    <div class="err">
+      <br>
+      <p2>Please make a selection before clicking 'Continue'</p2>
+    </div>
+    
 
     <br><br>
 
@@ -155,38 +143,25 @@
   <div class="slide" id="example2">
     <h3>Example 2</h3>
     <p class="context" style="text-align: left;"></p>
-    <p style="color:blue;text-align:left" class="AResponse"></p>
+    <!-- <p style="color:blue;text-align:left" class="AResponse"></p> -->
 
-    <div id="intruction2" class="instruction"><i>How similar is the statement in blue (with 'but not both') to the
-        statement in red (without 'but not both')?</i></div>
-    <table class="likertscale">
-      <tr>
-        <td>
-          <font color=#424242>very different meaning</font>
-        </td>
-        <td><input type="radio" name="number" value="1" /></td>
-        <td><input type="radio" name="number" value="2" /></td>
-        <td><input type="radio" name="number" value="3" /></td>
-        <td><input type="radio" name="number" value="4" /></td>
-        <td><input type="radio" name="number" value="5" /></td>
-        <td><input type="radio" name="number" value="6" /></td>
-        <td><input type="radio" name="number" value="7" /></td>
-        <td>
-          <font color=#424242>same meaning</font>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td></td>
-      </tr>
-    </table>
+    <div id="intruction2" class="instruction"><i>Based on the question in red, which of the following does the speaker want to know?</i></div>
+    <!-- add the dynamic button-ing here -->
+    <div class="grid-container" id='paraphrase-holder'>
+      <div class="loc1"></div>
+      <div class="loc2"></div>
+      <div class="loc3"></div>
+      <div class="loc4"></div>
+    </div>
+    <br><br>
+    <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
+    <br>
+    <br>
+    <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+    <div class="err">
+      <br>
+      <p2>Please make a selection before clicking 'Continue'</p2>
+    </div>
     <br><br>
 
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
@@ -201,29 +176,20 @@
     <br><br>
     <p id="instruct-text" align="left">Great! Now we can start the real experiment. <br><br> You will now read 30
       conversations.
-      You won't always need to read the whole conversation to decide whether the blue and the red sentence have the same
-      meaning or not.
-      <br><br>Sometimes, the sentence with "but not both" will sound strange. In this case, set the slider to the best
-      of your ability,
-      but also click the checkbox next to "The blue sentence sounds strange". <br><br> Note: these are transcripts of
-      real phone conversations so sometimes the text will be a little jumbled. If that happens, respond to the best of
-      your ability. But don't get too frustrated! If it seems impossible to give an answer, give a low rating, click the
-      checkbox next to "The blue sentence sounds strange", and move on to the next one.
+      You won't always need to read the whole conversation to decide what the speaker wants to know.
+      <br><br>Sometimes, the questions will sound strange. In this case, make your best guess about what you think the 
+      speaker wants to know, but also click the checkbox next to "None of the above". 
+      <br><br> Note: these are transcripts of real phone conversations so sometimes the text will be a little jumbled. 
+      If that happens, respond to the best of your ability. But don't get too frustrated! Click the checkbox next to 
+      "None of the above", and move on to the next one.
     </p>
     <br><br>
-    <!-- <p id="instruct-text" align="left">Great! Now we can start the real experiment. You will now read 20 sentences. Your
-      task is to rate how similar the red sentence is to the blue sentence where the word 'or' is replaced with 'or, but
-      not both'.
-      Sometimes, the blue sentence will sound strange. In this case, give a rating to the best of your ability, but also
-      click the checkbox next to "The blue sentence sounds strange".
-    </p> -->
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
   </div>
 
   <div class="slide" id="generateEntities">
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction3" class="instruction"><i>Select the paraphrase that is most similar to what the speaker
-        asked.</i></div>
+    <div id="intruction3" class="instruction"><i>Based on the question in red, which of the following does the speaker want to know?</i></div>
     <!-- add the dynamic button-ing here -->
     <div class="grid-container" id='paraphrase-holder'>
       <div class="loc1"></div>
@@ -232,7 +198,7 @@
       <div class="loc4"></div>
     </div>
     <br><br>
-    <font color=#424242> None of these paraphrases sound right: <input type="checkbox" id="strange"></font>
+    <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
     <br>
     <br>
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
