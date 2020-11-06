@@ -65,13 +65,22 @@ function make_slides(f) {
     start: function () {
       $('.err').hide();
 
-      var contexthtml = "<b>Speaker #1</b>: I'm so hungry, let's order some food. I want a double cheeseburger, fries and a large shake. <br> <b>Speaker #2</b>: I'm not that hungry, "
-      var entirehtml = "<font color=#FF0000> " + "I'll either get a burger or fries."
+      var contexthtml = "<b>Speaker #1</b>: The party last night was packed! And there was lots of drama. <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
+      var entirehtml = "<font color=#FF0000> " + "Who was there?"
       contexthtml = contexthtml + entirehtml
-      var besthtml = "<font color=#0000FF> " + "I'll either get a burger or fries <b>but not both</b>."
+
+
+
+      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person that was at the party?" + '</label>'
+      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person that was at the party?" + '</label>'
+      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person that was at the party?" + '</label>'
+      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>' + "Who is every person that was at the party?" + '</label>'
 
       $(".context").html(contexthtml);
-      $(".BestResponse").html(besthtml);
+      $(".loc1").html(theParaphrase);
+      $(".loc2").html(aParaphrase);
+      $(".loc3").html(allParaphrase);
+      $(".loc4").html(someParaphrase);
       $(".err").hide();
 
     },
@@ -105,13 +114,22 @@ function make_slides(f) {
     start: function () {
       $(".err").hide();
 
-      var contexthtml = "<b>Speaker #1</b>: Do your employees speak any language besides English? <br> <b>Speaker #2</b>: "
-      var entirehtml = "<font color=#FF0000> " + "All our employees also speak at least French or Spanish."
+      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? I'm not from around here. <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
+      var entirehtml = "<font color=#FF0000> " + "Where can I get coffee?"
       contexthtml = contexthtml + entirehtml
-      var besthtml = "<font color=#0000FF> " + "All our employees also speak at least French or Spanish <b>but not both</b>."
+      
+      
+      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that I get get coffee?" + '</label>'
+      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that I can get coffee?" + '</label>'
+      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that I can get coffee?" + '</label>'
+      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>' + "What are all places that I can get coffee?" + '</label>'
+
 
       $(".context").html(contexthtml);
-      $(".BestResponse").html(besthtml);
+      $(".loc1").html(theParaphrase);
+      $(".loc2").html(aParaphrase);
+      $(".loc3").html(allParaphrase);
+      $(".loc4").html(someParaphrase);
       $(".err").hide();
 
     },
@@ -170,10 +188,10 @@ function make_slides(f) {
 
       // var contexthtml = generic.PreceedingContext;
       var contexthtml = this.format_context(generic.PreceedingContext);
-      var entirehtml = "<font color=#FF0000> " + generic.EntireSentence
+      var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.EntireSentence)
       contexthtml = contexthtml + entirehtml
 
-      // var aParaphrase = generic.AResponse
+      // This is where the dependent variable is
       var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>' + generic.TheResponse + '</label>'
       var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>' + generic.AResponse + '</label>'
       var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>' + generic.SomeResponse + '</label>'
