@@ -174,12 +174,12 @@ function make_slides(f) {
       contexthtml = contexthtml + entirehtml
 
       // var aParaphrase = generic.AResponse
-      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>'+generic.TheResponse+'</label>'
-      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>'+generic.AResponse+'</label>'
-      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>'+generic.SomeResponse+'</label>'
-      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>'+generic.AllResponse+'</label>'
-  
-  
+      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>' + generic.TheResponse + '</label>'
+      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>' + generic.AResponse + '</label>'
+      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>' + generic.SomeResponse + '</label>'
+      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>' + generic.AllResponse + '</label>'
+
+
       $(".context").html(contexthtml);
       $(".loc1").html(theParaphrase);
       $(".loc2").html(aParaphrase);
@@ -203,8 +203,8 @@ function make_slides(f) {
       // remove all ### standing alone
       contexthtml = context.replace(/###/g, " ");
       // replace first three ## with Speaker 1
-      contexthtml = contexthtml.replace(/speakera(\d+)./g, "<br><b>Speaker #1: </b>"); // ###SpeakerA55-2*t55-2, SpeakerA53*t53
-      contexthtml = contexthtml.replace(/speakerb(\d+)./g, "<br><b>Speaker #2: </b>"); // ###SpeakerA53*t53
+      contexthtml = contexthtml.replace(/speakera(\d+)./g, "<br><b>Speaker #1: </b>");
+      contexthtml = contexthtml.replace(/speakerb(\d+)./g, "<br><b>Speaker #2: </b>");
       // remove the traces
       contexthtml = contexthtml.replace(/\*t*\**\-(\d+)/g, "");
       // remove random asterisks
@@ -226,6 +226,11 @@ function make_slides(f) {
         }
       };
       return contexthtml;
+    },
+
+    format_sentence: function (sentence) {
+      // remove the traces
+      entirehtml = sentence.replace(/\*t*\**\-(\d+)/g, "");
     },
 
     button: function () {

@@ -30,7 +30,7 @@ export PATH="/afs/ir/data/linguistic-data/bin/linux_2_4/:$PATH"
 
 
 
-tgrep2 -afc /afs/ir/data/linguistic-data/Treebank/tgrep2able//swbd.t2c.gz "/WP|WRB/ >> /SBARQ/ << /VP/ . /MD/"
+tgrep2 -aftwc /afs/ir/data/linguistic-data/Treebank/tgrep2able//swbd.t2c.gz "/WP|WRB/ >> /SBARQ/ << /VP/ . /MD/"
 
 
 to look at the results:
