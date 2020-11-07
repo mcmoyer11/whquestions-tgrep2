@@ -66,7 +66,7 @@ function make_slides(f) {
       $('.err').hide();
 
       var contexthtml = "<b>Speaker #1</b>: The party last night was packed! And there was lots of drama. <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
-      var entirehtml = "<font color=#FF0000> " + "Who was there?"
+      var entirehtml = "Tell me everything! " + "<font color=#FF0000> " + "Who was there?"
       contexthtml = contexthtml + entirehtml
 
       exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person that was at the party?" + '</label>'
@@ -114,8 +114,8 @@ function make_slides(f) {
     start: function () {
       $(".err").hide();
 
-      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? I'm not from around here. <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
-      var entirehtml = "<font color=#FF0000> " + "Where can I get coffee?"
+      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please?. <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
+      var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where can I get coffee?"
       contexthtml = contexthtml + entirehtml
       
       exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that I get get coffee?" + '</label>'
@@ -133,7 +133,7 @@ function make_slides(f) {
     },
     button: function () {
       this.radio = $("input[name='number']:checked").val();
-      if (this.radio == "a" | this.radio == "some" | this.radio == "the") {
+      if (this.radio == "the") {
         this.log_responses();
         exp.go();
       }
@@ -246,6 +246,7 @@ function make_slides(f) {
     format_sentence: function (sentence) {
       // remove the traces
       entirehtml = sentence.replace(/\*t*\**\-(\d+)/g, "");
+      return entirehtml
     },
 
     button: function () {
