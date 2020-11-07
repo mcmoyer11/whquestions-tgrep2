@@ -115,13 +115,13 @@ function make_slides(f) {
       $(".err").hide();
 
       var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please?. <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
-      var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where can I get coffee?"
+      var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where do they sell coffee around here?"
       contexthtml = contexthtml + entirehtml
       
-      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that I get get coffee?" + '</label>'
-      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that I can get coffee?" + '</label>'
-      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that I can get coffee?" + '</label>'
-      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every place that I can get coffee?" + '</label>'
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that they sell coffee...?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that they sell coffee...?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that they sell coffee...?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every place that they sell coffee...?" + '</label>'
 
       $(".context").html(contexthtml);
 
