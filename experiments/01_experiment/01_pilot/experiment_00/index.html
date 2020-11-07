@@ -62,7 +62,7 @@
     <h3>Are you a bot?</h3>
     <p id="s"></p>
     <p id="q"></p>
-    <input type="text" id="text_box" /></question>
+    <input type="text" id="text_box"/></question>
     <br><br><br>
     <div class="err1">
       <p2>Failing this question two more times will disqualify you from this study.</p2>
@@ -108,11 +108,11 @@
   <div class="slide" id="example1">
     <h3>Practice Trial 1</h3>
     <p class="context" style="text-align: left;"></p>
-    <!-- <p style="color:blue;text-align:left" class="BestResponse"></p> -->
+  
 
-    <div id="intruction1" class="instruction"><i>Based on the question in red, which of the following 
-      does the speaker want to know?</i></div>
-    <!-- add the dynamic button-ing here -->
+    <div id="intruction1" class="instruction"><i>Based on the question in red, which of the following
+        does the speaker want to know?</i></div>
+   
     <div class="grid-container" id='paraphrase-holder'>
       <div class="loc1"></div>
       <div class="loc2"></div>
@@ -121,32 +121,25 @@
     </div>
     <br><br>
     <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
-    <br>
-    <br>
-    <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+    <br><br>
     <div class="err">
-      <br>
       <p2>Please make a selection before clicking 'Continue'</p2>
     </div>
-    
-
     <br><br>
-
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
     <div class="err">
-      <br>
-      <p2>In your rating, consider whether the sentence with 'but not both' expresses the same thing as the red
-        sentence. In this example the two sentences are very similar.</p2>
+      <p2>In your rating, consider whether the question in red expresses the same thing as one of the questions below. 
+        In this example the two questions are very similar.</p2>
     </div>
-  </div>
+  </div> 
+
 
   <div class="slide" id="example2">
-    <h3>Example 2</h3>
+    <h3>Practice Trail 2</h3>
     <p class="context" style="text-align: left;"></p>
-    <!-- <p style="color:blue;text-align:left" class="AResponse"></p> -->
-
-    <div id="intruction2" class="instruction"><i>Based on the question in red, which of the following does the speaker want to know?</i></div>
-    <!-- add the dynamic button-ing here -->
+    <div id="intruction2" class="instruction"><i>Based on the question in red, which of the following does the speaker
+        want to know?</i></div>
+   
     <div class="grid-container" id='paraphrase-holder'>
       <div class="loc1"></div>
       <div class="loc2"></div>
@@ -155,20 +148,11 @@
     </div>
     <br><br>
     <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
-    <br>
-    <br>
-    <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err">
-      <br>
-      <p2>Please make a selection before clicking 'Continue'</p2>
-    </div>
     <br><br>
-
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
     <div class="err">
-      <br>
-      <p2>In your rating, consider whether the sentence with 'but not both' expresses the same thing as the red
-        sentence. In this example the two sentences are very different.</p2>
+      <p2>In your rating, consider whether the question in red expresses the same thing as the one of the questions below. 
+        In this example the two questions are very different.</p2>
     </div>
   </div>
 
@@ -177,10 +161,10 @@
     <p id="instruct-text" align="left">Great! Now we can start the real experiment. <br><br> You will now read 30
       conversations.
       You won't always need to read the whole conversation to decide what the speaker wants to know.
-      <br><br>Sometimes, the questions will sound strange. In this case, make your best guess about what you think the 
-      speaker wants to know, but also click the checkbox next to "None of the above". 
-      <br><br> Note: these are transcripts of real phone conversations so sometimes the text will be a little jumbled. 
-      If that happens, respond to the best of your ability. But don't get too frustrated! Click the checkbox next to 
+      <br><br>Sometimes, the questions will sound strange. In this case, make your best guess about what you think the
+      speaker wants to know, but also click the checkbox next to "None of the above".
+      <br><br> Note: these are transcripts of real phone conversations so sometimes the text will be a little jumbled.
+      If that happens, respond to the best of your ability. But don't get too frustrated! Click the checkbox next to
       "None of the above", and move on to the next one.
     </p>
     <br><br>
@@ -189,7 +173,8 @@
 
   <div class="slide" id="generateEntities">
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction3" class="instruction"><i>Based on the question in red, which of the following does the speaker want to know?</i></div>
+    <div id="intruction3" class="instruction"><i>Based on the question in red, which of the following does the speaker
+        want to know?</i></div>
     <!-- add the dynamic button-ing here -->
     <div class="grid-container" id='paraphrase-holder'>
       <div class="loc1"></div>

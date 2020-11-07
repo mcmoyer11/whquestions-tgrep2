@@ -69,25 +69,25 @@ function make_slides(f) {
       var entirehtml = "<font color=#FF0000> " + "Who was there?"
       contexthtml = contexthtml + entirehtml
 
-
-
-      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person that was at the party?" + '</label>'
-      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person that was at the party?" + '</label>'
-      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person that was at the party?" + '</label>'
-      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>' + "Who is every person that was at the party?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person that was at the party?" + '</label>'
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person that was at the party?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person that was at the party?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "Who is every person that was at the party?" + '</label>'
 
       $(".context").html(contexthtml);
-      $(".loc1").html(theParaphrase);
-      $(".loc2").html(aParaphrase);
-      $(".loc3").html(allParaphrase);
-      $(".loc4").html(someParaphrase);
-      $(".err").hide();
 
+      // console.log("exp.paraphraseArray: ", exp.paraphraseArray)
+
+      for (i=0; i< 4; i++){
+        $(`.loc${i+1}`).html(exp.paraphraseArray[i].value)
+      }
+      $(".err").hide();
     },
 
     button: function () {
-      this.radio = $("input[name='number']:checked").val();
-      if (this.radio == "5" | this.radio == "6" | this.radio == "7") {
+      this.radio = $("input[name='paraphrase']:checked").val();
+      console.log(this.radio)
+      if (this.radio == "all") {
         this.log_responses();
         exp.go();
       }
@@ -118,24 +118,22 @@ function make_slides(f) {
       var entirehtml = "<font color=#FF0000> " + "Where can I get coffee?"
       contexthtml = contexthtml + entirehtml
       
-      
-      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that I get get coffee?" + '</label>'
-      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that I can get coffee?" + '</label>'
-      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that I can get coffee?" + '</label>'
-      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>' + "What are all places that I can get coffee?" + '</label>'
-
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that I get get coffee?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that I can get coffee?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that I can get coffee?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every place that I can get coffee?" + '</label>'
 
       $(".context").html(contexthtml);
-      $(".loc1").html(theParaphrase);
-      $(".loc2").html(aParaphrase);
-      $(".loc3").html(allParaphrase);
-      $(".loc4").html(someParaphrase);
+
+      for (i=0; i< 4; i++){
+        $(`.loc${i+1}`).html(exp.paraphraseArray[i].value)
+      }
       $(".err").hide();
 
     },
     button: function () {
       this.radio = $("input[name='number']:checked").val();
-      if (this.radio == "1" | this.radio == "2" | this.radio == "3") {
+      if (this.radio == "a" | this.radio == "some" | this.radio == "the") {
         this.log_responses();
         exp.go();
       }
@@ -192,17 +190,16 @@ function make_slides(f) {
       contexthtml = contexthtml + entirehtml
 
       // This is where the dependent variable is
-      var theParaphrase = '<label><input type="radio" name="paraphrase" value="the"/>' + generic.TheResponse + '</label>'
-      var aParaphrase = '<label><input type="radio" name="paraphrase" value="a"/>' + generic.AResponse + '</label>'
-      var someParaphrase = '<label><input type="radio" name="paraphrase" value="some"/>' + generic.SomeResponse + '</label>'
-      var allParaphrase = '<label><input type="radio" name="paraphrase" value="all"/>' + generic.AllResponse + '</label>'
-
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + generic.TheResponse + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + generic.AResponse + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + generic.SomeResponse + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + generic.AllResponse + '</label>'
+      
+      for (i=0; i<4; i++){
+        $(`.loc${i+1}`).html(exp.paraphraseArray[i].value)  
+      }
 
       $(".context").html(contexthtml);
-      $(".loc1").html(theParaphrase);
-      $(".loc2").html(aParaphrase);
-      $(".loc3").html(allParaphrase);
-      $(".loc4").html(someParaphrase);
 
       $(".err").hide();
 
@@ -290,7 +287,8 @@ function make_slides(f) {
         education: $("#education").val(),
         problems: $("#problems").val(),
         fairprice: $("#fairprice").val(),
-        comments: $("#comments").val()
+        comments: $("#comments").val(),
+        paraArray: [exp.paraphraseArray[0].name,exp.paraphraseArray[1].name,exp.paraphraseArray[2].name,exp.paraphraseArray[3].name]
       });
       exp.go(); //use exp.go() if and only if there is no "present" data.
     }
@@ -308,9 +306,6 @@ function make_slides(f) {
         "time_in_minutes": (Date.now() - exp.startT) / 60000
       };
       setTimeout(function () { proliferate.submit(exp.data); }, 1000);
-
-
-
     }
   });
 
@@ -321,15 +316,17 @@ function make_slides(f) {
 function init() {
 
   repeatWorker = false;
-
-
   //exp.n_entities = 1;
   exp.names = [];
   exp.all_names = [];
   exp.trials = [];
   exp.catch_trials = [];
   var stimuli = generate_stim(); // this calls a function in stimuli.js
-
+  exp.theParaphrase={name:"theParaphrase"};
+  exp.aParaphrase={name:"aParaphrase"};
+  exp.allParaphrase={name:"allParaphrase"};
+  exp.someParaphrase={name:"someParaphrase"};
+  exp.paraphraseArray = _.shuffle([exp.theParaphrase,exp.aParaphrase,exp.allParaphrase,exp.someParaphrase])
   console.log(stimuli.length);
   //exp.stimuli = _.shuffle(stimuli).slice(0, 15);
   exp.stimuli = stimuli.slice();
@@ -349,8 +346,8 @@ function init() {
   };
   //blocks of the experiment:
   exp.structure = [
-    // "bot",
-    // "i0",
+    "bot",
+    "i0",
     "example1",
     "example2",
     "startExp",
