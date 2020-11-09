@@ -134,6 +134,7 @@ function make_slides(f) {
     button: function () {
       this.radio = $("input[name='number']:checked").val();
       if (this.radio == "a" | this.radio == "some") {
+        console.log(this.radio);
         this.log_responses();
         exp.go();
       }
