@@ -132,9 +132,9 @@ function make_slides(f) {
 
     },
     button: function () {
-      this.radio = $("input[name='number']:checked").val();
-      if (this.radio == "a" | this.radio == "some") {
-        console.log(this.radio);
+      this.radio = $("input[name='paraphrase']:checked").val();
+      console.log(this.radio)
+      if (this.radio == "some" | this.radio == "a") {
         this.log_responses();
         exp.go();
       }
