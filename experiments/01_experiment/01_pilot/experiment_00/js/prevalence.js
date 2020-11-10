@@ -82,7 +82,7 @@ function make_slides(f) {
     },
     button: function () {
       this.radio = $("input[name='paraphrase']:checked").val();
-      console.log(this.radio)
+      // console.log(this.radio)
       if (this.radio == "all") {
         this.log_responses();
         exp.go();
@@ -98,6 +98,7 @@ function make_slides(f) {
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": "example3",
         "response": [this.radio, ""],
+        "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
   });
@@ -127,7 +128,7 @@ function make_slides(f) {
     },
     button: function () {
       this.radio = $("input[name='paraphrase']:checked").val();
-      console.log(this.radio)
+      // console.log(this.radio)
       if (this.radio == "some" | this.radio == "a") {
         this.log_responses();
         exp.go();
@@ -143,6 +144,7 @@ function make_slides(f) {
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": "example2",
         "response": [this.radio, ""],
+        "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
   });
@@ -175,7 +177,7 @@ function make_slides(f) {
 
     button: function () {
       this.radio = $("input[name='paraphrase']:checked").val();
-      console.log(this.radio)
+      // console.log(this.radio)
       if (this.radio == "all") {
         this.log_responses();
         exp.go();
@@ -191,6 +193,7 @@ function make_slides(f) {
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": "example1",
         "response": [this.radio, ""],
+        "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
   });
@@ -220,10 +223,14 @@ function make_slides(f) {
     },
     button: function () {
       this.radio = $("input[name='paraphrase']:checked").val();
-      console.log(this.radio)
+      // console.log(this.radio)
       if (this.radio == "some" | this.radio == "a" | this.radio == "the") {
         this.log_responses();
         exp.go();
+        // $(this.radio).prop('checked', false);
+        // exp.checkbox.checked = false;
+        // this.checked = false;
+        // _stream.apply(this); //go to the next element
       }
       else {
         $('.err').show();
@@ -231,11 +238,27 @@ function make_slides(f) {
       }
     },
 
+    // button: function () {
+    //   this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+    //   if (this.radio) {
+    //     this.log_responses();
+    //     $(this.radio).prop('checked', false);
+    //     exp.checkbox.checked = false;
+    //     //this.checked = false;
+    //     _stream.apply(this); //go to the next element
+    //   }
+    //   else {
+    //     $('.err').show();
+    //     //this.log_responses();
+    //   }
+    // },
+
     log_responses: function () {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": "example4",
-        "response": [this.radio, ""],
+        "response": [this.radio, ""], // exp.checkbox.checked],
+        "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
   });
@@ -360,6 +383,7 @@ function make_slides(f) {
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": this.generic.TGrepID,
         "response": [this.radio, exp.checkbox.checked],
+        "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
         // "sentence": this.generic.BestResponse,
       });
     },
@@ -380,7 +404,7 @@ function make_slides(f) {
         problems: $("#problems").val(),
         fairprice: $("#fairprice").val(),
         comments: $("#comments").val(),
-        paraArray: [exp.paraphraseArray[0].name, exp.paraphraseArray[1].name, exp.paraphraseArray[2].name, exp.paraphraseArray[3].name]
+        // paraArray: [exp.paraphraseArray[0].name, exp.paraphraseArray[1].name, exp.paraphraseArray[2].name, exp.paraphraseArray[3].name]
       });
       exp.go(); //use exp.go() if and only if there is no "present" data.
     }
@@ -414,10 +438,10 @@ function init() {
   exp.trials = [];
   exp.catch_trials = [];
   var stimuli = generate_stim(); // this calls a function in stimuli.js
-  exp.theParaphrase = { name: "theParaphrase" };
-  exp.aParaphrase = { name: "aParaphrase" };
-  exp.allParaphrase = { name: "allParaphrase" };
-  exp.someParaphrase = { name: "someParaphrase" };
+  exp.theParaphrase = { name: "the" };
+  exp.aParaphrase = { name: "a" };
+  exp.allParaphrase = { name: "all" };
+  exp.someParaphrase = { name: "some" };
   exp.paraphraseArray = _.shuffle([exp.theParaphrase, exp.aParaphrase, exp.allParaphrase, exp.someParaphrase])
   console.log(stimuli.length);
   //exp.stimuli = _.shuffle(stimuli).slice(0, 15);
