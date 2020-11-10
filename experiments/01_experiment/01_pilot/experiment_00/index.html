@@ -51,9 +51,9 @@
     }});
     </script>
 
-<!-- avoid errror -->
-<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-<meta content="utf-8" http-equiv="encoding">
+  <!-- avoid errror -->
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
 
 </head>
 
@@ -64,7 +64,7 @@
     <h3>Are you a bot?</h3>
     <p id="s"></p>
     <p id="q"></p>
-    <input type="text" id="text_box"/></question>
+    <input type="text" id="text_box" /></question>
     <br><br><br>
     <div class="err1">
       <p2>Failing this question two more times will disqualify you from this study.</p2>
@@ -107,20 +107,78 @@
             proceed to the study tasks.<br></small></small></i></p>
   </div>
 
+
   <div class="slide" id="example1">
     <h3>Practice Trial 1</h3>
     <p class="context" style="text-align: left;"></p>
-  
+    <div id="intruction1" class="instruction"><i>Based on the question in red, which of the following does the speaker
+        want to know?</i></div>
 
-    <div id="intruction1" class="instruction"><i>Based on the question in red, which of the following
-        does the speaker want to know?</i></div>
-   
     <div class="grid-container" id='paraphrase-holder'>
       <div class="loc1"></div>
       <div class="loc2"></div>
       <div class="loc3"></div>
       <div class="loc4"></div>
     </div>
+    <br>
+    <div id="intruction1" class="instruction"><font color=#0000FF>Read these in your head as, "Who is <b>a</b> person that can help spread the word?", 
+      "Who is <b>the</b> person that can help spread the word?", "Who is <b>some</b> person that can help spread the word?", and
+      "Who is <b>every</b> person that can help spread the word?" </font></div>
+    <br><br>
+    <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
+    <br><br>
+    <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+    <div class="err">
+      <p2>In your rating, consider whether the question in red expresses the same thing as the one of the questions
+        below.
+        In this example, the speaker wants to know as many people as possible who can spread the word.</p2>
+    </div>
+  </div>
+
+  <div class="slide" id="example2">
+    <h3>Practice Trial 2</h3>
+    <p class="context" style="text-align: left;"></p>
+    <div id="intruction2" class="instruction"><i>Based on the question in red, which of the following does the speaker
+        want to know?</i></div>
+
+    <div class="grid-container" id='paraphrase-holder'>
+      <div class="loc1"></div>
+      <div class="loc2"></div>
+      <div class="loc3"></div>
+      <div class="loc4"></div>
+    </div>
+    <br>
+    <div id="intruction3" class="instruction"><font color=#0000FF>Read these in your head as, "What is <b>a</b> place that I can get coffee?", 
+      "What is <b>the</b> place that I can get coffee?", "What is <b>some</b> place that I can get coffee?", and
+      "What is <b>every</b> place that I can get coffee?" </font></div>
+    <br><br>
+    <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
+    <br><br>
+    <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+    <div class="err">
+      <p2>In your rating, consider whether the question in red expresses the same thing as the one of the questions
+        below. In this example, the speaker doesn't need to know about every place.</p2>
+    </div>
+  </div>
+
+  <div class="slide" id="example3">
+    <h3>Practice Trial 3</h3>
+    <p class="context" style="text-align: left;"></p>
+
+
+    <div id="intruction3" class="instruction"><i>Based on the question in red, which of the following
+        does the speaker want to know?</i></div>
+
+    <div class="grid-container" id='paraphrase-holder'>
+      <div class="loc1"></div>
+      <div class="loc2"></div>
+      <div class="loc3"></div>
+      <div class="loc4"></div>
+    </div>
+    <br>
+    <div id="intruction3" class="instruction"><font color=#0000FF>Read these in your head as, "Who is <b>a</b> person that came to the party?", 
+      "Who is <b>the</b> person that came to the party?", "Who is <b>some</b> person that came to the party?", and
+      "Who is <b>every</b> person that came to the party?" </font></div>
     <br><br>
     <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
     <br><br>
@@ -130,31 +188,36 @@
     <br><br>
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
     <div class="err">
-      <p2>In your rating, consider whether the question in red expresses the same thing as one of the questions below. 
-        In this example, the speaker wants to know about all the people at the party.</p2>
+      <p2>In your rating, consider whether the question in red expresses the same thing as one of the questions below.
+        In this example, the speaker wants to know about all the people.</p2>
     </div>
-  </div> 
+  </div>
 
 
-  <div class="slide" id="example2">
-    <h3>Practice Trial 2</h3>
+  <div class="slide" id="example4">
+    <h3>Practice Trial 4</h3>
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction2" class="instruction"><i>Based on the question in red, which of the following does the speaker
+    <div id="intruction4" class="instruction"><i>Based on the question in red, which of the following does the speaker
         want to know?</i></div>
-   
+
     <div class="grid-container" id='paraphrase-holder'>
       <div class="loc1"></div>
       <div class="loc2"></div>
       <div class="loc3"></div>
       <div class="loc4"></div>
     </div>
+    <br>
+    <div id="intruction4" class="instruction"><font color=#0000FF>Read these in your head as, "What is <b>a</b> way to get to Central Park?", 
+      "What is <b>the</b> way to get to Central Park?", "What is <b>some</b> way to get to Central Park?", and
+      "What is <b>every</b> way to get to Central Park?" </font></div>
     <br><br>
     <font color=#424242> None of the above: <input type="checkbox" id="strange"></font>
     <br><br>
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
     <div class="err">
-      <p2>In your rating, consider whether the question in red expresses the same thing as the one of the questions below. 
-        In this example, the speaker doesn't need to know about every place that sells coffee.</p2>
+      <p2>In your rating, consider whether the question in red expresses the same thing as the one of the questions
+        below.
+        In this example, the speaker doesn't need to know about every way.</p2>
     </div>
   </div>
 

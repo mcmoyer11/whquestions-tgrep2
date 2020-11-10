@@ -25,7 +25,6 @@ function make_slides(f) {
           "slide_number_in_experiment": exp.phase,
           "tgrep_id": "bot_check",
           "response": [exp.text_input, exp.listener],
-          "sentence": "",
         });
         exp.go();
       }
@@ -34,7 +33,6 @@ function make_slides(f) {
           "slide_number_in_experiment": exp.phase,
           "tgrep_id": "bot_check",
           "response": [exp.text_input, exp.listener],
-          "sentence": "",
         });
         if (exp.lives == 0) {
           $('.err1').show();
@@ -63,16 +61,107 @@ function make_slides(f) {
     name: "example1",
 
     start: function () {
+      $(".err").hide();
+
+      var contexthtml = "<b>Speaker #1</b>:  We need to promote this fundraiser as widely as possible.<br> <b>Speaker #2</b>: "
+      var entirehtml = "<font color=#FF0000> " + "Who can help spread the word?"
+      contexthtml = contexthtml + entirehtml
+
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person...?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person...?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person...?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "Who is every person...?" + '</label>'
+
+      $(".context").html(contexthtml);
+
+      for (i = 0; i < 4; i++) {
+        $(`.loc${i + 1}`).html(exp.paraphraseArray[i].value)
+      }
+      $(".err").hide();
+
+    },
+    button: function () {
+      this.radio = $("input[name='paraphrase']:checked").val();
+      console.log(this.radio)
+      if (this.radio == "all") {
+        this.log_responses();
+        exp.go();
+      }
+      else {
+        $('.err').show();
+        this.log_responses();
+      }
+    },
+
+    log_responses: function () {
+      exp.data_trials.push({
+        "slide_number_in_experiment": exp.phase,
+        "tgrep_id": "example3",
+        "response": [this.radio, ""],
+      });
+    },
+  });
+
+  slides.example2 = slide({
+    name: "example2",
+
+    start: function () {
+      $(".err").hide();
+
+      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
+      var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where can I get coffee around here?"
+      contexthtml = contexthtml + entirehtml
+
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place...?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place...?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place...?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every place...?" + '</label>'
+
+      $(".context").html(contexthtml);
+
+      for (i = 0; i < 4; i++) {
+        $(`.loc${i + 1}`).html(exp.paraphraseArray[i].value)
+      }
+      $(".err").hide();
+
+    },
+    button: function () {
+      this.radio = $("input[name='paraphrase']:checked").val();
+      console.log(this.radio)
+      if (this.radio == "some" | this.radio == "a") {
+        this.log_responses();
+        exp.go();
+      }
+      else {
+        $('.err').show();
+        this.log_responses();
+      }
+    },
+
+    log_responses: function () {
+      exp.data_trials.push({
+        "slide_number_in_experiment": exp.phase,
+        "tgrep_id": "example2",
+        "response": [this.radio, ""],
+      });
+    },
+  });
+
+
+  slides.example3 = slide({
+    name: "example3",
+
+    start: function () {
       $('.err').hide();
 
       var contexthtml = "<b>Speaker #1</b>: The party last night was packed! And there was lots of drama. <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
-      var entirehtml = "Tell me everything! " + "<font color=#FF0000> " + "Who was there?"
+      var entirehtml = "Tell me everything! " + "<font color=#FF0000> " + "Who came to the party?"
       contexthtml = contexthtml + entirehtml
 
-      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person that was at the party?" + '</label>'
-      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person that was at the party?" + '</label>'
-      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person that was at the party?" + '</label>'
-      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "Who is every person that was at the party?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person...?" + '</label>'
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person...?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person...?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "Who is every person...?" + '</label>'
 
       $(".context").html(contexthtml);
 
@@ -107,110 +196,20 @@ function make_slides(f) {
   });
 
 
-  slides.example2 = slide({
-    name: "example2",
-
-    start: function () {
-      $(".err").hide();
-
-      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please?. <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
-      var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where do they sell coffee around here?"
-      contexthtml = contexthtml + entirehtml
-
-      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that they sell coffee?" + '</label>'
-      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that they sell coffee?" + '</label>'
-      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that they sell coffee?" + '</label>'
-      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every place that they sell coffee?" + '</label>'
-
-      $(".context").html(contexthtml);
-
-      for (i = 0; i < 4; i++) {
-        $(`.loc${i + 1}`).html(exp.paraphraseArray[i].value)
-      }
-      $(".err").hide();
-
-    },
-    button: function () {
-      this.radio = $("input[name='paraphrase']:checked").val();
-      console.log(this.radio)
-      if (this.radio == "some" | this.radio == "a") {
-        this.log_responses();
-        exp.go();
-      }
-      else {
-        $('.err').show();
-        this.log_responses();
-      }
-    },
-
-    log_responses: function () {
-      exp.data_trials.push({
-        "slide_number_in_experiment": exp.phase,
-        "tgrep_id": "example2",
-        "response": [this.radio, ""],
-      });
-    },
-  });
-
-  slides.example3 = slide({
-    name: "example3",
-
-    start: function () {
-      $(".err").hide();
-
-      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please?. <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
-      var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where do they sell coffee around here?"
-      contexthtml = contexthtml + entirehtml
-
-      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that they sell coffee?" + '</label>'
-      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that they sell coffee?" + '</label>'
-      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that they sell coffee?" + '</label>'
-      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every place that they sell coffee?" + '</label>'
-
-      $(".context").html(contexthtml);
-
-      for (i = 0; i < 4; i++) {
-        $(`.loc${i + 1}`).html(exp.paraphraseArray[i].value)
-      }
-      $(".err").hide();
-
-    },
-    button: function () {
-      this.radio = $("input[name='paraphrase']:checked").val();
-      console.log(this.radio)
-      if (this.radio == "some" | this.radio == "a") {
-        this.log_responses();
-        exp.go();
-      }
-      else {
-        $('.err').show();
-        this.log_responses();
-      }
-    },
-
-    log_responses: function () {
-      exp.data_trials.push({
-        "slide_number_in_experiment": exp.phase,
-        "tgrep_id": "example3",
-        "response": [this.radio, ""],
-      });
-    },
-  });
-
   slides.example4 = slide({
     name: "example4",
 
     start: function () {
       $(".err").hide();
 
-      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please?. <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
-      var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where do they sell coffee around here?"
+      var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
+      var entirehtml = "<font color=#FF0000> " + "How do I get to Central Park?"
       contexthtml = contexthtml + entirehtml
 
-      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the place that they sell coffee?" + '</label>'
-      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a place that they sell coffee?" + '</label>'
-      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some place that they sell coffee?" + '</label>'
-      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every place that they sell coffee?" + '</label>'
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "What is the way...?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "What is a way...?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "What is some way...?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "What is every way...?" + '</label>'
 
       $(".context").html(contexthtml);
 
@@ -222,7 +221,7 @@ function make_slides(f) {
     button: function () {
       this.radio = $("input[name='paraphrase']:checked").val();
       console.log(this.radio)
-      if (this.radio == "some" | this.radio == "a") {
+      if (this.radio == "some" | this.radio == "a" | this.radio == "the") {
         this.log_responses();
         exp.go();
       }
@@ -443,6 +442,8 @@ function init() {
     "i0",
     "example1",
     "example2",
+    "example3",
+    "example4",
     "startExp",
     "generateEntities", // This is where the test trials come in.
     //"priors",
