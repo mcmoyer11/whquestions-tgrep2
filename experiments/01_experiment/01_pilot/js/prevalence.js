@@ -62,11 +62,11 @@ function make_slides(f) {
 
     start: function () {
       $(".err").hide();
+      $("#str1").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>:  We need to promote this fundraiser as widely as possible.<br> <b>Speaker #2</b>: "
       var entirehtml = "<font color=#FF0000> " + "Who can help spread the word?"
       contexthtml = contexthtml + entirehtml
-
       exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person...?" + '</label>'
       exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person...?" + '</label>'
       exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person...?" + '</label>'
@@ -80,24 +80,28 @@ function make_slides(f) {
       $(".err").hide();
 
     },
-    button: function () {
-      this.radio = $("input[name='paraphrase']:checked").val();
-      // console.log(this.radio)
-      if (this.radio == "all") {
-        this.log_responses();
-        exp.go();
-      }
-      else {
-        $('.err').show();
-        this.log_responses();
-      }
-    },
+      button: function () {
+        this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+        this.strange = document.getElementById("str1").checked;
+
+        if (this.radio == "every") {
+          this.log_responses();
+          $(this.radio).prop('checked', false);
+          this.strange = false;
+          //this.checked = false;
+          exp.go() //go to the next slide
+        }
+        else {
+          $('.err').show();
+          this.log_responses();
+        }
+      },
 
     log_responses: function () {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
-        "tgrep_id": "example3",
-        "response": [this.radio, ""],
+        "tgrep_id": "example1",
+        "response": [this.radio, this.strange],
         "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
@@ -108,6 +112,7 @@ function make_slides(f) {
 
     start: function () {
       $(".err").hide();
+      $("#str2").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
       var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where can I get coffee around here?"
@@ -127,11 +132,15 @@ function make_slides(f) {
 
     },
     button: function () {
-      this.radio = $("input[name='paraphrase']:checked").val();
-      // console.log(this.radio)
-      if (this.radio == "some" | this.radio == "a") {
+      this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+      this.strange = document.getElementById("str2").checked;
+
+      if (this.radio == "a" | this.radio == "some") {
         this.log_responses();
-        exp.go();
+        $(this.radio).prop('checked', false);
+        this.strange = false;
+        //this.checked = false;
+        exp.go() //go to the next slide
       }
       else {
         $('.err').show();
@@ -139,22 +148,23 @@ function make_slides(f) {
       }
     },
 
+
     log_responses: function () {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": "example2",
-        "response": [this.radio, ""],
+        "response": [this.radio, this.strange],
         "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
   });
-
 
   slides.example3 = slide({
     name: "example3",
 
     start: function () {
       $('.err').hide();
+      $("#str3").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: The party last night was packed! And there was lots of drama. <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
       var entirehtml = "Tell me everything! " + "<font color=#FF0000> " + "Who came to the party?"
@@ -176,11 +186,15 @@ function make_slides(f) {
     },
 
     button: function () {
-      this.radio = $("input[name='paraphrase']:checked").val();
-      // console.log(this.radio)
-      if (this.radio == "all") {
+      this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+      this.strange = document.getElementById("str3").checked;
+
+      if (this.radio == "every") {
         this.log_responses();
-        exp.go();
+        $(this.radio).prop('checked', false);
+        this.strange = false;
+        //this.checked = false;
+        exp.go() //go to the next slide
       }
       else {
         $('.err').show();
@@ -192,18 +206,18 @@ function make_slides(f) {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": "example1",
-        "response": [this.radio, ""],
+        "response": [this.radio, this.strange],
         "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
   });
-
 
   slides.example4 = slide({
     name: "example4",
 
     start: function () {
       $(".err").hide();
+      $("#str4").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
       var entirehtml = "<font color=#FF0000> " + "How do I get to Central Park?"
@@ -222,15 +236,15 @@ function make_slides(f) {
       $(".err").hide();
     },
     button: function () {
-      this.radio = $("input[name='paraphrase']:checked").val();
-      // console.log(this.radio)
+      this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+      this.strange = document.getElementById("str4").checked;
+
       if (this.radio == "some" | this.radio == "a" | this.radio == "the") {
         this.log_responses();
-        exp.go();
-        // $(this.radio).prop('checked', false);
-        // exp.checkbox.checked = false;
-        // this.checked = false;
-        // _stream.apply(this); //go to the next element
+        $(this.radio).prop('checked', false);
+        this.strange = false;
+        //this.checked = false;
+        exp.go() //go to the next slide
       }
       else {
         $('.err').show();
@@ -238,26 +252,11 @@ function make_slides(f) {
       }
     },
 
-    // button: function () {
-    //   this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
-    //   if (this.radio) {
-    //     this.log_responses();
-    //     $(this.radio).prop('checked', false);
-    //     exp.checkbox.checked = false;
-    //     //this.checked = false;
-    //     _stream.apply(this); //go to the next element
-    //   }
-    //   else {
-    //     $('.err').show();
-    //     //this.log_responses();
-    //   }
-    // },
-
     log_responses: function () {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": "example4",
-        "response": [this.radio, ""], // exp.checkbox.checked],
+        "response": [this.radio, this.strange],
         "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });
     },
@@ -283,16 +282,12 @@ function make_slides(f) {
   slides.generateEntities = slide({
     name: "generateEntities",
     present: exp.stimuli, // This the array generated from stimuli.js
-
     present_handle: function (stim) { // this function is called bascially on exp.stim (more or less)
-
-      $("input[name='number']:checked").prop('checked', false);
-
-      this.counter = 1;
+      $(".err").hide();
+      $("#str").prop("checked", false);
 
       var generic = stim;
       this.generic = generic;
-      this.response = response = false;
 
       // var contexthtml = generic.PreceedingContext;
       var contexthtml = this.format_context(generic.PreceedingContext);
@@ -310,17 +305,7 @@ function make_slides(f) {
       }
 
       $(".context").html(contexthtml);
-
-      $(".err").hide();
-
-      this.counter++;
-
-      var checkbox = document.createElement('input');
-      checkbox.setAttribute('align', 'center');
-      exp.checkbox = document.getElementById("strange");
-
-      $(".err").hide();
-
+ 
     },
 
     // speakers 1 and 2 
@@ -365,16 +350,19 @@ function make_slides(f) {
 
     button: function () {
       this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+      this.strange = document.getElementById("str").checked;
+      // this.random = document.getElementById("random").checked;
       if (this.radio) {
+        // this.checked = false;
+        console.log("BUTTON: this.strange: ", this.strange)
+        // console.log("BUTTON: this.random: ", this.random)
         this.log_responses();
         $(this.radio).prop('checked', false);
-        exp.checkbox.checked = false;
-        //this.checked = false;
+        this.strange = false;
         _stream.apply(this); //go to the next element
       }
       else {
         $('.err').show();
-        //this.log_responses();
       }
     },
 
@@ -382,9 +370,8 @@ function make_slides(f) {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
         "tgrep_id": this.generic.TGrepID,
-        "response": [this.radio, exp.checkbox.checked],
+        "response": [this.radio, this.strange],
         "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
-        // "sentence": this.generic.BestResponse,
       });
     },
 
