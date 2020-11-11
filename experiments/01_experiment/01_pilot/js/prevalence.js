@@ -61,7 +61,8 @@ function make_slides(f) {
     name: "example1",
 
     start: function () {
-      $(".err").hide();
+      $(".err_answer").hide();
+      $(".err_selection").hide();
       $("#str1").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>:  We need to promote this fundraiser as widely as possible.<br> <b>Speaker #2</b>: "
@@ -77,22 +78,22 @@ function make_slides(f) {
       for (i = 0; i < 4; i++) {
         $(`.loc${i + 1}`).html(exp.paraphraseArray[i].value)
       }
-      $(".err").hide();
 
     },
       button: function () {
         this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
         this.strange = document.getElementById("str1").checked;
 
-        if (this.radio == "every") {
+        if (!this.radio) {
+          $(".err_selection").show();
+        } else if (this.radio == "all") {
           this.log_responses();
           $(this.radio).prop('checked', false);
           this.strange = false;
-          //this.checked = false;
           exp.go() //go to the next slide
-        }
-        else {
-          $('.err').show();
+        } else {
+          $(".err_selection").hide();
+          $('.err_answer').show();
           this.log_responses();
         }
       },
@@ -111,7 +112,8 @@ function make_slides(f) {
     name: "example2",
 
     start: function () {
-      $(".err").hide();
+      $(".err_selection").hide();
+      $(".err_answer").hide();
       $("#str2").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
@@ -135,15 +137,16 @@ function make_slides(f) {
       this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
       this.strange = document.getElementById("str2").checked;
 
-      if (this.radio == "a" | this.radio == "some") {
+      if (!this.radio) {
+        $(".err_selection").show();
+      } else if (this.radio == "a" | this.radio == "some") {
         this.log_responses();
         $(this.radio).prop('checked', false);
         this.strange = false;
-        //this.checked = false;
         exp.go() //go to the next slide
-      }
-      else {
-        $('.err').show();
+      } else {
+        $(".err_selection").hide();
+        $('.err_answer').show();
         this.log_responses();
       }
     },
@@ -163,7 +166,8 @@ function make_slides(f) {
     name: "example3",
 
     start: function () {
-      $('.err').hide();
+      $('.err_selection').hide();
+      $('.err_answer').hide();
       $("#str3").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: The party last night was packed! And there was lots of drama. <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
@@ -189,15 +193,16 @@ function make_slides(f) {
       this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
       this.strange = document.getElementById("str3").checked;
 
-      if (this.radio == "every") {
+      if (!this.radio) {
+        $(".err_selection").show();
+      } else if (this.radio == "all") {
         this.log_responses();
         $(this.radio).prop('checked', false);
         this.strange = false;
-        //this.checked = false;
         exp.go() //go to the next slide
-      }
-      else {
-        $('.err').show();
+      } else {
+        $(".err_selection").hide();
+        $('.err_answer').show();
         this.log_responses();
       }
     },
@@ -216,7 +221,8 @@ function make_slides(f) {
     name: "example4",
 
     start: function () {
-      $(".err").hide();
+      $(".err_selection").hide();
+      $(".err_answer").hide();
       $("#str4").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
@@ -239,15 +245,16 @@ function make_slides(f) {
       this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
       this.strange = document.getElementById("str4").checked;
 
-      if (this.radio == "some" | this.radio == "a" | this.radio == "the") {
+      if (!this.radio) {
+        $(".err_selection").show();
+      } else if (this.radio == "a" | this.radio == "some" | this.radio == "the") {
         this.log_responses();
         $(this.radio).prop('checked', false);
         this.strange = false;
-        //this.checked = false;
         exp.go() //go to the next slide
-      }
-      else {
-        $('.err').show();
+      } else {
+        $(".err_selection").hide();
+        $('.err_answer').show();
         this.log_responses();
       }
     },
