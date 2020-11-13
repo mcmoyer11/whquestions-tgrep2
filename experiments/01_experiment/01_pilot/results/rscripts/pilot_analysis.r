@@ -133,16 +133,16 @@ test = d %>%
   mutate(response = as.factor(response), is_strange = as.factor(is_strange))
 
 agr = test %>%
-  group_by(tgrep_id, response) %>%
+  group_by(Sentence, response) %>%
   summarize(count_response = n()) %>%
   group_by(tgrep_id) %>%
   mutate(prop = count_response/sum(count_response))
-
-View(agr)
-ggplot(agr,aes(x=tgrep_id, y=prop, fill=response)) +
-  geom_bar(stat="identity") +
-  ggsave("../graphs/pilot_test.pdf")
-  # theme(axis.text.x = element_text(angle = 60))
+  
+ggplot(agr,aes(x=response, y=prop)) +
+  geom_bar(position="dodge",stat="identity") +
+  facet_wrap(~tgrep_id) +
+  ggsave("../graphs/pilot_test_faceted.pdf") +
+  theme(axis.text.x = element_text(angle = 60))
 
 View(d_contexts)
 
