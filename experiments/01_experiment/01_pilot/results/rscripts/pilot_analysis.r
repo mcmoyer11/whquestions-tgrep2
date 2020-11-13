@@ -37,32 +37,39 @@ nrow(corp_match)
 dm <- merge(d1, corp_match, by="tgrep_id")
 nrow(dm)
 # left-join does not
-d <- left_join(d1, corp_match, by="tgrep_id")
-nrow(d)
+df <- left_join(d1, corp_match, by="tgrep_id")
+df$time_in_minutes = as.numeric(as.character(df$time_in_minutes))
+write.csv(df,"df_nested.csv")
 
-str(d)
+head(df)
+# until i can find a way to unnest, save this as csv and unnest in python,
+# then read the csv back in here
 
-d$time_in_minutes = as.numeric(as.character(d$time_in_minutes))
-
+############################################################
+# trying to UNNEST
 t = d$response[[1]]
 View(t)
 library(purr)
 test = d %>% 
-  mutate(d["strange"] = unnest(response))
+  mutate(strange = unnest(., response))
+
+test = d %>% split(d$response)
 
 str(test)
 unnest(d,response)
 
-
-str(d)
-
+# this is the way to do it:
+separate(response,into=c("response_val","response_goodsentence"),sep="\', ") %>% 
+d$response_goodsentence = as.factor(as.character(gsub('[{u\'strance_sentence\': ','',sapply(strsplit(as.character(d$response),", u\'sliderval\': "), "[", 1),fixed=T)))
+d$response_val = as.numeric(as.character(gsub('}]','',sapply(strsplit(as.character(d$response),", u\'sliderval\': "), "[", 2),fixed=T)))
 
 View(test)
 test = cbind(d[1],t(data.frame(d$strange)))
 
-
-
-
+# ############################################################
+# read the csv back in
+d = read.csv("../total_unnested.csv", header = TRUE)
+head(d)
 # look at comments
 unique(d$subject_information.comments)
 
@@ -96,7 +103,34 @@ ggplot(d, aes(x=time_in_minutes)) +
 
 # Practice trials
 practice = d %>%
-  filter(tgrep_id %in% c("example1", "example2", "example3", "example4"))
+  filter(tgrep_id %in% c("example1", "example2", "example3", "example4")) %>%
+  mutate(response = as.factor(response), is_strange = as.factor(is_strange))
+
+# what are the subjects doing
+agr = practice %>%
+  group_by(tgrep_id, as.factor(response)) %>%
+  mutate(count = n()) %>%
+  
+  ggplot(aes(x=tgrep_id, fill=response)) +
+  geom_histogram(stat="count")
+  # # summarize(count_res = n()) %>%
+  # group_by(tgrep_id) %>%
+  # summarize(count_item = n())
+  # ungroup() %>%
+  # summarize(prop = count_res/count_item)
+
+ggplot(agr,aes(x=response, y=count, fill=tgrep_id)) +
+  geom_bar()
+
+View(agr)
 
 
-ggplot()
+# test
+test = d %>%
+  filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
+  mutate(response = as.factor(response), is_strange = as.factor(is_strange))
+str(test)
+
+agr = test %>%
+  group_by(tgrep_id) %>%
+  summarize(mean = mean(response))
