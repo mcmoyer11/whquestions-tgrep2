@@ -109,6 +109,7 @@ practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4")) %>%
   mutate(response = as.factor(response), is_strange = as.factor(is_strange))
 
+View(practice)
 # what are the subjects doing
 
 # something is wrong with the labels..it looks like example3 didn't get labeled properly
@@ -116,15 +117,17 @@ practice = d %>%
 
 # these numbers may be off because we tracked participants' first responses
 agr = practice %>%
-  group_by(tgrep_id, response) %>%
+  group_by(slide_number_in_experiment, response) %>%
   summarize(count_response = n()) %>%
-  group_by(tgrep_id) %>%
+  group_by(slide_number_in_experiment) %>%
   mutate(prop = count_response/sum(count_response))
 View(agr)
 
-ggplot(agr,aes(x=tgrep_id, y=prop, fill=response)) +
-  geom_bar(stat="identity") +
-  theme(axis.text.x = element_text(angle = 90))
+ggplot(agr,aes(x=response, y=prop, fill=response)) +
+  geom_bar(position="dodge",stat="identity") +
+  facet_wrap(~slide_number_in_experiment) +
+  ggsave("../graphs/pilot_practice_faceted_Sentence.pdf")
+  # theme(axis.text.x = element_text(angle = 90))
 
 
 # test
@@ -133,26 +136,40 @@ test = d %>%
   mutate(response = as.factor(response), is_strange = as.factor(is_strange))
 
 agr = test %>%
-  group_by(Sentence, response) %>%
+  group_by(workerid,tgrep_id, response) %>%
   summarize(count_response = n()) %>%
   group_by(tgrep_id) %>%
-  mutate(prop = count_response/sum(count_response))
+  mutate(prop_response = count_response/sum(count_response))
   
-ggplot(agr,aes(x=response, y=prop)) +
+ggplot(agr,aes(x=response, y=prop, fill = response)) +
   geom_bar(position="dodge",stat="identity") +
-  facet_wrap(~tgrep_id) +
-  ggsave("../graphs/pilot_test_faceted.pdf") +
-  theme(axis.text.x = element_text(angle = 60))
+  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(40))) +
+  ggsave("../graphs/pilot_test_faceted_Sentence.pdf")
+  # theme(axis.text.x = element_text(angle = 60))
 
 View(d_contexts)
 
 agr_strange = test %>%
-  group_by(tgrep_id, is_strange) %>%
+  group_by(workerid,tgrep_id, is_strange) %>%
   summarize(count_is_strange = n()) %>%
   group_by(tgrep_id) %>%
-  mutate(prop = count_is_strange/sum(count_is_strange))
+  mutate(prop_strange = count_is_strange/sum(count_is_strange))
 View(agr_strange)
 ggplot(agr_strange,aes(x=tgrep_id, y=prop, fill=is_strange)) +
   geom_bar(stat="identity")
 # theme(axis.text.x = element_text(angle = 60))
 
+
+
+both_vars = merge(agr_strange,agr, by=c("workerid","tgrep_id"))
+View(both_vars)
+
+ggplot(both_vars, aes(x=prop_response,y=prop_strange)) +
+  # geom_density(alpha=.5) +
+  facet_wrap(~workerid,scales="free_y")
+
+# subject variablility
+ggplot(test, aes(x=response,fill=response)) +
+  geom_histogram(stat="count") +
+  facet_wrap(~workerid) +
+  ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
