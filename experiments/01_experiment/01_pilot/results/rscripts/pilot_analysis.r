@@ -138,9 +138,21 @@ agr = test %>%
   group_by(tgrep_id) %>%
   mutate(prop = count_response/sum(count_response))
 
-
+View(agr)
 ggplot(agr,aes(x=tgrep_id, y=prop, fill=response)) +
   geom_bar(stat="identity") +
-  theme(axis.text.x = element_text(angle = 60))
+  ggsave("../graphs/pilot_test.pdf")
+  # theme(axis.text.x = element_text(angle = 60))
 
 View(d_contexts)
+
+agr_strange = test %>%
+  group_by(tgrep_id, is_strange) %>%
+  summarize(count_is_strange = n()) %>%
+  group_by(tgrep_id) %>%
+  mutate(prop = count_is_strange/sum(count_is_strange))
+View(agr_strange)
+ggplot(agr_strange,aes(x=tgrep_id, y=prop, fill=is_strange)) +
+  geom_bar(stat="identity")
+# theme(axis.text.x = element_text(angle = 60))
+
