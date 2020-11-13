@@ -136,14 +136,14 @@ test = d %>%
   mutate(response = as.factor(response), is_strange = as.factor(is_strange))
 
 agr = test %>%
-  group_by(workerid,tgrep_id, response) %>%
+  group_by(Sentence, response) %>%
   summarize(count_response = n()) %>%
-  group_by(tgrep_id) %>%
+  group_by(Sentence) %>%
   mutate(prop_response = count_response/sum(count_response))
   
-ggplot(agr,aes(x=response, y=prop, fill = response)) +
+ggplot(agr,aes(x=response, y=prop_response, fill = response)) +
   geom_bar(position="dodge",stat="identity") +
-  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(40))) +
+  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20))) +
   ggsave("../graphs/pilot_test_faceted_Sentence.pdf")
   # theme(axis.text.x = element_text(angle = 60))
 
