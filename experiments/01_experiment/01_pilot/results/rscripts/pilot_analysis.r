@@ -69,7 +69,10 @@ test = cbind(d[1],t(data.frame(d$strange)))
 # ############################################################
 # read the csv back in
 d = read.csv("../total_unnested.csv", header = TRUE)
-head(d)
+
+# read in the contexts too:
+d_contexts = read.csv("../../../../clean_corpus/pilot1.txt",sep="\t",header=T,quote="")
+head(d_contexts)
 # look at comments
 unique(d$subject_information.comments)
 
@@ -107,30 +110,37 @@ practice = d %>%
   mutate(response = as.factor(response), is_strange = as.factor(is_strange))
 
 # what are the subjects doing
+
+# something is wrong with the labels..it looks like example3 didn't get labeled properly
+# ideally, we will want to look at the first attempts
+
+# these numbers may be off because we tracked participants' first responses
 agr = practice %>%
-  group_by(tgrep_id, as.factor(response)) %>%
-  mutate(count = n()) %>%
-  
-  ggplot(aes(x=tgrep_id, fill=response)) +
-  geom_histogram(stat="count")
-  # # summarize(count_res = n()) %>%
-  # group_by(tgrep_id) %>%
-  # summarize(count_item = n())
-  # ungroup() %>%
-  # summarize(prop = count_res/count_item)
-
-ggplot(agr,aes(x=response, y=count, fill=tgrep_id)) +
-  geom_bar()
-
+  group_by(tgrep_id, response) %>%
+  summarize(count_response = n()) %>%
+  group_by(tgrep_id) %>%
+  mutate(prop = count_response/sum(count_response))
 View(agr)
+
+ggplot(agr,aes(x=tgrep_id, y=prop, fill=response)) +
+  geom_bar(stat="identity") +
+  theme(axis.text.x = element_text(angle = 90))
 
 
 # test
 test = d %>%
   filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
   mutate(response = as.factor(response), is_strange = as.factor(is_strange))
-str(test)
 
 agr = test %>%
+  group_by(tgrep_id, response) %>%
+  summarize(count_response = n()) %>%
   group_by(tgrep_id) %>%
-  summarize(mean = mean(response))
+  mutate(prop = count_response/sum(count_response))
+
+
+ggplot(agr,aes(x=tgrep_id, y=prop, fill=response)) +
+  geom_bar(stat="identity") +
+  theme(axis.text.x = element_text(angle = 60))
+
+View(d_contexts)
