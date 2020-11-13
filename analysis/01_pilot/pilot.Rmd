@@ -1,0 +1,35 @@
+---
+title: "Analysis of questions: pilot e01"
+author: "mcmoyer"
+date: "November 11, 2020"
+output: html_document
+---
+  
+## Step 1: select stimuli for experiment
+  
+Set your path here and load some packages that are necessary for visualization 
+(ggplot), tidy data handling (tidyr and dplyr), and mixed effects modeling (lme4:
+                                                                                                                                                               
+```{r}  
+setwd("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/01_pilot/")
+source("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/helpers.R")
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(lme4)
+# theme_set(theme_bw())
+```
+
+Read the database into R and explore it.
+```{r}
+corp = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+d = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/01_experiment/01_pilot/results/pilot_e01-merged.csv")
+
+# Load in the .csv with the contexts removed
+# d = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/swbd_nocntxt.csv",header=T)
+View(corp)
+# old
+nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
+head(d)
+str(d)
+summary(d)
