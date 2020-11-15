@@ -84,7 +84,6 @@
     <p id="instruct-text" align="left">You will read short conversations. These are transcriptions of real conversations
       real people had over the phone. The last sentence of each conversation will be marked in red. <strong>Your task is to answer a question about the red sentence to the best
         of your ability. </strong><br><br>The HIT will take approximately 10 minutes. Let's start with two examples!</p>
-    <!--     <p id="instruct-text" align="left">You will read short conversations. These are transcriptions of real conversations that real people had over the phone. The last sentence of each conversation will be marked in red and you will see a blue sentence below the conversation. <strong>Your task is to answer a question about the red sentence to the best of your ability.</strong><br><br>The HIT will take approximately 10 minutes. Let's start with two examples!</p> -->
     <button id="start_button" type="button">Start Experiment</button>
     <p id="instruct-text" align="left"><i><small><small><strong><br><br><br>LEGAL INFORMATION</strong>:<br>We invite
             you to participate in a research study on language production and comprehension. Your experimenter will
@@ -106,6 +105,81 @@
             proceed to the study tasks.<br></small></small></i></p>
   </div>
 
+  <div class="slide" id="slider">
+    <h3>Slider Practice Trial 1</h3>
+    <p class="context" style="text-align: left;"></p>
+    <div id="intruction1" class="instruction"><i>Based on the question in red, which of the following does the speaker
+        want to know?</i></div>
+    <div id="prompt">
+      <!-- <p>
+        <i>Based on the question in red, which of the following does the speaker want to know?</i>
+      </p> -->
+      <p class="err">
+        Please make sure that the four ratings sum to 100!
+      </p>
+      <table>
+        <tr>
+          <td>
+            <strong><span class="loc1" id="loc1">{}</span></strong>
+          </td>
+          <td>
+            <div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+              <span id="slider_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input type="text" style="width: 30px; float: left; text-align: center" id="slider_1_val" value="0" disabled="disabled">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><span class="loc2" id="loc2">{}</span></strong>
+          </td>
+          <td>
+            <div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+              <span id="slider_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input type="text" style="width: 30px; float: left; text-align: center" id="slider_2_val" value="0" disabled="disabled">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><span class="loc3" id="loc3">{}</span></strong>
+          </td>
+          <td>
+            <div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+              <span id="slider_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input type="text" style="width: 30px; float: left; text-align: center" id="slider_3_val" value="0" disabled="disabled">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><span class="loc4" id="loc4">{}</span></strong>
+          </td>
+          <td>
+            <div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+              <span id="slider_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input type="text" style="width: 30px; float: left; text-align: center" id="slider_4_val" value="0" disabled="disabled">
+            </div>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <div id="intruction1" class="instruction">
+        <font color=#0000FF>Read these in your head as, "Who is <b>a</b> person that can help spread the word?",
+          "Who is <b>the</b> person that can help spread the word?", "Who is <b>some</b> person that can help spread the
+          word?", and
+          "Who is <b>every</b> person that can help spread the word?" </font>
+      </div>
+      <br><br>
+      <font color=#424242> None of the above: <input type="checkbox" id="str1"></font>
+      <br><br>
+      <!-- No forced choice -->
+      <!-- <div class="err_selection">
+        <p2>Please make a selection before clicking 'Continue'</p2>
+      </div> -->
+      <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+      <div class="err_answer">
+        <p2>In your rating, consider whether the question in red expresses the same thing as one of the questions below.
+          In this example, the speaker wants to know about all the people.</p2>
+      </div>
+    </div>
+  </div><input type="button" onclick="_s.button()" class="button" value="Next">
 
   <div class="slide" id="example1">
     <h3>Practice Trial 1</h3>
