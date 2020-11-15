@@ -65,8 +65,8 @@ function make_slides(f) {
       $(".err_selection").hide();
       $("#str1").prop("checked", false);
 
-      var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible.<br> <b>Speaker #2 </b>: "
-      var entirehtml = "<font color=#FF0000> " + "Who can help spread the word?"
+      var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Jane, can you get me a list of the people who have agreed to help? <br> <b>Speaker #2</b>: Sure, I have it here. <br> <b>Speaker #1</b>: "
+      var entirehtml = "Great." "<font color=#FF0000> " + "Who can help spread the word?"
       contexthtml = contexthtml + entirehtml
       exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person...?" + '</label>'
       exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person...?" + '</label>'
