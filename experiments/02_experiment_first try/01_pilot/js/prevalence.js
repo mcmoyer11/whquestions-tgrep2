@@ -57,6 +57,124 @@ function make_slides(f) {
     }
   });
 
+  slides.slider = slide({
+    name: "slider",
+    // present: exp.trials,
+    // present_handle: function(stim) { //for the test trials
+    start: function () {
+      $(".err_answer").hide();
+      // $(".err_selection").hide(); // uncomment to make forced-choice and show error
+      $("#str1").prop("checked", false);
+      this.stim = stim;
+
+
+      var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Jane, can you get me a list of the people who have agreed to help? <br> <b>Speaker #2</b>: Sure, I have it here. <br> <b>Speaker #1</b>: "
+      var entirehtml = "Great." + "<font color=#FF0000> " + "Who can help spread the word?"
+      contexthtml = contexthtml + entirehtml
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person...?" + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person...?" + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + "Who is some person...?" + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + "Who is every person...?" + '</label>'
+
+      $(".context").html(contexthtml);
+
+      // presentation of sliders
+      // $("#sent_1").text(stim["sentences"][0][1]);
+			// $("#sent_2").text(stim["sentences"][1][1]);
+      // $("#sent_3").text(stim["sentences"][2][1]);
+
+      for (i = 0; i < 4; i++) {
+        $(`.loc${i + 1}`).html(exp.paraphraseArray[i].value)
+      }
+			
+			
+			var callback = function () {
+				
+				var total = ($("#slider_1").slider("option", "value") +
+           $("#slider_2").slider("option", "value") + 
+           $("#slider_3").slider("option", "value") + 
+           $("#slider_4").slider("option", "value"));
+				
+				
+				if (total > 1.0) {
+					var other_total = total - $(this).slider("option", "value");
+					$(this).slider("option", "value", 1 - other_total);
+				}
+				
+				var perc = Math.round($(this).slider("option", "value") * 100);
+				$("#" + $(this).attr("id") + "_val").val(perc);
+				
+			}
+			utils.make_slider("#slider_1", callback);			
+			utils.make_slider("#slider_2", callback);
+			utils.make_slider("#slider_3", callback);
+			utils.make_slider("#slider_4", callback);
+			
+			$("#trial").fadeIn(700);
+			
+			
+    //  $(".response-buttons").attr("disabled", "disabled");
+      //$("#prompt").hide();
+      //$("#audio-player").attr("autoplay", "true");
+
+    },
+    button : function(response) {
+      this.response = response;
+			// make sure that the sum of all the values are 100
+	    var total = ($("#slider_1").slider("option", "value") +
+          $("#slider_2").slider("option", "value") + 
+          $("#slider_3").slider("option", "value") + 
+          $("#slider_4").slider("option", "value"));
+		
+			if (total < .99) {
+	      $(".err").show();
+			} else {
+      	this.log_responses();
+				var t = this;
+				$("#trial").fadeOut(300, function() {
+					window.setTimeout(function() {
+						_stream.apply(t);
+					}, 700);
+				});
+		}
+      
+    },
+
+    log_responses : function() {
+      for (var i = 0; i < 3; i++) {
+        exp.data_trials.push({
+          "slide_number_in_experiment": exp.phase,
+          "tgrep_id": "slider",
+          // this one has to change
+          // "response": [this.radio, this.strange],
+          "rating" : $("#slider_" + (i+1)).slider("option", "value"),
+          "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
+          // "expressions" : this.stim.expressions,
+          // "order" : this.stim.order,
+          // "sentence": this.stim.sentences[i][1],
+          // "modal" : this.stim.sentences[i][0],
+          // "rating" : $("#slider_" + (i+1)).slider("option", "value"),
+          // "percentage_blue": this.stim.percentage_blue,
+          // "color": this.stim.color
+        });
+      }
+
+      exp.data_trials.push({
+        "slide_number_in_experiment": exp.phase,
+        "tgrep_id": "example1",
+        "response": [this.radio, this.strange],
+        "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
+        // "expressions" : this.stim.expressions,
+        // "order" : this.stim.order,
+        // "sentence": "something else",
+        // "modal" : "other",
+        // "rating" : $("#slider_4").slider("option", "value"),
+        // "percentage_blue": this.stim.percentage_blue,
+        // "color": this.stim.color
+      });
+    }
+  });
+
   slides.example1 = slide({
     name: "example1",
 
@@ -65,8 +183,8 @@ function make_slides(f) {
       $(".err_selection").hide();
       $("#str1").prop("checked", false);
 
-      var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible.<br> <b>Speaker #2 </b>: "
-      var entirehtml = "<font color=#FF0000> " + "Who can help spread the word?"
+      var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Jane, can you get me a list of the people who have agreed to help? <br> <b>Speaker #2</b>: Sure, I have it here. <br> <b>Speaker #1</b>: "
+      var entirehtml = "Great." "<font color=#FF0000> " + "Who can help spread the word?"
       contexthtml = contexthtml + entirehtml
       exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + "Who is the person...?" + '</label>'
       exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + "Who is a person...?" + '</label>'
@@ -80,23 +198,23 @@ function make_slides(f) {
       }
 
     },
-    button: function () {
-      this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
-      this.strange = document.getElementById("str1").checked;
+      button: function () {
+        this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+        this.strange = document.getElementById("str1").checked;
 
-      if (!this.radio) {
-        $(".err_selection").show();
-      } else if (this.radio == "all") {
-        this.log_responses();
-        $(this.radio).prop('checked', false);
-        this.strange = false;
-        exp.go() //go to the next slide
-      } else {
-        $(".err_selection").hide();
-        $('.err_answer').show();
-        this.log_responses();
-      }
-    },
+        if (!this.radio) {
+          $(".err_selection").show();
+        } else if (this.radio == "all") {
+          this.log_responses();
+          $(this.radio).prop('checked', false);
+          this.strange = false;
+          exp.go() //go to the next slide
+        } else {
+          $(".err_selection").hide();
+          $('.err_answer').show();
+          this.log_responses();
+        }
+      },
 
     log_responses: function () {
       exp.data_trials.push({
@@ -292,7 +410,7 @@ function make_slides(f) {
     present_handle: function (stim) { // this function is called bascially on exp.stim (more or less)
       $(".err").hide();
       $("#str").prop("checked", false);
-      
+
       var generic = stim;
       this.generic = generic;
 
@@ -302,42 +420,17 @@ function make_slides(f) {
       contexthtml = contexthtml + entirehtml
 
       // This is where the dependent variable is
-      exp.theParaphrase.value = generic.TheResponse
-      exp.aParaphrase.value = generic.AResponse
-      exp.someParaphrase.value = generic.SomeResponse
-      exp.allParaphrase.value = generic.AllResponse
+      exp.theParaphrase.value = '<label><input type="radio" name="paraphrase" value="the"/>' + generic.TheResponse + '</label>'
+      exp.aParaphrase.value = '<label><input type="radio" name="paraphrase" value="a"/>' + generic.AResponse + '</label>'
+      exp.someParaphrase.value = '<label><input type="radio" name="paraphrase" value="some"/>' + generic.SomeResponse + '</label>'
+      exp.allParaphrase.value = '<label><input type="radio" name="paraphrase" value="all"/>' + generic.AllResponse + '</label>'
 
       for (i = 0; i < 4; i++) {
-        $(`#sent_${i + 1}`).text(exp.paraphraseArray[i].value)
+        $(`.loc${i + 1}`).html(exp.paraphraseArray[i].value)
       }
-
-      var callback = function () {
-        var total = ($("#slider_1").slider("option", "value") +
-          $("#slider_2").slider("option", "value") +
-          $("#slider_3").slider("option", "value") +
-          $("#slider_4").slider("option", "value"));
-
-        if (total > 1.0) {
-          var other_total = total - $(this).slider("option", "value");
-          $(this).slider("option", "value", 1 - other_total);
-        }
-
-        var perc = Math.round($(this).slider("option", "value") * 100);
-        $("#" + $(this).attr("id") + "_val").val(perc);
-
-      }
-      utils.make_slider("#slider_1", callback);
-      utils.make_slider("#slider_2", callback);
-      utils.make_slider("#slider_3", callback);
-      utils.make_slider("#slider_4", callback);
-
-      for (i=0; i<4; i++){
-        $("#slider_" + (i+1)).slider("option", "value",0)
-      }
-
-      //$("#trial").fadeIn(700);
 
       $(".context").html(contexthtml);
+ 
     },
 
     // speakers 1 and 2 
@@ -381,54 +474,33 @@ function make_slides(f) {
     },
 
     button: function () {
-      // this.response = response;
-      console.log("clicked button")
-
-      var total = ($("#slider_1").slider("option", "value") +
-        $("#slider_2").slider("option", "value") +
-        $("#slider_3").slider("option", "value") +
-        $("#slider_4").slider("option", "value"));
-      
-      console.log("total: ", total)
-
-      if (total < .99) {
-        $(".err").show();
-      } else {
+      this.radio = $("input[name='paraphrase']:checked").val(); // take the value of the paraphrase-named button that's checked
+      this.strange = document.getElementById("str").checked;
+      // this.random = document.getElementById("random").checked;
+      if (this.radio) {
+        // this.checked = false;
+        console.log("BUTTON: this.strange: ", this.strange)
+        // console.log("BUTTON: this.random: ", this.random)
         this.log_responses();
-        _stream.apply(this)
-        // var t = this;
-        // $("#trial").fadeOut(300, function () {
-        //   window.setTimeout(function () {
-        //     _stream.apply(t);
-        //   }, 700);
-        // });
+        $(this.radio).prop('checked', false);
+        this.strange = false;
+        _stream.apply(this); //go to the next element
+      }
+      else {
+        $('.err').show();
       }
     },
 
-    log_responses : function() {
-      for (var i = 0; i < 4; i++) {
-        exp.data_trials.push({
-          "slide_number_in_experiment": exp.phase,
-          "tgrep_id": this.generic.TGrepID,
-          "paraphrase": exp.paraphraseArray[i].name,
-          "rating" : $("#slider_" + (i+1)).slider("option", "value"),
-          "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
-        });
-      }
-    }
+    log_responses: function () {
+      exp.data_trials.push({
+        "slide_number_in_experiment": exp.phase,
+        "tgrep_id": this.generic.TGrepID,
+        "response": [this.radio, this.strange],
+        "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
+      });
+    },
+
   });
-
-
-  //   log_responses: function () {
-  //     exp.data_trials.push({
-  //       "slide_number_in_experiment": exp.phase,
-  //       "tgrep_id": this.generic.TGrepID,
-  //       "response": [this.response, this.strange],
-  //       "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
-  //     });
-  //   },
-
-  // });
 
   slides.subj_info = slide({
     name: "subj_info",
@@ -504,12 +576,13 @@ function init() {
   exp.structure = [
     "bot",
     "i0",
-    "example1",
-    "example2",
-    "example3",
-    "example4",
+    "slider",
+    // "example1",
+    // "example2",
+    // "example3",
+    // "example4",
     "startExp",
-    "generateEntities", // This is where the test trials come in.
+    // "generateEntities", // This is where the test trials come in.
     //"priors",
     "subj_info",
     "thanks"
@@ -536,4 +609,3 @@ function init() {
 
   exp.go(); //show first slide
 }
-
