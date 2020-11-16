@@ -328,7 +328,7 @@ function make_slides(f) {
     log_responses: function () {
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
-        "tgrep_id": "example1",
+        "tgrep_id": "example3",
         "response": [this.radio, this.strange],
         "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name + "-" + exp.paraphraseArray[3].name,
       });

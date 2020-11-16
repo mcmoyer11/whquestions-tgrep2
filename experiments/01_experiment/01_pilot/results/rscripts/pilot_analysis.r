@@ -34,41 +34,25 @@ nrow(corp_match)
 
 # join the two dataframes together 
 # merging will remove the values of "tgrep_id" that aren't shared
-dm <- merge(d1, corp_match, by="tgrep_id")
-nrow(dm)
+# dm <- merge(d1, corp_match, by="tgrep_id")
+# nrow(dm)
 # left-join does not
 df <- left_join(d1, corp_match, by="tgrep_id")
 df$time_in_minutes = as.numeric(as.character(df$time_in_minutes))
-write.csv(df,"df_nested.csv")
+# write.csv(df,"df_nested.csv")
 
 head(df)
 # until i can find a way to unnest, save this as csv and unnest in python,
 # then read the csv back in here
+str(d)
 
-############################################################
-# trying to UNNEST
-t = d$response[[1]]
-View(t)
-library(purr)
-test = d %>% 
-  mutate(strange = unnest(., response))
-
-test = d %>% split(d$response)
-
-str(test)
-unnest(d,response)
-
-# this is the way to do it:
-separate(response,into=c("response_val","response_goodsentence"),sep="\', ") %>% 
-d$response_goodsentence = as.factor(as.character(gsub('[{u\'strance_sentence\': ','',sapply(strsplit(as.character(d$response),", u\'sliderval\': "), "[", 1),fixed=T)))
-d$response_val = as.numeric(as.character(gsub('}]','',sapply(strsplit(as.character(d$response),", u\'sliderval\': "), "[", 2),fixed=T)))
-
-View(test)
-test = cbind(d[1],t(data.frame(d$strange)))
-
-# ############################################################
-# read the csv back in
-d = read.csv("../total_unnested.csv", header = TRUE)
+# separate the response column into two columns
+d = df %>%
+  separate(response,into=c("response","strange"),sep="\', ")
+# remove punctuation
+d$strange = as.factor(gsub("[[:punct:]]","",d$strange))
+d$response = as.factor(gsub("[[:punct:]]","",d$response))
+# View(d)
 
 # read in the contexts too:
 d_contexts = read.csv("../../../../clean_corpus/pilot1.txt",sep="\t",header=T,quote="")
@@ -107,9 +91,20 @@ ggplot(d, aes(x=time_in_minutes)) +
 # Practice trials
 practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4")) %>%
-  mutate(response = as.factor(response), is_strange = as.factor(is_strange))
+  mutate(response = as.factor(response), strange = as.factor(strange))
+# View(practice)
 
-View(practice)
+# LOOK ONLY AT THE FIRST response
+# NEED TO FIGURE THIS OUT
+practice_first_choice = practice %>%
+  group_by(workerid) %>%
+  arrange(slide_number_in_experiment) %>%
+  filter(cumsum(slide_number_in_experiment)<1)
+View(practice_first_choice)
+library(data.table)
+pfc = setDT(practice)[, .SD[1:(which.max(slide_number_in_experiment)-1)], by=workerid]
+
+View(pfc)
 # what are the subjects doing
 
 # something is wrong with the labels..it looks like example3 didn't get labeled properly
@@ -125,26 +120,43 @@ View(agr)
 
 ggplot(agr,aes(x=response, y=prop, fill=response)) +
   geom_bar(position="dodge",stat="identity") +
-  facet_wrap(~slide_number_in_experiment) +
-  ggsave("../graphs/pilot_practice_faceted_Sentence.pdf")
+  facet_wrap(~slide_number_in_experiment)
+  # ggsave("../graphs/pilot_practice_faceted_Sentence.pdf")
   # theme(axis.text.x = element_text(angle = 90))
 
 
 # test
 test = d %>%
   filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
-  mutate(response = as.factor(response), is_strange = as.factor(is_strange))
+  mutate(response = as.factor(response), strange = as.factor(strange))
+
+# why does this have the responses from non-test answers???
+table(test$response)/length(test$response)
 
 agr = test %>%
-  group_by(Sentence, response) %>%
+  select(Sentence,response,strange) %>%
+  group_by(Sentence,response) %>%
   summarize(count_response = n()) %>%
   group_by(Sentence) %>%
-  mutate(prop_response = count_response/sum(count_response))
+  mutate(prop_response = count_response/sum(count_response)) %>%
+  # group_by(Sentence) %>%
+  mutate(entropy_response = -sum(prop_response * log2(prop_response)))
+  # ungroup() %>%
+  # group_by(Sentence,strange) %>%
+  # summarize(count_strange = n()) %>%
+  # group_by(Sentence) %>%
+  # mutate(prop_strange = count_strange/sum(count_strange)) %>%
+View(agr)
+
+
+probs = prop.table(d$response)
+
+sum(probs*log2(probs))
 
 ggplot(test, aes(x=response)) +
   geom_histogram(stat="count")
 
-ggplot(test, aes(x=response, fill=is_strange)) +
+ggplot(test, aes(x=response, fill=strange)) +
   geom_histogram(position="dodge",stat="count")+
   facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20)))
   
@@ -157,19 +169,21 @@ ggplot(agr,aes(x=response, y=prop_response, fill = response)) +
 View(d_contexts)
 
 agr_strange = test %>%
-  group_by(workerid,tgrep_id, is_strange) %>%
-  summarize(count_is_strange = n()) %>%
-  group_by(tgrep_id) %>%
-  mutate(prop_strange = count_is_strange/sum(count_is_strange))
+  group_by(Sentence,strange) %>%
+  summarize(count_strange = n()) %>%
+  group_by(Sentence) %>%
+  mutate(prop_strange = count_strange/sum(count_strange))
 View(agr_strange)
 
-ggplot(agr_strange,aes(x=tgrep_id, y=prop_strange, fill=is_strange)) +
+ggplot(agr_strange,aes(x=tgrep_id, y=prop_strange, fill=strange)) +
   geom_bar(stat="identity")
 # theme(axis.text.x = element_text(angle = 60))
 
+strange_2 = agr_strange %>%
+  groupby()
+nrow(agr_strange)
 
-
-both_vars = merge(agr_strange,agr, by=c("workerid","tgrep_id"))
+both_vars = merge(agr_strange,agr, by=c("Sentence"))
 View(both_vars)
 
 ggplot(both_vars, aes(x=prop_response,y=prop_strange)) +
@@ -181,3 +195,6 @@ ggplot(test, aes(x=response,fill=response)) +
   geom_histogram(stat="count") +
   facet_wrap(~workerid) +
   ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
+
+# calculate entropy
+
