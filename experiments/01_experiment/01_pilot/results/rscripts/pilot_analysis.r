@@ -139,13 +139,7 @@ agr = test %>%
   summarize(count_response = n()) %>%
   group_by(Sentence) %>%
   mutate(prop_response = count_response/sum(count_response)) %>%
-  # group_by(Sentence) %>%
   mutate(entropy_response = -sum(prop_response * log2(prop_response)))
-  # ungroup() %>%
-  # group_by(Sentence,strange) %>%
-  # summarize(count_strange = n()) %>%
-  # group_by(Sentence) %>%
-  # mutate(prop_strange = count_strange/sum(count_strange)) %>%
 View(agr)
 
 
@@ -159,6 +153,13 @@ ggplot(test, aes(x=response)) +
 ggplot(test, aes(x=response, fill=strange)) +
   geom_histogram(position="dodge",stat="count")+
   facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20)))
+
+# subject variablility
+ggplot(test, aes(x=response,fill=response)) +
+  geom_histogram(stat="count") +
+  facet_wrap(~workerid) +
+  ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
+
   
 ggplot(agr,aes(x=response, y=prop_response, fill = response)) +
   geom_bar(position="dodge",stat="identity") +
@@ -172,29 +173,24 @@ agr_strange = test %>%
   group_by(Sentence,strange) %>%
   summarize(count_strange = n()) %>%
   group_by(Sentence) %>%
-  mutate(prop_strange = count_strange/sum(count_strange))
+  mutate(prop_strange = count_strange/sum(count_strange)) %>%
+  filter(strange %in% c("False")) %>%
+  mutate(prop_is_strange = 1 - prop_strange)
 View(agr_strange)
 
-ggplot(agr_strange,aes(x=tgrep_id, y=prop_strange, fill=strange)) +
+ggplot(agr_strange,aes(x=Sentence, y=prop_is_strange, fill=strange)) +
   geom_bar(stat="identity")
 # theme(axis.text.x = element_text(angle = 60))
 
-strange_2 = agr_strange %>%
-  groupby()
-nrow(agr_strange)
 
 both_vars = merge(agr_strange,agr, by=c("Sentence"))
 View(both_vars)
 
-ggplot(both_vars, aes(x=prop_response,y=prop_strange)) +
-  # geom_density(alpha=.5) +
-  facet_wrap(~workerid,scales="free_y")
+# plot prop_is_strange as a function of entropy_response
+ggplot(both_vars, aes(x=prop_is_strange,y=entropy_response)) +
+  geom_density(alpha=.5) +
+  facet_wrap(~Sentence,scales="free_y")
 
-# subject variablility
-ggplot(test, aes(x=response,fill=response)) +
-  geom_histogram(stat="count") +
-  facet_wrap(~workerid) +
-  ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
 
 # calculate entropy
 
