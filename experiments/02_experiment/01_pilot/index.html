@@ -83,9 +83,9 @@
     <img src="alps_lab.png" alt="Alps Lab" style="width:400;height:192px;">
     <p id="instruct-text" align="left">You will read short conversations. These are transcriptions of real conversations
       real people had over the phone. The last sentence of each conversation will be marked in red. <strong>Your task is
-        to answer a question about the red sentence to the best
-        of your ability. </strong><br><br>The HIT will take approximately 10 minutes. Let's start with two examples!</p>
-    <!--     <p id="instruct-text" align="left">You will read short conversations. These are transcriptions of real conversations that real people had over the phone. The last sentence of each conversation will be marked in red and you will see a blue sentence below the conversation. <strong>Your task is to answer a question about the red sentence to the best of your ability.</strong><br><br>The HIT will take approximately 10 minutes. Let's start with two examples!</p> -->
+        to answer a question about the red sentence to the best of your ability. </strong>
+        <br><br>
+        The HIT will take approximately 10 minutes. Let's start with four examples!</p>
     <button id="start_button" type="button">Start Experiment</button>
     <p id="instruct-text" align="left"><i><small><small><strong><br><br><br>LEGAL INFORMATION</strong>:<br>We invite
             you to participate in a research study on language production and comprehension. Your experimenter will
@@ -107,68 +107,117 @@
             proceed to the study tasks.<br></small></small></i></p>
   </div>
 
-
   <div class="slide" id="example1">
     <h3>Practice Trial 1</h3>
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction1" class="instruction"><i>Based on the question in red, which of the following does the speaker
-        want to know?</i></div>
+    <div id="intruction1" class="instruction"><i>Based on the question in red, how likely do you think it is that
+       the speaker wanted to know each of the following questions?</i></div> 
+    <p class="err">Please make sure that the four ratings sum to 100!</p>
+    <table>
+      <tr>
+        <td><strong><span class="display_condition" id="sent1_1">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider1_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider1_1_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent1_2">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider1_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider1_2_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent1_3">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider1_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider1_3_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><em><span class="sent_other">Something else</span></em></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider1_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider1_4_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+    </table>
 
-    <div class="grid-container" id='paraphrase-holder'>
-      <div class="loc1"></div>
-      <div class="loc2"></div>
-      <div class="loc3"></div>
-      <div class="loc4"></div>
-    </div>
-    <br>
     <div id="intruction1" class="instruction">
       <font color=#0000FF>Read these in your head as, "Who is <b>a</b> person that can help spread the word?",
-        "Who is <b>the</b> person that can help spread the word?", "Who is <b>some</b> person that can help spread the
-        word?", and
-        "Who is <b>every</b> person that can help spread the word?" </font>
+        "Who is <b>the</b> person that can help spread the word?", and "Who is <b>every</b> person that can help spread the word?" </font>
     </div>
-    <br><br>
+    <!-- <br><br>
     <font color=#424242> None of the above: <input type="checkbox" id="str1"></font>
-    <br><br>
-    <div class="err_selection">
+    <br><br> -->
+    <!-- <div class="err_selection">
       <p2>Please make a selection before clicking 'Continue'</p2>
-    </div>
+    </div> -->
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
-      <p2>In your rating, consider whether the question in red expresses the same thing as one of the questions below.
+    <!-- <div class="err_answer">
+      <p2>In your ratings, consider how well each of the questions below expresses the same thing as the question in red.
         In this example, the speaker wants to know about all the people.</p2>
-    </div>
+    </div> -->
   </div>
-
+  
   <div class="slide" id="example2">
     <h3>Practice Trial 2</h3>
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction2" class="instruction"><i>Based on the question in red, which of the following does the speaker
-        want to know?</i></div>
+    <div id="intruction2" class="instruction"><i>Based on the question in red, how likely do you think it is that
+      the speaker wanted to know each of the following questions?</i></div>
+    <p class="err">Please make sure that the four ratings sum to 100!</p>
+    <table>
+      <tr>
+        <td><strong><span class="display_condition" id="sent2_1">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider2_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider2_1_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent2_2">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider2_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider2_2_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent2_3">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider2_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider2_3_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><em><span class="sent_other">Something else</span></em></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider2_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider2_4_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+    </table>
 
-    <div class="grid-container" id='paraphrase-holder'>
-      <div class="loc1"></div>
-      <div class="loc2"></div>
-      <div class="loc3"></div>
-      <div class="loc4"></div>
-    </div>
-    <br>
     <div id="intruction3" class="instruction">
       <font color=#0000FF>Read these in your head as, "What is <b>a</b> place that I can get coffee?",
-        "What is <b>the</b> place that I can get coffee?", "What is <b>some</b> place that I can get coffee?", and
-        "What is <b>every</b> place that I can get coffee?" </font>
+        "What is <b>the</b> place that I can get coffee?", and "What is <b>every</b> place that I can get coffee?" </font>
     </div>
-    <br><br>
-    <font color=#424242> None of the above: <input type="checkbox" id="str2"></font>
-    <br><br>
-    <div class="err_selection">
+    <!-- <div class="err_selection">
       <p2>Please make a selection before clicking 'Continue'</p2>
-    </div>
+    </div> -->
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
-      <p2>In your rating, consider whether the question in red expresses the same thing as the one of the questions
-        below. In this example, the speaker doesn't need to know about every place, or about a specific place.</p2>
-    </div>
+    <!-- <div class="err_answer">
+      <p2>In your ratings, consider how well each of the questions below expresses the same thing as the question in red. 
+        In this example, the speaker doesn't need to know about every place, or about a specific place.</p2>
+    </div> -->
   </div>
 
   <div class="slide" id="example3">
@@ -176,75 +225,119 @@
     <p class="context" style="text-align: left;"></p>
 
 
-    <div id="intruction3" class="instruction"><i>Based on the question in red, which of the following
-        does the speaker want to know?</i></div>
-
-    <div class="grid-container" id='paraphrase-holder'>
-      <div class="loc1"></div>
-      <div class="loc2"></div>
-      <div class="loc3"></div>
-      <div class="loc4"></div>
-    </div>
-    <br>
+    <div id="intruction3" class="instruction"><i>Based on the question in red, how likely do you think it is that
+      the speaker wanted to know each of the following questions?</i></div>
+    <p class="err">Please make sure that the four ratings sum to 100!</p>
+    <table>
+      <tr>
+        <td><strong><span class="display_condition" id="sent3_1">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider3_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider3_1_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent3_2">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider3_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider3_2_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent3_3">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider3_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider3_3_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><em><span class="sent_other">Something else</span></em></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider3_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider3_4_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+    </table>
     <div id="intruction3" class="instruction">
       <font color=#0000FF>Read these in your head as, "Who is <b>a</b> person that came to the party?",
-        "Who is <b>the</b> person that came to the party?", "Who is <b>some</b> person that came to the party?", and
-        "Who is <b>every</b> person that came to the party?" </font>
+        "Who is <b>the</b> person that came to the party?", and "Who is <b>every</b> person that came to the party?" </font>
     </div>
-    <br><br>
-    <font color=#424242> None of the above: <input type="checkbox" id="str3"></font>
-    <br><br>
-    <div class="err_selection">
+    <!-- <div class="err_selection">
       <p2>Please make a selection before clicking 'Continue'</p2>
-    </div>
+    </div> -->
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
-      <p2>In your rating, consider whether the question in red expresses the same thing as one of the questions below.
+    <!-- <div class="err_answer">
+      <p2>In your ratings, consider how well each of the questions below expresses the same thing as the question in red.
         In this example, the speaker wants to know about all the people.</p2>
-    </div>
+    </div> -->
   </div>
 
   <div class="slide" id="example4">
     <h3>Practice Trial 4</h3>
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction4" class="instruction"><i>Based on the question in red, which of the following does the speaker
-        want to know?</i></div>
-
-    <div class="grid-container" id='paraphrase-holder'>
-      <div class="loc1"></div>
-      <div class="loc2"></div>
-      <div class="loc3"></div>
-      <div class="loc4"></div>
-    </div>
-    <br>
+    <div id="intruction4" class="instruction"><i>Based on the question in red, how likely do you think it is that
+      the speaker wanted to know each of the following questions?</i></div>
+    <p class="err">Please make sure that the four ratings sum to 100!</p>
+    <table>
+      <tr>
+        <td><strong><span class="display_condition" id="sent4_1">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider4_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider4_1_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent4_2">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider4_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider4_2_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent4_3">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider4_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider4_3_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><em><span class="sent_other">Something else</span></em></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider4_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider4_4_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+    </table>
     <div id="intruction4" class="instruction">
       <font color=#0000FF>Read these in your head as, "What is <b>a</b> way to get to Central Park?",
-        "What is <b>the</b> way to get to Central Park?", "What is <b>some</b> way to get to Central Park?", and
-        "What is <b>every</b> way to get to Central Park?" </font>
+        "What is <b>the</b> way to get to Central Park?", and "What is <b>every</b> way to get to Central Park?" </font>
     </div>
-    <br><br>
-    <font color=#424242> None of the above: <input type="checkbox" id="str4"></font>
-    <br><br>
-    <div class="err_selection">
+    <!-- <div class="err_selection">
       <p2>Please make a selection before clicking 'Continue'</p2>
-    </div>
+    </div> -->
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
+    <!-- <div class="err_answer">
       <p2>In your rating, consider whether the question in red expresses the same thing as one of the questions below.
         In this example, the speaker doesn't need to know about all the ways.</p2>
-    </div>
+    </div> -->
   </div>
 
   <div class="slide" id="startExp">
     <br><br>
     <p id="instruct-text" align="left">Great! Now we can start the real experiment. <br><br> You will now read 30
-      conversations.
-      You won't always need to read the whole conversation to decide what the speaker wants to know.
-      <br><br>Sometimes, the questions will sound strange. In this case, make your best guess about what you think the
-      speaker wants to know, but also click the checkbox next to "None of the above".
+      conversations. You won't always need to read the whole conversation to decide what the speaker wants to know.
+      <br><br>Sometimes, the questions will sound strange. In this case, make your best guess about how likely you think the questions capture what
+      speaker wants to know, but you can also rate "Something else".
       <br><br> Note: these are transcripts of real phone conversations so sometimes the text will be a little jumbled.
-      If that happens, respond to the best of your ability. But don't get too frustrated! Click the checkbox next to
-      "None of the above", and move on to the next one.
+      If that happens, respond to the best of your ability. But don't get too frustrated! Rate the "Something else" option, and move on to the next one.
     </p>
     <br><br>
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
@@ -252,59 +345,48 @@
 
   <div class="slide" id="generateEntities">
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction3" class="instruction"><i>Based on the question in red, which of the following does the speaker
-        want to know?</i></div>
-    <!-- add the dynamic button-ing here -->
-    <!-- <div class="grid-container" id='paraphrase-holder'>
-      <div class="loc1"></div>
-      <div class="loc2"></div>
-      <div class="loc3"></div>
-      <div class="loc4"></div>
-    </div>
-    <br><br> -->
+    <div id="intruction3" class="instruction"><i>Based on the question in red, how likely do you think it is that
+      the speaker wanted to know each of the following questions?</i></div>
+    <p class="err">Please make sure that the four ratings sum to 100!</p>
     <table>
       <tr>
-        <td><strong><span class="display_condition" id="sent_1">{}</span></strong></td>
+        <td><strong><span class="display_condition" id="sent5_1">{}</span></strong></td>
         <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
-            <span id="slider_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
-              type="text" style="width: 30px; float: left; text-align: center" id="slider_1_val" value="0"
+            <span id="slider5_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider5_1_val" value="0"
               disabled="disabled">
           </div></td>
       </tr>
       <tr>
-        <td><strong><span class="display_condition" id="sent_2">{}</span></strong></td>
+        <td><strong><span class="display_condition" id="sent5_2">{}</span></strong></td>
         <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
-            <span id="slider_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
-              type="text" style="width: 30px; float: left; text-align: center" id="slider_2_val" value="0"
+            <span id="slider5_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider5_2_val" value="0"
               disabled="disabled">
           </div></td>
       </tr>
       <tr>
-        <td><strong><span class="display_condition" id="sent_3">{}</span></strong></td>
+        <td><strong><span class="display_condition" id="sent5_3">{}</span></strong></td>
         <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
-            <span id="slider_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
-              type="text" style="width: 30px; float: left; text-align: center" id="slider_3_val" value="0"
+            <span id="slider5_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider5_3_val" value="0"
               disabled="disabled">
           </div></td>
       </tr>
       <tr>
-        <td><strong><em><span class="display_condition" id=sent_4>{}</span></em></strong></td>
+        <td><strong><em><span class="sent_other">Something else</span></em></strong></td>
         <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
-            <span id="slider_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
-              type="text" style="width: 30px; float: left; text-align: center" id="slider_4_val" value="0"
+            <span id="slider5_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider5_4_val" value="0"
               disabled="disabled">
           </div></td>
       </tr>
     </table>
-    <font color=#424242> None of the above:</font><input type="checkbox" id="str">
-    <!-- <font color=#424242>Random </font><input type="checkbox" id="random"> -->
-    <br>
-    <br>
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err">
+    <!-- <div class="err">
       <br>
       <p2>Please make a selection before clicking 'Continue'</p2>
-    </div>
+    </div> -->
   </div>
 
   <div class="slide" id="subj_info">
