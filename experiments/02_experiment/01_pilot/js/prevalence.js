@@ -57,6 +57,23 @@ function make_slides(f) {
     }
   });
 
+  slides.instructions_slider = slide({
+    name: "instructions_slider",
+    start: function () {
+      $("#instrunctionGen").html('<table class=table1 id="instructionGen"> </table>');
+      var dispRow = $(document.createElement('tr')).attr("id", 'rowp' + 1);
+      dispRow.append("<div class=row>");
+      dispRow.append("<div align=center><button class=continueButton onclick= _s.button()>Continue</button></div>");
+      dispRow.append('<td/>');
+      dispRow.append('</div>');
+      dispRow.appendTo("#instructionGen");
+
+    },
+    button: function () {
+      exp.go(); //use exp.go() if and only if there is no "present" data.
+    },
+  });
+
   slides.example1 = slide({
     name: "example1",
 
@@ -634,6 +651,7 @@ function init() {
   exp.structure = [
     "bot",
     "i0",
+    "instructions_slider",
     "example1",
     "example2",
     "example3",
