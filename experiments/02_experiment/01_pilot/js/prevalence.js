@@ -415,7 +415,7 @@ function make_slides(f) {
           "slide_number_in_experiment": exp.phase,
           "tgrep_id": "example4",
           "paraphrase": exp.paraphraseArray[i].name,
-          "rating": $("#slider_" + (i + 1)).slider("option", "value"),
+          "rating": $("#slider4_" + (i + 1)).slider("option", "value"),
           "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name,
         });
       }
