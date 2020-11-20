@@ -86,7 +86,7 @@ ggplot(d, aes(x=subject_information.education)) +
 # time_in_minutes
 ggplot(d, aes(x=time_in_minutes)) +
   geom_histogram(stat="count")
-
+mean(d$time_in_minutes)
 
 # Practice trials
 practice = d %>%
@@ -100,11 +100,10 @@ practice_first_choice = practice %>%
   group_by(workerid) %>%
   arrange(slide_number_in_experiment) %>%
   filter(cumsum(slide_number_in_experiment)<1)
-View(practice_first_choice)
-library(data.table)
+# View(practice_first_choice)
+# library(data.table)
 pfc = setDT(practice)[, .SD[1:(which.max(slide_number_in_experiment)-1)], by=workerid]
 
-View(pfc)
 # what are the subjects doing
 
 # something is wrong with the labels..it looks like example3 didn't get labeled properly
@@ -116,7 +115,7 @@ agr = practice %>%
   summarize(count_response = n()) %>%
   group_by(slide_number_in_experiment) %>%
   mutate(prop = count_response/sum(count_response))
-View(agr)
+# View(agr)
 
 ggplot(agr,aes(x=response, y=prop, fill=response)) +
   geom_bar(position="dodge",stat="identity") +
@@ -139,15 +138,9 @@ agr = test %>%
   summarize(count_response = n()) %>%
   group_by(Sentence) %>%
   mutate(prop_response = count_response/sum(count_response)) %>%
-  # group_by(Sentence) %>%
   mutate(entropy_response = -sum(prop_response * log2(prop_response)))
-  # ungroup() %>%
-  # group_by(Sentence,strange) %>%
-  # summarize(count_strange = n()) %>%
-  # group_by(Sentence) %>%
-  # mutate(prop_strange = count_strange/sum(count_strange)) %>%
-View(agr)
-
+# View(agr)
+view(agr)
 
 probs = prop.table(d$response)
 
@@ -156,9 +149,20 @@ sum(probs*log2(probs))
 ggplot(test, aes(x=response)) +
   geom_histogram(stat="count")
 
+ggplot(test, aes(x=response,fill=response)) +
+  geom_histogram(stat="count") +
+  facet_wrap(~Sentence)
+
 ggplot(test, aes(x=response, fill=strange)) +
   geom_histogram(position="dodge",stat="count")+
   facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20)))
+
+# subject variablility
+ggplot(test, aes(x=response,fill=response)) +
+  geom_histogram(stat="count") +
+  facet_wrap(~workerid) +
+  ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
+
   
 ggplot(agr,aes(x=response, y=prop_response, fill = response)) +
   geom_bar(position="dodge",stat="identity") +
@@ -172,29 +176,26 @@ agr_strange = test %>%
   group_by(Sentence,strange) %>%
   summarize(count_strange = n()) %>%
   group_by(Sentence) %>%
-  mutate(prop_strange = count_strange/sum(count_strange))
+  mutate(prop_strange = count_strange/sum(count_strange)) %>%
+  filter(strange %in% c("False")) %>%
+  mutate(prop_is_strange = 1 - prop_strange)
 View(agr_strange)
 
-ggplot(agr_strange,aes(x=tgrep_id, y=prop_strange, fill=strange)) +
+ggplot(agr_strange,aes(x=response, y=prop_is_strange, fill=response)) +
   geom_bar(stat="identity")
 # theme(axis.text.x = element_text(angle = 60))
 
-strange_2 = agr_strange %>%
-  groupby()
-nrow(agr_strange)
-
+library(scales)
 both_vars = merge(agr_strange,agr, by=c("Sentence"))
 View(both_vars)
 
-ggplot(both_vars, aes(x=prop_response,y=prop_strange)) +
-  # geom_density(alpha=.5) +
-  facet_wrap(~workerid,scales="free_y")
+# plot prop_is_strange as a function of entropy_response
+ggplot(both_vars, aes(x=prop_is_strange,y=entropy_response)) +
+  geom_point(shape=16, size=6, aes(shape=Sentence, color=Sentence, size=Sentence))+
+  geom_smooth() +
+  scale_colour_discrete(labels = function(x) str_wrap(x, width = 20))
+  # ggsave("../graphs/pilot_entropyXstrange.pdf")
 
-# subject variablility
-ggplot(test, aes(x=response,fill=response)) +
-  geom_histogram(stat="count") +
-  facet_wrap(~workerid) +
-  ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
 
 # calculate entropy
 
