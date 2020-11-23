@@ -122,49 +122,10 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20))) +
   ggsave("../graphs/pilot_e02_test_faceted_Sentence.pdf")
 
-ggplot(test, aes(x=response, fill=strange)) +
-  geom_histogram(position="dodge",stat="count")+
-  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20)))
 
 # subject variablility
-ggplot(test, aes(x=response,fill=response)) +
+ggplot(test, aes(x=rating,fill=response)) +
   geom_histogram(stat="count") +
   facet_wrap(~workerid) +
-  ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
-
-
-ggplot(agr,aes(x=response, y=prop_response, fill = response)) +
-  geom_bar(position="dodge",stat="identity") +
-  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20))) +
-  ggsave("../graphs/pilot_test_faceted_Sentence.pdf")
-# theme(axis.text.x = element_text(angle = 60))
-
-View(d_contexts)
-
-agr_strange = test %>%
-  group_by(Sentence,strange) %>%
-  summarize(count_strange = n()) %>%
-  group_by(Sentence) %>%
-  mutate(prop_strange = count_strange/sum(count_strange)) %>%
-  filter(strange %in% c("False")) %>%
-  mutate(prop_is_strange = 1 - prop_strange)
-View(agr_strange)
-
-ggplot(agr_strange,aes(x=response, y=prop_is_strange, fill=response)) +
-  geom_bar(stat="identity")
-# theme(axis.text.x = element_text(angle = 60))
-
-library(scales)
-both_vars = merge(agr_strange,agr, by=c("Sentence"))
-View(both_vars)
-
-# plot prop_is_strange as a function of entropy_response
-ggplot(both_vars, aes(x=prop_is_strange,y=entropy_response)) +
-  geom_point(shape=16, size=6, aes(shape=Sentence, color=Sentence, size=Sentence))+
-  geom_smooth() +
-  scale_colour_discrete(labels = function(x) str_wrap(x, width = 20))
-# ggsave("../graphs/pilot_entropyXstrange.pdf")
-
-
-# calculate entropy
+  # ggsave("../graphs/pilot_test_faceted_bysubjects.pdf")
 
