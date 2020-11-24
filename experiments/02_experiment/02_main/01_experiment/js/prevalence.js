@@ -555,7 +555,9 @@ slides.generateEntities = slide({
     // remove the traces
     entirehtml = sentence.replace(/\*t*\**\-(\d+)/g, "");
     entirehtml = entirehtml.replace(/\*ich/g, "");
+    entirehtml = entirehtml.replace(/ich/g, "");
     entirehtml = entirehtml.replace(/0/g, "");
+    entirehtml = entirehtml.replace(/\*/g, "");
     return entirehtml
   },
 
