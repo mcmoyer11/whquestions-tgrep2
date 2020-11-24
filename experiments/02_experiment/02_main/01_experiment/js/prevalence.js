@@ -233,7 +233,7 @@ slides.example2 = slide({
       this.log_responses();
       for(var i = 0; i< 3; i++) {
         if (exp.paraphraseArray[i].name == "all") {
-          if ($("#slider1_" + (i + 1)).slider("option", "value") > .5)
+          if ($("#slider2_" + (i + 1)).slider("option", "value") > .5)
             $(".err_answer").show();
           else
             exp.go()
@@ -256,7 +256,7 @@ slides.example2 = slide({
       "slide_number_in_experiment": exp.phase,
       "tgrep_id": "example2",
       "paraphrase": "other",
-      "rating": $("#slider2_4").slider("option", "value"),
+      "rating": $("#slider_4").slider("option", "value"),
       "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name,
     });
   }
@@ -329,7 +329,7 @@ slides.example3 = slide({
       this.log_responses();
       for(var i = 0; i< 3; i++) {
         if (exp.paraphraseArray[i].name == "all") {
-          if ($("#slider1_" + (i + 1)).slider("option", "value") < .5)
+          if ($("#slider3_" + (i + 1)).slider("option", "value") < .5)
             $(".err_answer").show();
           else
             exp.go()
@@ -423,7 +423,7 @@ slides.example4 = slide({
       this.log_responses();
       for(var i = 0; i< 3; i++) {
         if (exp.paraphraseArray[i].name == "all") {
-          if ($("#slider1_" + (i + 1)).slider("option", "value") > .5)
+          if ($("#slider4_" + (i + 1)).slider("option", "value") > .5)
             $(".err_answer").show();
           else
             exp.go()
