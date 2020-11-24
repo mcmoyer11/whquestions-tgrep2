@@ -128,7 +128,7 @@
     <h3>Practice Trial 1</h3>
     <p class="context" style="text-align: left;"></p>
     <div id="intruction1" class="instruction"><i>Based on the question in red, how likely do you think it is that
-       the speaker wanted to know about each of the following questions? 
+       the speaker wanted to know each of the following questions? 
        Make sure all the ratings add up to 100. </i></div> 
     <p class="err">Please make sure that the four ratings sum to 100!</p>
     <table>
@@ -170,18 +170,14 @@
       <font color=#0000FF>Read these in your head as, "Who is <b>a</b> person that can help spread the word?",
         "Who is <b>the</b> person that can help spread the word?", and "Who is <b>every</b> person that can help spread the word?" </font>
     </div>
-
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
-      <p2>Actually, in this case, it is more useful for the person asking the question to know who all the people are who can help spread the word, rather than just one.</p2>
-    </div>
   </div>
   
   <div class="slide" id="example2">
     <h3>Practice Trial 2</h3>
     <p class="context" style="text-align: left;"></p>
     <div id="intruction2" class="instruction"><i>Based on the question in red, how likely do you think it is that
-      the speaker wanted to know about each of the following questions?</i></div>
+      the speaker wanted to know each of the following questions?</i></div>
     <p class="err">Please make sure that the four ratings sum to 100!</p>
     <table>
       <tr>
@@ -224,9 +220,6 @@
     </div>
 
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
-      <p2>Actually, in this case, the person asking the question doesn't need to know all the places.</p2>
-    </div>
   </div>
 
   <div class="slide" id="example3">
@@ -235,7 +228,7 @@
 
 
     <div id="intruction3" class="instruction"><i>Based on the question in red, how likely do you think it is that
-      the speaker wanted to know about each of the following questions?</i></div>
+      the speaker wanted to know each of the following questions?</i></div>
     <p class="err">Please make sure that the four ratings sum to 100!</p>
     <table>
       <tr>
@@ -275,18 +268,14 @@
       <font color=#0000FF>Read these in your head as, "Who is <b>a</b> person that came to the party?",
         "Who is <b>the</b> person that came to the party?", and "Who is <b>every</b> person that came to the party?" </font>
     </div>
-
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
-      <p2>Actually, in this case, it is more useful to the person asking the question to know who all the people are who came to the party.</p2>
-    </div>
   </div>
 
   <div class="slide" id="example4">
     <h3>Practice Trial 4</h3>
     <p class="context" style="text-align: left;"></p>
     <div id="intruction4" class="instruction"><i>Based on the question in red, how likely do you think it is that
-      the speaker wanted to know about each of the following questions?</i></div>
+      the speaker wanted to know each of the following questions?</i></div>
     <p class="err">Please make sure that the four ratings sum to 100!</p>
     <table>
       <tr>
@@ -326,11 +315,7 @@
       <font color=#0000FF>Read these in your head as, "What is <b>a</b> way to get to Central Park?",
         "What is <b>the</b> way to get to Central Park?", and "What is <b>every</b> way to get to Central Park?" </font>
     </div>
-
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
-    <div class="err_answer">
-      <p2>Actually, in this case, it's not useful for the speaker asking the question to know every way to get to Central Park.</p2>
-    </div>
   </div>
 
   <div class="slide" id="startExp">
@@ -350,8 +335,8 @@
 
   <div class="slide" id="generateEntities">
     <p class="context" style="text-align: left;"></p>
-    <div id="intruction3" class="instruction"><i>Based on the sentence in red, how likely do you think it is that
-      the speaker wanted to know about each of the following?</i></div>
+    <div id="intruction3" class="instruction"><i>Based on the question in red, how likely do you think it is that
+      the speaker wanted to know each of the following questions?</i></div>
     <p class="err">Please make sure that the four ratings sum to 100!</p>
     <table>
       <tr>
@@ -388,7 +373,53 @@
       </tr>
     </table>
     <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+    <!-- <div class="err">
+      <br>
+      <p2>Please make a selection before clicking 'Continue'</p2>
+    </div> -->
   </div>
+
+    <p class="context" style="text-align: left;"></p>
+    <div id="intruction3" class="instruction"><i>Based on the question in red, how likely do you think it is that
+      the speaker wanted to know each of the following questions?</i></div>
+    <p class="err">Please make sure that the four ratings sum to 100!</p>
+    <table>
+      <tr>
+        <td><strong><span class="display_condition" id="sent6_1">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider6_1" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider6_1_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent6_2">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider6_2" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider6_2_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><span class="display_condition" id="sent6_3">{}</span></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider6_3" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider6_3_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+      <tr>
+        <td><strong><em><span class="sent_other">Something else</span></em></strong></td>
+        <td><div style="width:275px; padding: 15px; margin: 0 auto; overflow: hidden;">
+            <span id="slider6_4" style="display:block; width:200px; float:left; margin: 0 20px;"></span><input
+              type="text" style="width: 30px; float: left; text-align: center" id="slider6_4_val" value="0"
+              disabled="disabled">
+          </div></td>
+      </tr>
+    </table>
+    <div align=center><button class=continueButton onclick=_s.button()>Continue</button></div>
+
+  </div> -->
 
   <div class="slide" id="subj_info">
     <div class="long_form">
