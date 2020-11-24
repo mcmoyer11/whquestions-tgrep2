@@ -526,6 +526,8 @@ slides.generateEntities = slide({
     // replace first three ## with Speaker 1
     contexthtml = contexthtml.replace(/speakera(\d+)./g, "<br><b>Speaker #1: </b>");
     contexthtml = contexthtml.replace(/speakerb(\d+)./g, "<br><b>Speaker #2: </b>");
+    contexthtml = contexthtml.replace(/speakera./g, "<br><b>Speaker #1: </b>");
+    contexthtml = contexthtml.replace(/speakerb./g, "<br><b>Speaker #2: </b>");
     // remove the traces
     contexthtml = contexthtml.replace(/\*t*\**\-(\d+)/g, "");
     // remove random asterisks
