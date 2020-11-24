@@ -18,7 +18,7 @@ theme_set(theme_bw())
 # Read the database into R.
 corp = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
-d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/02_experiment/01_pilot/results/pilot_e02-merged.csv")
+d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/02_experiment/01_pilot/results/data/01_pilot_e02-merged.csv")
 
 str(d1)
 # Rename the Item_ID variable in the database to Tgrep_ID
@@ -85,7 +85,47 @@ mean(d$time_in_minutes)
 # Practice trials
 practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4"))
+  # write.csv(.,"practice_01_pilot_e01.csv")
 View(practice)
+
+
+# look at just the first practice trial
+prac_agr = practice %>%
+  group_by(workerid,tgrep_id,paraphrase,rating) %>%
+  summarise(count = n()) %>%
+  group_by(workerid,tgrep_id) %>%
+  mutate(total_per_ex = sum(count))
+nrow(prac_agr) # 367
+
+prac_agr_rem = practice %>%
+  group_by(workerid,tgrep_id,paraphrase,rating) %>%
+  summarise(count = n()) %>%
+  group_by(workerid,tgrep_id) %>%
+  mutate(total_per_ex = sum(count)) %>%
+  filter(total_per_ex > 4) %>%
+  write.csv(.,"practice_to_edit.csv")
+nrow(prac_agr_rem) # 115
+
+fixed = read.csv("practice_edited.csv",header=TRUE)
+nrow(fixed) # 68
+head(fixed)
+# remove that one column
+fixed = fixed[c(2:7)]
+
+head(fixed)
+prac_agr_keep = practice %>%
+  group_by(workerid,tgrep_id,paraphrase,rating) %>%
+  summarise(count = n()) %>%
+  group_by(workerid,tgrep_id) %>%
+  mutate(total_per_ex = sum(count)) %>%
+  filter(total_per_ex <= 4)
+nrow(prac_agr_keep) # 252
+
+practice_first = rbind(fixed,prac_agr_keep)
+nrow(practice_first) #320
+
+seconds = prac_agr %>%
+  group_b
 
 agr = practice %>%
   group_by(tgrep_id, paraphrase) %>%
@@ -101,13 +141,35 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
   facet_wrap(~tgrep_id,labeller = labeller(tgrep_id = labels)) +
-  ggsave("../graphs/pilot_e02_practice_faceted_Sentence.pdf")
+  ggsave("../graphs/1_pilot_e02_practice_total_faceted_Sentence.pdf")
 # theme(axis.text.x = element_text(angle = 90))
+
+d$tgrep_id
+# controls
+cntrls = read.csv("../../../../clean_corpus/controls.csv",header=TRUE,quote="")
+c <- left_join(d1, cntrls, by="tgrep_id")
+
+
+controls = d1 %>%
+  filter(tgrep_id %in% c("control"))
+View(controls)
+agr = controls %>%
+  group_by(Sentence,paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+View(agr)
+
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
+  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20)))
+  # ggsave("../graphs/01_pilot_e02_controls.pdf")
 
 
 # test
 test = d %>%
-  filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check"))
+  filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check","controls"))
 
 agr = test %>%
   group_by(Sentence,paraphrase) %>%
@@ -120,7 +182,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
   facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20))) +
-  ggsave("../graphs/pilot_e02_test_faceted_Sentence.pdf")
+  ggsave("../graphs/01_pilot_e02_test.pdf")
 
 
 # subject variablility
