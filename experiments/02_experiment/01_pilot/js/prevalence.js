@@ -256,7 +256,7 @@ slides.example2 = slide({
       "slide_number_in_experiment": exp.phase,
       "tgrep_id": "example2",
       "paraphrase": "other",
-      "rating": $("#slider_4").slider("option", "value"),
+      "rating": $("#slider2_4").slider("option", "value"),
       "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name,
     });
   }
@@ -410,10 +410,10 @@ slides.example4 = slide({
     // this.response = response;
     console.log("clicked button")
 
-    var total = ($("#slider_1").slider("option", "value") +
-      $("#slider_2").slider("option", "value") +
-      $("#slider_3").slider("option", "value") +
-      $("#slider_4").slider("option", "value"));
+    var total = ($("#slider4_1").slider("option", "value") +
+      $("#slider4_2").slider("option", "value") +
+      $("#slider4_3").slider("option", "value") +
+      $("#slider4_4").slider("option", "value"));
 
     console.log("total: ", total)
 
@@ -446,7 +446,7 @@ slides.example4 = slide({
       "slide_number_in_experiment": exp.phase,
       "tgrep_id": "example4",
       "paraphrase": "other",
-      "rating": $("#slider_4").slider("option", "value"),
+      "rating": $("#slider4_4").slider("option", "value"),
       "order": exp.paraphraseArray[0].name + "-" + exp.paraphraseArray[1].name + "-" + exp.paraphraseArray[2].name,
     });
   }
