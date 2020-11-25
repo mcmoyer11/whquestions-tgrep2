@@ -18,7 +18,7 @@ theme_set(theme_bw())
 # Read the database into R.
 corp = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
-d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/02_experiment/01_pilot/results/data/01_pilot_e02-merged.csv")
+d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/02_experiment/01_pilot/results/data/01_pilot_e02_try2-merged.csv")
 
 str(d1)
 # Rename the Item_ID variable in the database to Tgrep_ID
@@ -95,16 +95,16 @@ prac_agr = practice %>%
   summarise(count = n()) %>%
   group_by(workerid,tgrep_id) %>%
   mutate(total_per_ex = sum(count))
-nrow(prac_agr) # 367
+nrow(prac_agr) # 542
 
 prac_agr_rem = practice %>%
   group_by(workerid,tgrep_id,paraphrase,rating) %>%
   summarise(count = n()) %>%
   group_by(workerid,tgrep_id) %>%
   mutate(total_per_ex = sum(count)) %>%
-  filter(total_per_ex > 4) %>%
-  write.csv(.,"practice_to_edit.csv")
-nrow(prac_agr_rem) # 115
+  filter(total_per_ex > 4)
+  # write.csv(.,"practice_to_edit.csv")
+nrow(prac_agr_rem) # 150
 
 fixed = read.csv("practice_edited.csv",header=TRUE)
 nrow(fixed) # 68
@@ -119,7 +119,7 @@ prac_agr_keep = practice %>%
   group_by(workerid,tgrep_id) %>%
   mutate(total_per_ex = sum(count)) %>%
   filter(total_per_ex <= 4)
-nrow(prac_agr_keep) # 252
+nrow(prac_agr_keep) # 392
 
 practice_first = rbind(fixed,prac_agr_keep)
 nrow(practice_first) #320
@@ -146,15 +146,21 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 
 d$tgrep_id
 # controls
-cntrls = read.csv("../../../../clean_corpus/controls.csv",header=TRUE,quote="")
-c <- left_join(d1, cntrls, by="tgrep_id")
-
-
 controls = d1 %>%
-  filter(tgrep_id %in% c("control"))
+  filter(grepl("control",tgrep_id))
+nrow(controls) # 720
+cntrls = read.csv("../../../../clean_corpus/controls.csv",header=TRUE,quote="")
+names(cntrls)[names(cntrls) == "TGrepID"] <- "tgrep_id"
+
 View(controls)
-agr = controls %>%
-  group_by(Sentence,paraphrase) %>%
+
+c <- left_join(controls, cntrls, by="tgrep_id")
+View(c)
+
+
+View(controls)
+agr = c %>%
+  group_by(EntireSentence,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
@@ -163,13 +169,14 @@ View(agr)
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
-  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20)))
-  # ggsave("../graphs/01_pilot_e02_controls.pdf")
+  facet_wrap(~EntireSentence, labeller = labeller(Sentence = label_wrap_gen(20))) +
+  ggsave("../graphs/01_pilot_e02_controls.pdf")
 
 
 # test
 test = d %>%
-  filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check","controls"))
+  filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
+  filter(!grepl("control",tgrep_id))
 
 agr = test %>%
   group_by(Sentence,paraphrase) %>%
