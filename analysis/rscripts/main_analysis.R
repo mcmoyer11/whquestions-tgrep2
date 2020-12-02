@@ -15,12 +15,15 @@ library(lme4)
 library(lmerTest)
 library(tidyverse)
 theme_set(theme_bw())
+cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
 
+########################################################################
 # Read the database into R.
 corp = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
 d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/data/main-merged.csv")
 
+########################################################################
 str(d1)
 # Rename the Item_ID variable in the database to Tgrep_ID
 names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
@@ -52,6 +55,13 @@ str(d)
 # read in the contexts too:
 d_contexts = read.csv("../../experiments/clean_corpus/pilot2.txt",sep="\t",header=T,quote="")
 
+
+########################################################################
+########################################################################
+# comments and demographic information
+########################################################################
+########################################################################
+
 # look at comments
 unique(d$subject_information.comments)
 
@@ -82,6 +92,14 @@ ggplot(d, aes(x=subject_information.education)) +
 ggplot(d, aes(x=time_in_minutes)) +
   geom_histogram(stat="count")
 mean(d$time_in_minutes)
+
+########################################################################
+########################################################################
+# Practice trials
+# TODO: look at just the first choice items
+# Note Date: 12/2
+########################################################################
+########################################################################
 
 # Practice trials
 practice = d %>%
@@ -143,27 +161,27 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   ggsave("../graphs/main_practice_total.pdf")
 # theme(axis.text.x = element_text(angle = 90))
 
-d$tgrep_id
-# controls
+
+########################################################################
+########################################################################
+# Control Items
+########################################################################
+########################################################################
 controls = d1 %>%
   filter(grepl("control",tgrep_id))
 nrow(controls) # 720
+# read in the file to have access to the items
 cntrls = read.csv("../../experiments/clean_corpus/controls.csv",header=TRUE,quote="")
+# rename the item column in order to merge on it
 names(cntrls)[names(cntrls) == "TGrepID"] <- "tgrep_id"
-
-# View(controls)
-
+# join dfs together
 c <- left_join(controls, cntrls, by="tgrep_id")
-View(c)
 
-
-# View(controls)
 agr = c %>%
   group_by(EntireSentence,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-# View(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
@@ -171,6 +189,11 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   facet_wrap(~EntireSentence, labeller = labeller(Sentence = label_wrap_gen(1))) +
   ggsave("../graphs/main_controls.pdf")
 
+########################################################################
+########################################################################
+# Test Items
+########################################################################
+########################################################################
 
 # test
 test = d %>%
@@ -187,9 +210,12 @@ View(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
-  ggsave("../graphs/main_test_overall.pdf")
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge")
+  # ggsave("../graphs/main_test_overall.pdf")
   # facet_wrap(~Wh)
+
+
+
 
 agr = test %>%
   group_by(Wh,ModalPresent,paraphrase) %>%
@@ -204,25 +230,114 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   facet_wrap(~Wh) +
   ggsave("../graphs/main_test_ModxWh.pdf")
 
+########################################################################
+# WH
+########################################################################
+agr = test %>%
+  group_by(Wh,paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+nrow(agr)
 
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=Wh)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
+  # facet_wrap(~Wh)
+  ggsave("../graphs/main_Wh.pdf")
+
+agr = test %>%
+  group_by(paraphrase,Wh,Question) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
+
+ggplot(agr, aes(x=mean_rating)) +
+  geom_histogram() +
+  facet_grid(Wh~paraphrase)
+
+########################################################################
+# Modal
+########################################################################
 # rename 'ca' in modals to 'can'
 test$Modal[test$Modal == "ca"] = "can"
+mod = test %>%
+  filter(ModalPresent %in% c("yes")) %>%
+  group_by(Modal,paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
 
+ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
+  geom_bar(stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
+  facet_wrap(~Modal) +
+  ggsave("../graphs/main_modals.pdf")
+
+ggplot(mod, aes(x=mean_rating)) +
+  geom_histogram(stat="count") +
+  facet_wrap(~paraphrase)
+
+########################################################################
+# MODAL x WH
+########################################################################
 agr = test %>%
   filter(ModalPresent %in% c("yes")) %>%
   group_by(Wh,Modal,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-View(agr)
+nrow(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=Modal)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh) +
-  ggsave("../graphs/main_test_ModalsxWh.pdf")
+  facet_wrap(~Wh)
+  # ggsave("../graphs/main_test_ModalsxWh.pdf")
+agr = test %>%
+  filter(ModalPresent %in% c("yes")) %>%
+  group_by(paraphrase,Question) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
 
-table(d$ModalPresent,)
+ggplot(agr, aes(x=mean_rating)) +
+  geom_histogram() +
+  facet_wrap(~paraphrase)
+
+
+########################################################################
+# NoModal
+########################################################################
+nomod = test %>%
+  filter(ModalPresent %in% c("no")) %>%
+  group_by(paraphrase,Wh) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
+
+ggplot(nomod, aes(x=paraphrase,y=mean_rating,fill=Wh)) +
+  geom_bar(stat="identity",position = "dodge") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))
+
+ggsave("../graphs/main_NoModalXWh.pdf")
+
+ggplot(nomod, aes(x=mean_rating)) +
+  geom_histogram() +
+  facet_wrap(~Wh)
+
+########################################################################
+# Determiners
+# TODO: go back to the database and make sure everything is coded properly
+# Note Date: 12/2
+########################################################################
+nomod = test %>%
+  filter(ModalPresent %in% c("no") & paraphrase == "a" & DeterminerNonSubjPresent == "yes") %>%
+# filter(grepl("a|the", DeterminerNonSubject)) %>%
+group_by(DeterminerNonSubject) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
+ggplot(nomod, aes(x=DeterminerNonSubject,y=mean_rating,fill=DeterminerNonSubject)) +
+  geom_bar(stat="identity",position = "dodge") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))
+
+
 
 head(test)
 agr = test %>%
@@ -230,36 +345,73 @@ agr = test %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
 
-# subject variablility
-ggplot(agr, aes(x=Question,y=mean_rating,fill=Question)) +
-  geom_bar(stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~paraphrase) +
-  theme(legend.position = "none")
-  # ggsave("../graphs/main_byitem.pdf")
-
 ggplot(agr, aes(x=mean_rating)) +
   geom_histogram(stat="count") +
   facet_wrap(~paraphrase)
   # theme(legend.position = "none")
 
 
-the_high = agr %>%
-  filter(paraphrase %in% c("the") &  mean_rating > .5)
 
-the_high["Question"]  
+########################################################################
+#  "a" vs. "all" paraphrase
+########################################################################
+agr = test %>%
+  filter(paraphrase %in% c("a","all")) %>%
+  group_by(paraphrase,ModalPresent,Wh) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
 
-a_high = agr %>%
-  filter(paraphrase %in% c("a") &  mean_rating > .5)
-a_high["Question"]
+ggplot(agr, aes(x=Wh,y=mean_rating,fill=ModalPresent)) +
+  geom_bar(stat="identity",position = "dodge") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
+  facet_wrap(~paraphrase)
 
-all_high = agr %>%
-  filter(paraphrase %in% c("all") &  mean_rating > .5)
-all_high["Question"]
+ggsave("../graphs/main_AxAll.pdf")
 
-cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
+# histogram
+agr = test %>%
+  filter(paraphrase %in% c("a","all")) %>%
+  group_by(paraphrase,ModalPresent,Wh) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
+
+
+########################################################################
+# Perusing items
+########################################################################
+
+the_high = test %>%
+  filter(paraphrase %in% c("the")) %>%
+  group_by(tgrep_id,Question) %>%
+  summarize(mean_rating = mean(rating)) %>%
+  filter(mean_rating > .5)
+View(the_high)
+
+a_high = test %>%
+  filter(paraphrase %in% c("a")) %>%
+  group_by(tgrep_id,Question) %>%
+  summarize(mean_rating = mean(rating)) %>%
+  filter(mean_rating > .3)
+View(a_high)
+
+all_high = test %>%
+  filter(paraphrase %in% c("all")) %>%
+  group_by(tgrep_id,Question) %>%
+  summarize(mean_rating = mean(rating)) %>%
+  filter(mean_rating > .4)
+View(all_high)
+
+other_high = test %>%
+  filter(paraphrase %in% c("other")) %>%
+  group_by(tgrep_id,Question) %>%
+  summarize(mean_rating = mean(rating)) %>%
+  filter(mean_rating > .5)
+View(other_high)
+  
+  
+########################################################################
 ########################################################################
 # Regression Models
+########################################################################
 ########################################################################
 # First break up data into each paraphrase,
 # Run logistic regression in each
