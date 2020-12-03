@@ -199,7 +199,8 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 test = d %>%
   filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
   filter(!grepl("control",tgrep_id))
-View(test)
+length(unique(test$condition))
+
 
 agr = test %>%
   group_by(paraphrase) %>%
@@ -214,9 +215,6 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   # ggsave("../graphs/main_test_overall.pdf")
   # facet_wrap(~Wh)
 
-
-
-
 agr = test %>%
   group_by(Wh,ModalPresent,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -229,6 +227,29 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
   facet_wrap(~Wh) +
   ggsave("../graphs/main_test_ModxWh.pdf")
+
+
+
+
+# Normalize the data by removing rhetorical questions (questions with "other" as the highest rating)
+test_agr = test %>%
+  group_by(tgrep_id, paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
+
+other_ratings = test %>%
+  group_by(tgrep_id, paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  filter(mean_rating[paraphrase == "other"] >= (mean_rating[paraphrase=="a"] & mean_rating[paraphrase=="all"] & mean_rating[paraphrase=="the"]))
+View(other_ratings)
+
+normalized = test %>%
+  group_by(tgrep_id, paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  filter(mean_rating[paraphrase == "other"] < (mean_rating[paraphrase=="a"] & mean_rating[paraphrase=="all"] & mean_rating[paraphrase=="the"]))
+
+nrow(normalized)/4 # 304 items
+nrow(other_ratings)/4 # 1 item
+nrow(test_agr)/4 #305
 
 ########################################################################
 # WH
