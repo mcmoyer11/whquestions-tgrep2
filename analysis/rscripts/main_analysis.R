@@ -767,8 +767,8 @@ ggsave("../graphs/histogram_means_all.pdf",width=4,height=3)
 # COMPARING ALL and A
 # all vs. a
 alla = rbind(all,a)
-m.noitems.3 = lmer(rating ~ ModalPresent + Wh +paraphrase + (1|workerid) + (1|tgrep_id), data=alla) 
-m.noitems.2 = lmerTest::lmer(rating ~ Wh*ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
+m.noitems.3 = lmerTest::lmer(rating ~ ModalPresent + Wh +paraphrase + (1|workerid) + (1|tgrep_id), data=alla) 
+m.noitems.2 = lmerTest::lmer(rating ~ Wh + ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
 # m.noitems.1 = lmerTest::lmer(rating ~ ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
 summary(m.noitems.3)
 # ModalPresent
