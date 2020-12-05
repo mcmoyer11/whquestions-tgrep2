@@ -22,26 +22,33 @@ cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#
 corp = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
 d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/data/main-merged.csv")
-
+nrow(d1)
+d2  = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/data/main2-merged.csv")
+nrow(d2)
+d3 = rbind(d1,d2)
+nrow(d3)
 ########################################################################
-str(d1)
 # Rename the Item_ID variable in the database to Tgrep_ID
 names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
 
 # filter from the database the tgrep_ids from the data
 corp_match = corp %>%
-  filter(tgrep_id %in% d1$tgrep_id)
+  filter(tgrep_id %in% d3$tgrep_id)
 
 nrow(corp)
 nrow(d1)
 nrow(corp_match)
+
 
 # join the two dataframes together 
 # merging will remove the values of "tgrep_id" that aren't shared
 # dm <- merge(d1, corp_match, by="tgrep_id")
 # nrow(dm)
 # left-join does not
-d <- left_join(d1, corp_match, by="tgrep_id")
+d <- left_join(d3, corp_match, by="tgrep_id")
+length(unique(d$tgrep_id)) 
+
+nrow(d)
 d$time_in_minutes = as.numeric(as.character(d$time_in_minutes))
 d$rating = as.numeric(d$rating)
 # write.csv(df,"df_nested.csv")
@@ -61,6 +68,7 @@ d_contexts = read.csv("../../experiments/clean_corpus/pilot2.txt",sep="\t",heade
 # comments and demographic information
 ########################################################################
 ########################################################################
+length(unique(d$workerid)) #385
 
 # look at comments
 unique(d$subject_information.comments)
@@ -105,8 +113,7 @@ mean(d$time_in_minutes)
 practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4"))
   # write.csv(.,"practice_01_pilot_e01.csv")
-View(practice)
-
+nrow(practice) #10096
 
 # look at just the first practice trial
 prac_agr = practice %>%
@@ -167,9 +174,10 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 # Control Items
 ########################################################################
 ########################################################################
-controls = d1 %>%
+nrow(d)
+controls = d %>%
   filter(grepl("control",tgrep_id))
-nrow(controls) # 720
+nrow(controls) # 9240
 # read in the file to have access to the items
 cntrls = read.csv("../../experiments/clean_corpus/controls.csv",header=TRUE,quote="")
 # rename the item column in order to merge on it
@@ -199,7 +207,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 test = d %>%
   filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
   filter(!grepl("control",tgrep_id))
-length(unique(test$condition))
+unique(test$proliferate.condition)
 
 
 agr = test %>%
@@ -207,12 +215,11 @@ agr = test %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-View(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge")
-  # ggsave("../graphs/main_test_overall.pdf")
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
+  ggsave("../graphs/main_test_overall.pdf")
   # facet_wrap(~Wh)
 
 agr = test %>%
@@ -220,7 +227,6 @@ agr = test %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-# View(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_bar(position="dodge",stat="identity") +
@@ -229,9 +235,10 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   ggsave("../graphs/main_test_ModxWh.pdf")
 
 
-
-
-# Normalize the data by removing rhetorical questions (questions with "other" as the highest rating)
+########################################################################
+########################################################################
+# Normalize the data by removing rhetorical questions 
+# (questions with "other" as the highest rating)
 test_agr = test %>%
   group_by(tgrep_id, paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
@@ -239,35 +246,45 @@ test_agr = test %>%
 other_ratings = test %>%
   group_by(tgrep_id, paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  filter(mean_rating[paraphrase == "other"] >= (mean_rating[paraphrase=="a"] & mean_rating[paraphrase=="all"] & mean_rating[paraphrase=="the"]))
-View(other_ratings)
+  filter((mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="a"]) & 
+           (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="all"]) & 
+           (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="the"]))
 
-normalized = test %>%
-  group_by(tgrep_id, paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  filter(mean_rating[paraphrase == "other"] < (mean_rating[paraphrase=="a"] & mean_rating[paraphrase=="all"] & mean_rating[paraphrase=="the"]))
+nrow(other_ratings)/nrow(test_agr)*100
+232*4*30
+nrow(test_agr)#1340
+335*4
+or_ids = other_ratings$tgrep_id
+View(or_ids)
+test_other = test %>%
+  filter(tgrep_id %in% or_ids)
 
-nrow(normalized)/4 # 304 items
-nrow(other_ratings)/4 # 1 item
-nrow(test_agr)/4 #305
+# 16% of the items which are rhetorical questions
+nrow(test_other)/nrow(test)*100
+
+
+test_norm = test %>%
+  filter(!tgrep_id %in% or_ids)
+nrow(test_norm)/nrow(test)*100
 
 ########################################################################
 # WH
 ########################################################################
-agr = test %>%
-  group_by(Wh,paraphrase) %>%
+agr = test_norm %>%
+  filter(paraphrase %in% c("all","a")) %>%
+  group_by(paraphrase,Wh) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-nrow(agr)
 
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=Wh)) +
+ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
   # facet_wrap(~Wh)
-  ggsave("../graphs/main_Wh.pdf")
+  ggsave("../graphs/main_Wh_allXa.pdf")
 
-agr = test %>%
+agr = test_norm %>%
+  filter(paraphrase %in% c("all","a")) %>%
   group_by(paraphrase,Wh,Question) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
@@ -279,9 +296,22 @@ ggplot(agr, aes(x=mean_rating)) +
 ########################################################################
 # Modal
 ########################################################################
+agr = test_norm %>%
+  filter(paraphrase %in% c("all","a")) %>%
+  group_by(paraphrase,ModalPresent) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
+ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
+  # facet_wrap(~Wh)
+  ggsave("../graphs/main_ModalPresent_allXa.pdf")
 # rename 'ca' in modals to 'can'
-test$Modal[test$Modal == "ca"] = "can"
-mod = test %>%
+test_norm$Modal[test_norm$Modal == "ca"] = "can"
+mod = test_norm %>%
+  filter(paraphrase %in% c("all","a")) %>%
   filter(ModalPresent %in% c("yes")) %>%
   group_by(Modal,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -291,29 +321,27 @@ ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
   geom_bar(stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
   facet_wrap(~Modal) +
-  ggsave("../graphs/main_modals.pdf")
-
-ggplot(mod, aes(x=mean_rating)) +
-  geom_histogram(stat="count") +
-  facet_wrap(~paraphrase)
+  ggsave("../graphs/main_modals_allXa.pdf")
 
 ########################################################################
 # MODAL x WH
 ########################################################################
-agr = test %>%
-  filter(ModalPresent %in% c("yes")) %>%
-  group_by(Wh,Modal,paraphrase) %>%
+agr = test_norm %>%
+  filter(paraphrase %in% c("all","a")) %>%
+  # filter(ModalPresent %in% c("yes")) %>%
+  group_by(Wh,ModalPresent,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-nrow(agr)
 
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=Modal)) +
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh)
-  # ggsave("../graphs/main_test_ModalsxWh.pdf")
-agr = test %>%
+  facet_wrap(~Wh) +
+  guides(fill=guide_legend(title="Modal?")) +
+  ggsave("../graphs/main_test_norm_ModalsxWh_allXa.pdf")
+
+agr = test_norm %>%
   filter(ModalPresent %in% c("yes")) %>%
   group_by(paraphrase,Question) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -327,7 +355,7 @@ ggplot(agr, aes(x=mean_rating)) +
 ########################################################################
 # NoModal
 ########################################################################
-nomod = test %>%
+nomod = test_norm %>%
   filter(ModalPresent %in% c("no")) %>%
   group_by(paraphrase,Wh) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -348,7 +376,7 @@ ggplot(nomod, aes(x=mean_rating)) +
 # TODO: go back to the database and make sure everything is coded properly
 # Note Date: 12/2
 ########################################################################
-nomod = test %>%
+nomod = test_norm %>%
   filter(ModalPresent %in% c("no") & paraphrase == "a" & DeterminerNonSubjPresent == "yes") %>%
 # filter(grepl("a|the", DeterminerNonSubject)) %>%
 group_by(DeterminerNonSubject) %>%
@@ -360,8 +388,8 @@ ggplot(nomod, aes(x=DeterminerNonSubject,y=mean_rating,fill=DeterminerNonSubject
 
 
 
-head(test)
-agr = test %>%
+head(test_norm)
+agr = test_norm %>%
   group_by(paraphrase,Question) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
@@ -376,7 +404,7 @@ ggplot(agr, aes(x=mean_rating)) +
 ########################################################################
 #  "a" vs. "all" paraphrase
 ########################################################################
-agr = test %>%
+agr = test_norm %>%
   filter(paraphrase %in% c("a","all")) %>%
   group_by(paraphrase,ModalPresent,Wh) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -390,31 +418,40 @@ ggplot(agr, aes(x=Wh,y=mean_rating,fill=ModalPresent)) +
 ggsave("../graphs/main_AxAll.pdf")
 
 # histogram
-agr = test %>%
+agr = test_norm %>%
   filter(paraphrase %in% c("a","all")) %>%
   group_by(paraphrase,ModalPresent,Wh) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
+
 
 
 ########################################################################
 # Perusing items
 ########################################################################
 
-the_high = test %>%
+the_high = test_norm %>%
   filter(paraphrase %in% c("the")) %>%
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(rating)) %>%
   filter(mean_rating > .5)
 View(the_high)
 
-a_high = test %>%
+a_high = test_norm %>%
   filter(paraphrase %in% c("a")) %>%
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(rating)) %>%
   filter(mean_rating > .3)
 View(a_high)
 
-all_high = test %>%
+ex = d %>%
+  filter(tgrep_id %in% c("102025:30")) %>%
+  group_by(paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
+View(ex)  
+
+
+
+all_high = test_norm %>%
   filter(paraphrase %in% c("all")) %>%
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(rating)) %>%
@@ -428,7 +465,7 @@ other_high = test %>%
   filter(mean_rating > .5)
 View(other_high)
   
-  
+View()
 ########################################################################
 ########################################################################
 # Regression Models
@@ -437,10 +474,10 @@ View(other_high)
 # First break up data into each paraphrase,
 # Run logistic regression in each
 
-the = subset(test, test$paraphrase == "the")
-a = subset(test, test$paraphrase == "a")
-all = subset(test, test$paraphrase == "all")
-other = subset(test, test$paraphrase == "other")
+the = subset(test_norm, test_norm$paraphrase == "the")
+a = subset(test_norm, test_norm$paraphrase == "a")
+all = subset(test_norm, test_norm$paraphrase == "all")
+other = subset(test_norm, test_norm$paraphrase == "other")
 
 ########################################################################
 # start with subjects only intercept
@@ -504,7 +541,7 @@ cor(means$MeanEmpirical,means$MeanPredicted)
 head(the)
 ########################################################################
 # add fixed effects of interest with random subjects
-m.noitems = lmer(rating ~ ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent  + (1|workerid), data=the) 
+m.noitems = lmer(rating ~ ModalPresent + Wh + (1|workerid), data=the) 
 summary(m.noitems)
 the$FittedNoCluster = fitted(m.noitems)
 
@@ -526,14 +563,13 @@ r.squaredGLMM(m.noitems)
 vif.mer(m.noitems) 
 
 
-m.noitems = lmer(rating ~ ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent  + (1|workerid), data=a) 
+m.noitems = lmer(rating ~ ModalPresent + Wh + (1|workerid), data=a) 
 summary(m.noitems)
 a$FittedNoCluster = fitted(m.noitems)
 
 means = a %>%
   group_by(tgrep_id) %>%
   summarize(MeanPredicted = mean(FittedNoCluster),MeanEmpirical = mean(rating))
-View(means)
 ggplot(means, aes(x=MeanPredicted,y=MeanEmpirical)) +
   geom_point() +
   geom_smooth(method="lm") +
@@ -549,7 +585,7 @@ r.squaredGLMM(m.noitems)
 vif.mer(m.noitems) 
 
 
-m.noitems = lmer(rating ~ ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent  + (1|workerid), data=all) 
+m.noitems = lmer(rating ~ ModalPresent + Wh + (1|workerid), data=all) 
 summary(m.noitems)
 all$FittedNoCluster = fitted(m.noitems)
 
@@ -571,7 +607,7 @@ cor(means$MeanEmpirical,means$MeanPredicted)
 # add fixed effects of interest no random effects
 
 # add fixed effects of interest
-m.noitemsnosubjects = lm(rating ~  ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent, data=the)
+m.noitemsnosubjects = lm(rating ~  ModalPresent + Wh, data=the)
 summary(m.noitemsnosubjects)
 the$FittedNoItemsNoSubject = fitted(m.noitemsnosubjects)
 
@@ -588,7 +624,7 @@ ggplot(means, aes(x=MeanPredicted,y=MeanEmpirical)) +
 ggsave("../graphs/model_fit_fixed_norandom_the.pdf",width=5,height=4)
 cor(means$MeanEmpirical,means$MeanPredicted)
 
-m.noitemsnosubjects = lm(rating ~  ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent, data=a)
+m.noitemsnosubjects = lm(rating ~  ModalPresent + Wh, data=a)
 summary(m.noitemsnosubjects)
 a$FittedNoItemsNoSubject = fitted(m.noitemsnosubjects)
 
@@ -605,7 +641,7 @@ ggplot(means, aes(x=MeanPredicted,y=MeanEmpirical)) +
 ggsave("../graphs/model_fit_fixed_norandom_a.pdf",width=5,height=4)
 cor(means$MeanEmpirical,means$MeanPredicted)
 
-m.noitemsnosubjects = lm(rating ~  ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent, data=all)
+m.noitemsnosubjects = lm(rating ~  ModalPresent + Wh, data=all)
 summary(m.noitemsnosubjects)
 all$FittedNoItemsNoSubject = fitted(m.noitemsnosubjects)
 
@@ -625,7 +661,7 @@ cor(means$MeanEmpirical,means$MeanPredicted)
 
 ########################################################################
 # add fixed effects of interest with random subjects and items intercepts
-m.noitems = lmer(rating ~ ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent  + (1|workerid) + (1|tgrep_id), data=the) 
+m.noitems = lmer(rating ~ ModalPresent + Wh + (1|workerid) + (1|tgrep_id), data=the) 
 summary(m.noitems)
 the$FittedNoClusterItem = fitted(m.noitems)
 
@@ -653,7 +689,17 @@ ggplot(means, aes(x=MeanEmpirical)) +
 ggsave("../graphs/histogram_means_the.pdf",width=4,height=3)
 
 
-m.noitems = lmer(rating ~ ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent  + (1|workerid) + (1|tgrep_id), data=a) 
+m.noitems.3 = lmerTest::lmer(rating ~ ModalPresent*Wh + (1|workerid) + (1|tgrep_id), data=a, REML=FALSE) 
+m.noitems.3a = lmerTest::lmer(rating ~ ModalPresent + Wh + (1|workerid) + (1|tgrep_id), data=a, REML=FALSE) 
+m.noitems.2 = lmerTest::lmer(rating ~ Wh + (1|workerid) + (1|tgrep_id), data=a, REML=FALSE) 
+m.noitems.1 = lmerTest::lmer(rating ~ ModalPresent + (1|workerid) + (1|tgrep_id), data=a, REML=FALSE) 
+summary(m.noitems.3a)
+anova(m.noitems.3,m.noitems.3a)
+# ModalPresent
+anova(m.noitems.3,m.noitems.2) # ***
+# Wh
+anova(m.noitems.3,m.noitems.1) # **
+
 summary(m.noitems)
 a$FittedNoClusterItem = fitted(m.noitems)
 
@@ -681,7 +727,15 @@ ggplot(means, aes(x=MeanEmpirical)) +
 ggsave("../graphs/histogram_means_a.pdf",width=4,height=3)
 
 
-m.noitems = lmer(rating ~ ModalPresent + Wh + DeterminerSubjPresent + DeterminerNonSubjPresent  + (1|workerid) + (1|tgrep_id), data=all) 
+m.noitems.3 = lmer(rating ~ ModalPresent*Wh + (1|workerid) + (1|tgrep_id), data=all, REML=FALSE) 
+m.noitems.2 = lmerTest::lmer(rating ~ Wh + (1|workerid) + (1|tgrep_id), data=all, REML=FALSE) 
+m.noitems.1 = lmerTest::lmer(rating ~ ModalPresent + (1|workerid) + (1|tgrep_id), data=all,  REML=FALSE) 
+summary(m.noitems.3)
+# ModalPresent
+anova(m.noitems.3,m.noitems.2) # ns
+# Wh
+anova(m.noitems.3,m.noitems.1) # ns
+
 summary(m.noitems)
 all$FittedNoClusterItem = fitted(m.noitems)
 
@@ -707,3 +761,32 @@ ggsave("../graphs/histogram_raw_all.pdf",width=4,height=3)
 ggplot(means, aes(x=MeanEmpirical)) +
   geom_histogram()
 ggsave("../graphs/histogram_means_all.pdf",width=4,height=3)
+
+
+
+# COMPARING ALL and A
+# all vs. a
+alla = rbind(all,a)
+m.noitems.3 = lmer(rating ~ ModalPresent + Wh +paraphrase + (1|workerid) + (1|tgrep_id), data=alla) 
+m.noitems.2 = lmerTest::lmer(rating ~ Wh*ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
+# m.noitems.1 = lmerTest::lmer(rating ~ ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
+summary(m.noitems.3)
+# ModalPresent
+anova(m.noitems.3,m.noitems.2)
+# Wh
+anova(m.noitems.3,m.noitems.1) # **
+
+m.noitems.3 = lmer(rating ~ ModalPresent + Wh + paraphrase + (1|workerid) + (1|tgrep_id), data=alla) 
+m.noitems.2 = lmerTest::lmer(rating ~ Wh + ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
+# m.noitems.1 = lmerTest::lmer(rating ~ ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
+summary(m.noitems.3)
+# ModalPresent
+anova(m.noitems.3,m.noitems.2)
+
+alla_mods = alla %>%
+  filter(ModalPresent %in% c("yes"))
+m.noitems.3 = lmerTest::lmer(rating ~ Wh + paraphrase + Modal + (1|workerid) + (1|tgrep_id), data=alla_mods, REML=FALSE) 
+m.noitems.2 = lmerTest::lmer(rating ~ Wh + Modal + (1|workerid) + (1|tgrep_id), data=alla_mods, REML=FALSE) 
+# m.noitems.1 = lmerTest::lmer(rating ~ ModalPresent + (1|workerid) + (1|tgrep_id), data=alla) 
+summary(m.noitems.3)
+# ModalPresent
