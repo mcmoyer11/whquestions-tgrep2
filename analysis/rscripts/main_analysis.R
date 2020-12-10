@@ -104,7 +104,6 @@ mean(d$time_in_minutes)
 # Note Date: 12/2
 ########################################################################
 ########################################################################
-
 # Practice trials
 practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4"))
@@ -128,7 +127,7 @@ prac_agr_rem = practice %>%
   # write.csv(.,"practice_to_edit.csv")
 nrow(prac_agr_rem) # 2014
 
-fixed = read.csv("practice_edited.csv",header=TRUE)
+# fixed = read.csv("practice_edited.csv",header=TRUE)
 nrow(fixed) # 68
 head(fixed)
 # remove that one column
@@ -160,8 +159,8 @@ names(labels) = c("example1","example2","example3", "example4")
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
-  facet_wrap(~tgrep_id,labeller = labeller(tgrep_id = labels)) +
-  ggsave("../graphs/main_practice_total.pdf")
+  facet_wrap(~tgrep_id,labeller = labeller(tgrep_id = labels))
+ggsave("../graphs/main_practice_total.pdf")
 # theme(axis.text.x = element_text(angle = 90))
 
 
@@ -190,11 +189,14 @@ agr = c %>%
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
-  facet_wrap(~EntireSentence, labeller = labeller(Sentence = label_wrap_gen(1))) +
-  ggsave("../graphs/main_controls.pdf")
+  facet_wrap(~EntireSentence, labeller = labeller(Sentence = label_wrap_gen(1)))
+ggsave("../graphs/main_controls.pdf")
 
 ########################################################################
-# remove subjects who failed two controls
+########################################################################
+# remove subjects who failed 2/6 controls
+########################################################################
+########################################################################
 length(unique(d$workerid)) #385
 unique(c$tgrep_id)
 # [1] "movie"   "novels"  "tissue"  "book"    "napkin"  "cookies"
@@ -237,11 +239,12 @@ length(unique(failed_controls$workerid))/length(unique(d$workerid))*100 # 4.9%
 ########################################################################
 # N before removing ppl who failed 2 controls 
 length(unique(d$workerid)) #385
-# test
+
 test = d %>%
   filter(!workerid %in% c(failed_controls$workerid)) %>%
   filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
   filter(!grepl("control",tgrep_id))
+# rename all to every
 test$paraphrase[test$paraphrase == "all"] = "every"
 unique(test$proliferate.condition)
 
@@ -260,7 +263,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   xlab("Paraphrase") +
   ylab("Mean rating") +
   theme(legend.position = "none")
-  ggsave("../graphs/main_test_overall.pdf")
+ggsave("../graphs/main_test_overall.pdf")
 
 agr = test %>%
   group_by(Wh,ModalPresent,paraphrase) %>%
@@ -271,14 +274,16 @@ agr = test %>%
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh) +
-  ggsave("../graphs/main_test_ModxWh.pdf")
+  facet_wrap(~Wh)
+ggsave("../graphs/main_test_ModxWh.pdf")
 
 
 ########################################################################
 ########################################################################
 # Normalize the data by removing rhetorical questions 
 # (questions with "other" as the highest rating)
+########################################################################
+########################################################################
 test_agr = test %>%
   group_by(tgrep_id, paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
@@ -321,11 +326,13 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   # ggtitle("Mean rating for 'a' vs. 'every'") +
   xlab("Paraphrase") +
   ylab("Mean rating") +
-  theme(legend.position = "none") +
+  theme(legend.position = "none")
 ggsave("../graphs/main_test_aXevery.pdf")
 
 ########################################################################
+########################################################################
 # WH
+########################################################################
 ########################################################################
 agr = test_norm %>%
   filter(paraphrase %in% c("every","a")) %>%
@@ -344,7 +351,7 @@ ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
         legend.position = "bottom")
   # theme(legend.position = "none")
   # facet_wrap(~Wh)
-  ggsave("../graphs/main_Wh_allXa.pdf")
+ggsave("../graphs/main_Wh_allXa.pdf")
 
 agr = test_norm %>%
   filter(paraphrase %in% c("every","a")) %>%
@@ -357,7 +364,9 @@ ggplot(agr, aes(x=mean_rating)) +
   facet_grid(Wh~paraphrase)
 
 ########################################################################
+########################################################################
 # Modal
+########################################################################
 ########################################################################
 agr = test_norm %>%
   filter(paraphrase %in% c("every","a")) %>%
@@ -376,7 +385,8 @@ ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
         legend.position = "bottom")
         # legend.spacing.y = unit(-10, 'cm'))
   # guides(fill=guide_legend(title="Paraphrase"))
-  ggsave("../graphs/main_ModalPresent_allXa.pdf")
+ggsave("../graphs/main_ModalPresent_allXa.pdf")
+
 # rename 'ca' in modals to 'can'
 test_norm$Modal[test_norm$Modal == "ca"] = "can"
 mod = test_norm %>%
@@ -389,8 +399,8 @@ mod = test_norm %>%
 ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
   geom_bar(stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Modal) +
-  ggsave("../graphs/main_modals_allXa.pdf")
+  facet_wrap(~Modal)
+ggsave("../graphs/main_modals_allXa.pdf")
 
 ########################################################################
 # MODAL x WH
@@ -407,8 +417,8 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
   facet_wrap(~Wh) +
-  guides(fill=guide_legend(title="Modal?")) +
-  ggsave("../graphs/main_test_norm_ModalsxWh_allXa.pdf")
+  guides(fill=guide_legend(title="Modal?"))
+ggsave("../graphs/main_test_norm_ModalsxWh_allXa.pdf")
 
 agr = test_norm %>%
   filter(ModalPresent %in% c("yes")) %>%
@@ -508,10 +518,13 @@ other_high = test %>%
   filter(mean_rating > .5)
 View(other_high)
   
-
+########################################################################
+########################################################################
 ########################################################################
 ########################################################################
 # Regression Models
+########################################################################
+########################################################################
 ########################################################################
 ########################################################################
 
@@ -519,19 +532,22 @@ View(other_high)
 # only "a" and "every"
 ########################################################################
 
-# COMPARING ALL and A
-# all vs. a
 critical = test_norm %>%
   filter(paraphrase %in% c("every","a"))
 
+# Full Model
 m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
 summary(m)
+
+# Fixed Effects
 # paraphrase
 m1 = lmerTest::lmer(rating ~ ModalPresent*Wh + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
 anova(m,m1) #***
+
 # ModalPresent
 m2 = lmerTest::lmer(rating ~ Wh*paraphrase + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
 anova(m,m2) #***
+
 # Wh
 m3 = lmerTest::lmer(rating ~ ModalPresent*paraphrase + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
 anova(m,m3) #***
@@ -544,12 +560,17 @@ K3 <- glht(m,mcp(ModalPresent="Tukey"))$linfct
 summary(glht(m, linfct = rbind(K1,K2,K3)))
 
 # Interaction terms
-critical$WPM = interaction(critical$Wh,critical$paraphrase,critical$ModalPresent)
-m.i = lmerTest::lmer(rating ~ WPM + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
-summary(glht(m.i,mcp(WPM="Tukey")))
+# TO ANSWER: is this really a legitimate way of doing interactions?
+critical$WP = interaction(critical$Wh,critical$paraphrase)
+m.i = lmerTest::lmer(rating ~ WP*ModalPresent + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+summary(glht(m.i,mcp(WP="Tukey")))
 
+critical$MP = interaction(critical$ModalPresent,critical$paraphrase)
+m.i = lmerTest::lmer(rating ~ MP*Wh + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+summary(glht(m.i,mcp(MP="Tukey")))
 
-
+########################################################################
+########################################################################
 ########################################################################
 ########################################################################
 ########################################################################
@@ -557,7 +578,7 @@ summary(glht(m.i,mcp(WPM="Tukey")))
 ########################################################################
 ########################################################################
 # First break up data into each paraphrase,
-# Run logistic regression in each
+# Run regression on each
 
 the = subset(test_norm, test_norm$paraphrase == "the")
 a = subset(test_norm, test_norm$paraphrase == "a")
