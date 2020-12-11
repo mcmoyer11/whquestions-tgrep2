@@ -131,7 +131,7 @@ nrow(prac_agr_rem) # 2014
 nrow(fixed) # 68
 head(fixed)
 # remove that one column
-fixed = fixed[c(2:7)]
+# fixed = fixed[c(2:7)]
 
 head(fixed)
 prac_agr_keep = practice %>%
@@ -202,7 +202,7 @@ unique(c$tgrep_id)
 # [1] "movie"   "novels"  "tissue"  "book"    "napkin"  "cookies"
 #       the       all         a       the         a         all
 t = c %>%
-  separate(tgrep_id,into=c("tgrep_id","para","trial"),sep="_") %>%
+  separate(tgrep_id,into=c("tgrep_id","para","trial"),sep="[_]") %>%
   group_by(workerid,paraphrase,trial) %>%
   filter(trial %in% c("movie", "book"), paraphrase %in% c("the")) %>%
   mutate(control_passed = ifelse(rating > .5,"1","0"))
@@ -314,12 +314,42 @@ nrow(test_norm)/nrow(test)*100 # 82.76%
 
 agr = test_norm %>%
   group_by(paraphrase) %>%
-  # filter(paraphrase %in% c("every","a")) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
 
-View(agr)
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge", show.legend = FALSE) +
+  # ggtitle("Overall mean rating for each paraphrase") +
+  xlab("Paraphrase") +
+  ylab("Mean rating") +
+  theme(legend.position = "none")
+ggsave("../graphs/main_test_norm_overall.pdf")
+
+agr = test_norm %>%
+  group_by(Wh,ModalPresent,paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
+  facet_wrap(~Wh) +
+  xlab("Paraphrase") +
+  ylab("Mean rating") +
+ggsave("../graphs/main_test_norm_ModxWh.pdf")
+
+
+# A vs. All
+agr = test_norm %>%
+  group_by(paraphrase) %>%
+  filter(paraphrase %in% c("every","a")) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge", show.legend = FALSE) +
@@ -535,6 +565,14 @@ View(other_high)
 critical = test_norm %>%
   filter(paraphrase %in% c("every","a"))
 
+str(critical)
+length(unique(critical$workerid))
+critical$ModalPresent = as.factor(critical$ModalPresent)
+critical$Wh = as.factor(critical$Wh)
+critical$paraphrase = as.factor(critical$paraphrase)
+
+# mean center modalpresent and paraphrase (2-level variables only)
+
 # Full Model
 m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
 summary(m)
@@ -573,6 +611,48 @@ summary(glht(m.i,mcp(MP="Tukey")))
 ########################################################################
 ########################################################################
 ########################################################################
+# Normalizing A and Every
+# Goal: noramlize probability distributions over just 'a' and 'every'
+
+
+length(unique(critical$tgrep_id))
+n = critical %>%
+  group_by(workerid,tgrep_id, paraphrase) %>%
+  summarize(count=n()) %>%
+  filter(count > 1)
+View(n)
+
+View(cr)
+cr = critical %>%
+  group_by(workerid,tgrep_id) %>%
+  # spread(paraphrase,rating)
+  mutate(rating_a = rating[paraphrase=="a"], rating_every = rating[paraphrase=="every"]) %>%
+  summarize(rating_sum = rating_a + rating_every)
+  
+crit_normed = left_join(cr,critical,by=c("tgrep_id","workerid","paraphrase"))
+View(crit_normed)
+agr_normed = crit_normed %>%
+  group_by(workerid,tgrep_id,paraphrase) %>%
+  summarise(normed_rating = round(rating/rating_sum))
+  
+View(agr_normed)
+
+agr = agr_normed %>%
+  # mutate(normed_rating = rating*2) %>%
+  group_by(paraphrase) %>%
+  summarize(mean_normed_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
+  mutate(YMin = mean_normed_rating - CILow, YMax = mean_normed_rating + CIHigh)
+View(agr)
+ggplot(agr, aes(x=paraphrase,y=mean_normed_rating)) +
+  geom_bar(stat="identity",position = "dodge") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))
+  # facet_wrap(~ModalPresent)
+
+
+ggsave("../graphs/.pdf")
+
+
+
 ########################################################################
 ########################################################################
 ########################################################################
