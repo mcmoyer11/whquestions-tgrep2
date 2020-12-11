@@ -345,7 +345,7 @@ ggsave("../graphs/main_test_norm_ModxWh.pdf")
 # A vs. All
 agr = test_norm %>%
   group_by(paraphrase) %>%
-  filter(paraphrase %in% c("every","a")) %>%
+  filter(paraphrase %in% c("every","a","the")) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
@@ -357,7 +357,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   xlab("Paraphrase") +
   ylab("Mean rating") +
   theme(legend.position = "none")
-ggsave("../graphs/main_test_aXevery.pdf")
+ggsave("../graphs/main_test_aXeverxthey.pdf")
 
 ########################################################################
 ########################################################################
@@ -365,7 +365,7 @@ ggsave("../graphs/main_test_aXevery.pdf")
 ########################################################################
 ########################################################################
 agr = test_norm %>%
-  filter(paraphrase %in% c("every","a")) %>%
+  filter(paraphrase %in% c("every","a","the")) %>%
   group_by(paraphrase,Wh) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
@@ -377,8 +377,10 @@ ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
   # ggtitle("Mean rating for Wh-Word") +
   xlab("Wh-Word") +
   ylab("Mean rating") +
-  theme(legend.title = element_blank(),
-        legend.position = "bottom")
+  theme(legend.title = element_blank()) +
+  theme(legend.key.size = unit(0.3, "cm"),
+        legend.position = "top", # c(.5,1)
+        legend.direction = "horizontal")
   # theme(legend.position = "none")
   # facet_wrap(~Wh)
 ggsave("../graphs/main_Wh_allXa.pdf")
