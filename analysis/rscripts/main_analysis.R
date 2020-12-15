@@ -2,7 +2,6 @@
 # title: "Analysis of questions"
 # author: "mcmoyer"
 # date: "November 20, 2020"
-# output: html_document
 # ---
 
 ## Step 1: select stimuli for experiment
