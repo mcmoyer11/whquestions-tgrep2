@@ -594,7 +594,7 @@ normed_agr = critical %>%
 View(normed_agr)
 
 normed = merge(normed_agr,critical,by='factors')
-normed[is.na(normed$ModalPresent)] <- 0
+normed[is.na(normed$ModalPresent)] <- "no"
 # save to .csv to load into analysis script
 write.csv(normed,"../data/normed.csv")
 
