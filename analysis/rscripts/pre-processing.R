@@ -247,6 +247,9 @@ unique(test$proliferate.condition)
 
 length(unique(test$workerid)) #366
 
+
+test[is.na(test)] <- 0
+
 agr = test %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
