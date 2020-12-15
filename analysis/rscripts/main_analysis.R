@@ -21,7 +21,7 @@ cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#
 # Read the data into R.
 d = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/data/normed.csv")
 
-# Full Model
+# Full Model with random slopes
 m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=d,REML=FALSE) 
 # message?: boundary (singular) fit: see ?isSingular
 summary(m)
@@ -38,6 +38,28 @@ anova(m,m2) #***
 # Wh
 m3 = lmerTest::lmer(rating ~ ModalPresent*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
 anova(m,m3) #***
+
+
+
+# Full Model without random slopes
+m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=d,REML=FALSE) 
+# message?: boundary (singular) fit: see ?isSingular
+summary(m)
+
+# Fixed Effects, all still significant
+# paraphrase
+m1 = lmerTest::lmer(rating ~ ModalPresent*Wh +  (1|workerid) + (1|tgrep_id), data=d,REML=FALSE) 
+anova(m,m1) #***
+
+# ModalPresent
+m2 = lmerTest::lmer(rating ~ Wh*paraphrase +  (1|workerid) + (1|tgrep_id), data=d,REML=FALSE) 
+anova(m,m2) #***
+
+# Wh
+m3 = lmerTest::lmer(rating ~ ModalPresent*paraphrase + (1|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
+anova(m,m3) #***
+
+
 
 
 # Pairwise comparisons
