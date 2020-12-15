@@ -93,4 +93,10 @@ centered = cbind(d,myCenter(d["ModalPresent"]))
 head(centered)
 summary(centered)
 str(centered)
+
+# full model with random slopes
 m = lmerTest::lmer(rating ~ cModalPresent*Wh*paraphrase + (1+cModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=centered,REML=FALSE) 
+
+
+# full model without random slopes
+m = lmerTest::lmer(rating ~ cModalPresent*Wh*paraphrase + (1|workerid) + (1|tgrep_id), data=centered,REML=FALSE) 
