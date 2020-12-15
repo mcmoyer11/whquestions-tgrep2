@@ -42,10 +42,6 @@ nrow(corp_match)
 
 
 # join the two dataframes together 
-# merging will remove the values of "tgrep_id" that aren't shared
-# dm <- merge(d1, corp_match, by="tgrep_id")
-# nrow(dm)
-# left-join does not
 d <- left_join(d3, corp_match, by="tgrep_id")
 length(unique(d$workerid)) # 385
 
@@ -222,6 +218,7 @@ nrow(a2) #770
 con = rbind(t,a1,a2)
 nrow(con) #2310
 
+########################################################################
 # filter out participants who failed more than 2 controls
 failed_controls = con %>%
   filter(control_passed == "1") %>%
@@ -296,9 +293,7 @@ other_ratings = test %>%
            (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="the"]))
 
 nrow(other_ratings)/nrow(test_agr)*100 # 17.3%
-232*4*30
 nrow(test_agr)#1340
-335*4
 
 or_ids = other_ratings$tgrep_id
 test_other = test %>%
@@ -307,7 +302,7 @@ test_other = test %>%
 # 16% of the items which are rhetorical questions
 nrow(test_other)/nrow(test)*100
 
-
+# filter out those bad guys
 test_norm = test %>%
   filter(!tgrep_id %in% or_ids)
 nrow(test_norm)/nrow(test)*100 # 82.76%
@@ -342,7 +337,6 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
 ggsave("../graphs/main_test_norm_ModxWh.pdf")
 
 
-# A vs. All
 agr = test_norm %>%
   group_by(paraphrase) %>%
   filter(paraphrase %in% c("every","a","the")) %>%
@@ -401,7 +395,7 @@ ggplot(agr, aes(x=mean_rating)) +
 ########################################################################
 ########################################################################
 agr = test_norm %>%
-  filter(paraphrase %in% c("every","a")) %>%
+  filter(paraphrase %in% c("every","a", "the")) %>%
   group_by(paraphrase,ModalPresent) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
@@ -413,11 +407,13 @@ ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
   # ggtitle("Mean rating ModalPresent") +
   xlab("Modal Present") +
   ylab("Mean rating") +
-  theme(legend.title = element_blank(),
-        legend.position = "bottom")
+  theme(legend.title = element_blank()) +
+  theme(legend.key.size = unit(0.3, "cm"),
+        legend.position = "top", # c(.5,1)
+        legend.direction = "horizontal")
         # legend.spacing.y = unit(-10, 'cm'))
   # guides(fill=guide_legend(title="Paraphrase"))
-ggsave("../graphs/main_ModalPresent_allXa.pdf")
+ggsave("../graphs/main_ModalPresent_allXaxthe.pdf")
 
 # rename 'ca' in modals to 'can'
 test_norm$Modal[test_norm$Modal == "ca"] = "can"
@@ -561,35 +557,167 @@ View(other_high)
 ########################################################################
 
 # Paraphrase as predictor
-# only "a" and "every"
+# only "a" and "every" and "the"
 ########################################################################
-
 critical = test_norm %>%
-  filter(paraphrase %in% c("every","a"))
+  filter(paraphrase %in% c("every","a","the"))
+View(critical)
 
-str(critical)
-length(unique(critical$workerid))
+critical$ids = paste(critical$workerid,critical$tgrep_id)
+
 critical$ModalPresent = as.factor(critical$ModalPresent)
 critical$Wh = as.factor(critical$Wh)
 critical$paraphrase = as.factor(critical$paraphrase)
 
-# mean center modalpresent and paraphrase (2-level variables only)
+# First renormalize the probability distribution to these three paraphrases
+length(unique(critical$tgrep_id))
+nrow(critical)
+
+cr = critical %>%
+  group_by(ids) %>%
+  # summarize(rating_sum = rating[paraphrase=="a"] + rating[paraphrase=="every"] + rating[paraphrase=="the"])
+  mutate(rating_a = rating[paraphrase=="a"], rating_every = rating[paraphrase=="every"], rating_the = rating[paraphrase=="the"]) %>%
+  summarize(rating_sum = rating_a + rating_every + rating_the)
+nrow(cr) #27585
+# remove duplicate rows
+xr = cr %>%
+  distinct(ids, .keep_all=TRUE)
+nrow(xr) #9195
+
+nrow(xr)==length(unique(xr$ids))
+
+critical = merge(xr,critical,by='ids')
+nrow(critical) #27585
+View(critical)
+
+critical$factors = paste(critical$ids,critical$paraphrase)
+normed_agr = critical %>%
+  group_by(factors) %>%
+  summarise(normed_rating = rating/rating_sum)
+View(normed_agr)
+
+normed = merge(normed_agr,critical,by='factors')
+
+nrow(normed)
+View(normed)
+
+agr = normed %>%
+  group_by(Wh,ModalPresent,paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
+  facet_wrap(~Wh) +
+  xlab("Paraphrase") +
+  ylab("Mean rating") +
+  ggsave("../graphs/final_norm_ModxWh.pdf")
+
+
+agr = normed %>%
+  group_by(paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge", show.legend = FALSE) +
+  # ggtitle("Mean rating for 'a' vs. 'every'") +
+  xlab("Paraphrase") +
+  ylab("Mean rating") +
+  theme(legend.position = "none")
+ggsave("../graphs/final_normed_overall.pdf")
+
+########################################################################
+########################################################################
+# WH
+########################################################################
+########################################################################
+agr = normed %>%
+  group_by(paraphrase,Wh) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
+ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))  +
+  # ggtitle("Mean rating for Wh-Word") +
+  xlab("Wh-Word") +
+  ylab("Mean rating") +
+  theme(legend.title = element_blank()) +
+  theme(legend.key.size = unit(0.3, "cm"),
+        legend.position = "top", # c(.5,1)
+        legend.direction = "horizontal")
+ggsave("../graphs/final_normed_wh.pdf")
+
+
+########################################################################
+########################################################################
+# Modal
+########################################################################
+########################################################################
+agr = normed %>%
+  group_by(paraphrase,ModalPresent) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
+ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
+  xlab("Modal Present") +
+  ylab("Mean rating") +
+  theme(legend.title = element_blank()) +
+  theme(legend.key.size = unit(0.3, "cm"),
+        legend.position = "top", # c(.5,1)
+        legend.direction = "horizontal")
+# legend.spacing.y = unit(-10, 'cm'))
+# guides(fill=guide_legend(title="Paraphrase"))
+ggsave("../graphs/final_normed_modalpresent.pdf")
+
+# rename 'ca' in modals to 'can'
+mod = normed %>%
+  filter(ModalPresent %in% c("yes")) %>%
+  group_by(Modal,paraphrase) %>%
+  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
+
+ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
+  geom_bar(stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
+  facet_wrap(~Modal)
+ggsave("../graphs/final_normed_modals.pdf")
+
+# mean center modalpresent (2-level variables only)
+centered = cbind(normed,myCenter(normed[,c("ModalPresent")]))
+# ERROR:Error in data.frame(..., check.names = FALSE) : 
+# arguments imply differing number of rows: 27585, 0
+
+head(centered)
+summary(centered)
+str(centered)
+
 
 # Full Model
-m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
+# message?: boundary (singular) fit: see ?isSingular
 summary(m)
 
-# Fixed Effects
+# Fixed Effects, all still significant
 # paraphrase
-m1 = lmerTest::lmer(rating ~ ModalPresent*Wh + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+m1 = lmerTest::lmer(rating ~ ModalPresent*Wh + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
 anova(m,m1) #***
 
 # ModalPresent
-m2 = lmerTest::lmer(rating ~ Wh*paraphrase + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+m2 = lmerTest::lmer(rating ~ Wh*paraphrase +  (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
 anova(m,m2) #***
 
 # Wh
-m3 = lmerTest::lmer(rating ~ ModalPresent*paraphrase + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+m3 = lmerTest::lmer(rating ~ ModalPresent*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
 anova(m,m3) #***
 
 
@@ -601,41 +729,22 @@ summary(glht(m, linfct = rbind(K1,K2,K3)))
 
 # Interaction terms
 # TO ANSWER: is this really a legitimate way of doing interactions?
-critical$WP = interaction(critical$Wh,critical$paraphrase)
-m.i = lmerTest::lmer(rating ~ WP*ModalPresent + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+normed$WP = interaction(normed$Wh,normed$paraphrase)
+m.i = lmerTest::lmer(rating ~ WP*ModalPresent + (1|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
 summary(glht(m.i,mcp(WP="Tukey")))
 
-critical$MP = interaction(critical$ModalPresent,critical$paraphrase)
-m.i = lmerTest::lmer(rating ~ MP*Wh + (1|workerid) + (1|tgrep_id), data=critical,REML=FALSE) 
+normed$MP = interaction(normed$ModalPresent,normed$paraphrase)
+m.i = lmerTest::lmer(rating ~ MP*Wh + (1|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
 summary(glht(m.i,mcp(MP="Tukey")))
 
 ########################################################################
 ########################################################################
 ########################################################################
 ########################################################################
-# Normalizing A and Every
-# Goal: noramlize probability distributions over just 'a' and 'every'
+# Normalizing A and Every and The 
 
 
-length(unique(critical$tgrep_id))
-n = critical %>%
-  group_by(workerid,tgrep_id, paraphrase) %>%
-  summarize(count=n()) %>%
-  filter(count > 1)
-View(n)
 
-View(cr)
-cr = critical %>%
-  group_by(workerid,tgrep_id) %>%
-  # spread(paraphrase,rating)
-  mutate(rating_a = rating[paraphrase=="a"], rating_every = rating[paraphrase=="every"]) %>%
-  summarize(rating_sum = rating_a + rating_every)
-  
-crit_normed = left_join(cr,critical,by=c("tgrep_id","workerid","paraphrase"))
-View(crit_normed)
-agr_normed = crit_normed %>%
-  group_by(workerid,tgrep_id,paraphrase) %>%
-  summarise(normed_rating = round(rating/rating_sum))
   
 View(agr_normed)
 
