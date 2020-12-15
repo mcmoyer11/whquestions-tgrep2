@@ -548,13 +548,7 @@ View(other_high)
   
 ########################################################################
 ########################################################################
-########################################################################
-########################################################################
-# Regression Models
-########################################################################
-########################################################################
-########################################################################
-########################################################################
+# NORMING ROUND 2
 
 # Paraphrase as predictor
 # only "a" and "every" and "the"
@@ -692,16 +686,11 @@ ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
   facet_wrap(~Modal)
 ggsave("../graphs/final_normed_modals.pdf")
 
-# mean center modalpresent (2-level variables only)
-centered = cbind(normed,myCenter(normed[,c("ModalPresent")]))
-# ERROR:Error in data.frame(..., check.names = FALSE) : 
-# arguments imply differing number of rows: 27585, 0
-
-head(centered)
-summary(centered)
-str(centered)
-
-
+########################################################################
+########################################################################
+# Regression Models
+########################################################################
+########################################################################
 # Full Model
 m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
 # message?: boundary (singular) fit: see ?isSingular
@@ -738,6 +727,21 @@ m.i = lmerTest::lmer(rating ~ MP*Wh + (1|workerid) + (1|tgrep_id), data=normed,R
 summary(glht(m.i,mcp(MP="Tukey")))
 
 ########################################################################
+# mean center modalpresent (2-level variables only)
+normed$ModalPresent[normed$ModalPresent == "no"] = "0"
+normed$ModalPresent[normed$ModalPresent == "yes"] = "1"
+
+normed$ModalPresent = as.factor(normed$ModalPresent)
+
+str(normed)
+centered = cbind(normed,myCenter(normed["ModalPresent"]))
+
+head(centered)
+summary(centered)
+str(centered)
+m = lmerTest::lmer(rating ~ cModalPresent*Wh*paraphrase + (1+cModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=centered,REML=FALSE) 
+
+
 ########################################################################
 ########################################################################
 ########################################################################
