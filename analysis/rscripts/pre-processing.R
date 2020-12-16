@@ -595,6 +595,7 @@ View(normed_agr)
 
 normed = merge(normed_agr,critical,by='factors')
 normed[is.na(normed$ModalPresent)] <- "no"
+
 # save to .csv to load into analysis script
 write.csv(normed,"../data/normed.csv")
 
@@ -679,7 +680,7 @@ ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
 # guides(fill=guide_legend(title="Paraphrase"))
 ggsave("../graphs/final_normed_modalpresent.pdf")
 
-# rename 'ca' in modals to 'can'
+
 mod = normed %>%
   filter(ModalPresent %in% c("yes")) %>%
   group_by(Modal,paraphrase) %>%
@@ -691,86 +692,6 @@ ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
   facet_wrap(~Modal)
 ggsave("../graphs/final_normed_modals.pdf")
-
-########################################################################
-########################################################################
-# Regression Models
-########################################################################
-########################################################################
-# Full Model
-m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
-# message?: boundary (singular) fit: see ?isSingular
-summary(m)
-
-# Fixed Effects, all still significant
-# paraphrase
-m1 = lmerTest::lmer(rating ~ ModalPresent*Wh + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
-anova(m,m1) #***
-
-# ModalPresent
-m2 = lmerTest::lmer(rating ~ Wh*paraphrase +  (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
-anova(m,m2) #***
-
-# Wh
-m3 = lmerTest::lmer(rating ~ ModalPresent*paraphrase + (1+ModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
-anova(m,m3) #***
-
-
-# Pairwise comparisons
-K1 <- glht(m,mcp(Wh="Tukey"))$linfct
-K2 <- glht(m,mcp(paraphrase="Tukey"))$linfct
-K3 <- glht(m,mcp(ModalPresent="Tukey"))$linfct
-summary(glht(m, linfct = rbind(K1,K2,K3)))
-
-# Interaction terms
-# TO ANSWER: is this really a legitimate way of doing interactions?
-normed$WP = interaction(normed$Wh,normed$paraphrase)
-m.i = lmerTest::lmer(rating ~ WP*ModalPresent + (1|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
-summary(glht(m.i,mcp(WP="Tukey")))
-
-normed$MP = interaction(normed$ModalPresent,normed$paraphrase)
-m.i = lmerTest::lmer(rating ~ MP*Wh + (1|workerid) + (1|tgrep_id), data=normed,REML=FALSE) 
-summary(glht(m.i,mcp(MP="Tukey")))
-
-########################################################################
-# mean center modalpresent (2-level variables only)
-normed$ModalPresent[normed$ModalPresent == "no"] = "0"
-normed$ModalPresent[normed$ModalPresent == "yes"] = "1"
-
-normed$ModalPresent = as.factor(normed$ModalPresent)
-
-str(normed)
-centered = cbind(normed,myCenter(normed["ModalPresent"]))
-
-head(centered)
-summary(centered)
-str(centered)
-m = lmerTest::lmer(rating ~ cModalPresent*Wh*paraphrase + (1+cModalPresent|workerid) + (1+Wh|workerid) + (1+paraphrase|workerid) + (1|tgrep_id), data=centered,REML=FALSE) 
-
-
-########################################################################
-########################################################################
-########################################################################
-# Normalizing A and Every and The 
-
-
-
-  
-View(agr_normed)
-
-agr = agr_normed %>%
-  # mutate(normed_rating = rating*2) %>%
-  group_by(paraphrase) %>%
-  summarize(mean_normed_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
-  mutate(YMin = mean_normed_rating - CILow, YMax = mean_normed_rating + CIHigh)
-View(agr)
-ggplot(agr, aes(x=paraphrase,y=mean_normed_rating)) +
-  geom_bar(stat="identity",position = "dodge") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))
-  # facet_wrap(~ModalPresent)
-
-
-ggsave("../graphs/.pdf")
 
 
 
