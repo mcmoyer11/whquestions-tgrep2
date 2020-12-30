@@ -17,7 +17,7 @@ add StringVar QuantifiedSubject
 add StringVar QuantifiedPredicate
 add StringVar Wh
 add StringVar MatrixNegation
-add StringVar MatrixDoSupport
+add StringVar InvertedMatrixVerb
 add StringVar MatrixPred1
 add StringVar MatrixPred2
 add StringVar MatVerbPart
