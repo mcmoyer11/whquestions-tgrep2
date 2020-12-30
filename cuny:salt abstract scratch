@@ -1,0 +1,60 @@
+cuny/salt abstract scratch
+
+Meeting notes:
+- General guiding question, from a theoretical perspective what should happen?
+- literatuer predicts a bias for ma over ms
+
+- a: doesn't seem to be a bias in the first place (where you can tease them apart)
+- include cases where a is preferred to all, and 
+
+- in the method section, ideally we would ask for MS vs MA
+for many cases, the two interpretations were the same (give examples)
+
+- if looking at the other bars
+- take all the cases for which 'other' received a high r
+
+- renormalize the distributions
+for each item, compute means for each para
+if the mean is highest for 'other', throw in to one bucket
+proportion of items that received a high 'other' rating
+
+report that we are excluding these
+
+- framing:
+there are many theories of (non-)exhaustivity in qs.
+what is the consensus? (what do people agree about)--MA default
+
+baseline intuition data.
+additional observations regarding wh and modal
+- but none of these intuitions come from actually looking at the way real people produce real language
+- in order to strengthen the empirical landscape on which theory building proceeds, we're going to look at a corpus of naturally occuring speech
+- get naive participants judgements 
+
+Step 1: Tgrep database
+empirical considertaions 
+report descriptive Stats
+how many contain modals
+how many whs.
+
+
+
+Step 2: get the 
+(1) is there variability? do we see the bias for MA answers?
+(2) are the observations made previously supported by the data?
+ be sure to report why some were excluded?
+ 
+
+conclusions:
+no bias
+observations not as cleanly supported
+leads to a methodological conclusion about 
+problematic for the purpose of theory building about examples that people come up with on the fly about input data
+
+point out where the results of Moyer \& Syrett are replicated.
+
+- not useful thinking about a default that can be overidden, but that a listener has to figure out the interpretation...consistent with constraint-based 
+
+First step, limited, questions about whether it will replicate in other corpora, once we take in to account embedded questions...
+
+Mixed effects without 'other'-preferred paras (see how many are left)
+report p values
