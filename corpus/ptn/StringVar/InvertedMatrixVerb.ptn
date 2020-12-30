@@ -1,0 +1,1 @@
+@WH >> (/^WH/ > (/^SBAR/ [$ /^VB|^JJ|^BE|^RB/=va | > (/^PP/ $ /^JJ|^VB|^BE|^RB/=vb)] !> /^NP/ !$ /^NN/ ,, (@TERMINAL=print [.. =va | .. =vb]) ))  
