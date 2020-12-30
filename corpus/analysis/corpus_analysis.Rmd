@@ -1,5 +1,5 @@
 ---
-title: "Analysis of factive verbs"
+title: "Analysis of wh-questions"
 author: "mcmoyer"
 date: "October 22, 2020"
 output: html_document
@@ -11,21 +11,23 @@ Set your path here and load some packages that are necessary for visualization
 (ggplot), tidy data handling (tidyr and dplyr), and mixed effects modeling (lme4:
                                                                                                                                                                
 ```{r}  
-setwd("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/")
-source("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/helpers.R")
 library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(lme4)
 # theme_set(theme_bw())
+
+this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(this.dir)
+source("../../analysis/helpers.R")
 ```
 
 Read the database into R and explore it.
 ```{r}
-d = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+d = read.table("../results/swbd.tab",sep="\t",header=T,quote="")
 
 # Load in the .csv with the contexts removed
-# d = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/swbd_nocntxt.csv",header=T)
+# d = read.csv("swbd_nocntxt.csv",header=T)
 View(d)
 # old
 nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
@@ -33,16 +35,6 @@ head(d)
 str(d)
 summary(d)
 
-# View(d[1:26])
-# ncol(d)
-# names = colnames(d)
-# 
-# for(n in names) {
-#    d[n] <- as.factor(d$n)
-#     }
-# summary(d)
-
-# d = as.factor(d[1:26])
 str(d)
 table(d$QuestionType)
 # Make sure there are none without a tag
@@ -57,18 +49,20 @@ View(se)
 
 d[d["Item_ID"] == "331:188"] # shouldn't be embedded
 d[d["Item_ID"] == "72099:29"]
+
 ```
 
-(TOP (SBARQ (CC but) (PRN (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) 
-(WHNP-1 (WDT whatever)) 
-(SQ (NP-SBJ (-NONE- *T*-1)) 
-    (VP (VBD became) 
-        (PP (IN of) (NP (NNP Peter) (NNP Frampton))))) (. .) (-DFL- E_S)))
+1064:40
+(TOP (S (NP-SBJ (NP (NN Loneliness)) (SBAR (-NONE- *ICH*-2))) 
+        (VP (VBZ is) (NP-PRD (NP (DT the) (RBS closest)) 
+                              (SBAR (WHADJP-1 (-NONE- 0)) (S (NP-SBJ (PRP you)) 
+                                                            (VP (MD can) (VP (VB come) (ADJP-PRD (-NONE- *T*-1))))))) 
+                      (, ,) 
+                      (SBAR-2 (WHNP-3 (WDT which)) (S (NP-SBJ (-NONE- *T*-3)) (VP (VBZ is) (ADVP (RB really)) (ADJP-PRD (RB quite) (JJ different)))))) (. .) (-DFL- E_S)))
 
 
-
-
-
+(TOP (SQ (VBZ Is) (NP-SBJ (DT that)) 
+  (SBAR-NOM-PRD (WHNP-1 (WP what)) (, ,) (S (NP-SBJ (PRP it)) (VP (VBZ does) (NP (-NONE- *T*-1))))) (. ?) (-DFL- E_S)))
 
 
 
@@ -130,19 +124,6 @@ write.csv(snew, "whq_sample_200_neworig.csv",row.names = TRUE)
 # 
 ```
 
-(TOP (S (INTJ (UH Uh)) 
-        (, ,) 
-        (NP-SBJ (NP (CD one)) 
-                (PP (IN of) (NP (PRP$ its) (JJ great) (NNS slogans)))) 
-        (VP (VBZ is) (SBAR-PRD (-NONE- 0) 
-        (S (SBAR-ADV (IN if) (S (NP-SBJ (PRP you)) (VP (VBP 're) (RB not) (VP (VBG serving) (NP (DT the) (NN customer)))))) 
-        (, ,) (NP-SBJ (PRP you)) (ADVP (RBR better)) 
-        (VP (VB be) (VP (VBG serving) 
-                        (NP (NP (NN someone)) 
-                            (SBAR (WHNP-1 (WP who)) 
-                                  (S (NP-SBJ (-NONE- *T*-1)) (VP (VBZ is) (NP-PRD (-NONE- *?*))))))))))) (. .) (-DFL- E_S)))
-
-
 # some embedded cases aren't printing a matrix verb
 ```{r}
 emb <- subset(d, d$QuestionType=="embedded")
@@ -155,28 +136,14 @@ nrow(enmv) # 3333.....0! fixed
 View(enmv)
 
 ```
-
-but it says 0 when the conversation is over *t*-1 * just say your good-byes and hang up.
-(TOP (S (CC but) 
-        (NP-SBJ (PRP it)) 
-        (VP (VBZ says) 
-            (SBAR (-NONE- 0) 
-                  (S-IMP-SEZ (SBAR-TMP (WHADVP-1 (WRB when)) 
-                                      (S (NP-SBJ (DT the) (NN conversation)) (VP (VBZ is) (ADVP-PRD (RP over)) (ADVP-TMP (-NONE- *T*-1))))) (NP-SBJ (-NONE- *)) (ADVP (RB just)) (VP (VP (VB say) (NP (PRP$ your) (NNS good-byes))) (CC and) (VP (VB hang) (PRT (RP up))))))) (. .) (-DFL- E_S)))
-
-
-
-(TOP (S (CC And) (NP-SBJ (PRP I)) 
-                  (VP (VBP think) 
-                      (SBAR (IN that) 
-                            (S (SBAR-TMP (WHADVP-1 (WRB when)) 
-                                (S (NP-SBJ (PRP she)) (VP (VBD passed) (ADVP (RB away)) (ADVP-TMP (-NONE- *T*-1))))) (NP-SBJ (PRP it)) (VP (VBD was) (ADVP (RB probably)) (NP-PRD (NP (CD one)) (PP (IN of) (NP-UNF (DT the) (JJS greatest)))))))) (, ,) (-DFL- N_S)))
-
-
+Take a look at cases where there is no questionType assigned.
 ```{r}
 no_qt = subset(d, d$QuestionType=="")
 nrow(no_qt) # 1016....819....20....18...0!
 View(no_qt)
+```
+Look at the modal and non-modal cases
+```{r}
 
 mod = subset(d, d$ModalPresent=="yes")
 nrow(mod) # 895
@@ -197,7 +164,7 @@ View(nf)
 # Do these return all the same ?
 all.equal(nf,nf2) # TRUE
 ````
-
+cases that are tagged neither as modal or non-modal
 
 
 
@@ -246,4 +213,8 @@ View(agr)
 
 ```
 
+Looking at embedded questions
+```{r}
 
+
+```
