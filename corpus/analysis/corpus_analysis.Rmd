@@ -45,7 +45,7 @@ nrow(nonya)
 d_emb = subset(d, d$QuestionType=="embedded")
 set.seed(234)
 se <- sample(d_emb,30)
-View(se)
+View(se[se[,c("Sentence","Item_ID","SentenceParse","MatrixPred1","InvertedMatrixVerb")]])
 
 d[d["Item_ID"] == "331:188"] # shouldn't be embedded
 d[d["Item_ID"] == "72099:29"]
