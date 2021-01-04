@@ -45,24 +45,44 @@ nrow(nonya)
 d_emb = subset(d, d$QuestionType=="embedded")
 set.seed(234)
 se <- sample(d_emb,30)
-View(se[se[,c("Sentence","Item_ID","SentenceParse","MatrixPred1","InvertedMatrixVerb")]])
+names(se)
+# look at just the columns of interest
+View(se[,c("Item_ID","Sentence","MatrixPred1","InvertedMatrixVerb","MatVerbPart","Question","SentenceParse")])
 
 d[d["Item_ID"] == "331:188"] # shouldn't be embedded
 d[d["Item_ID"] == "72099:29"]
 
 ```
 
-1064:40
-(TOP (S (NP-SBJ (NP (NN Loneliness)) (SBAR (-NONE- *ICH*-2))) 
-        (VP (VBZ is) (NP-PRD (NP (DT the) (RBS closest)) 
-                              (SBAR (WHADJP-1 (-NONE- 0)) (S (NP-SBJ (PRP you)) 
-                                                            (VP (MD can) (VP (VB come) (ADJP-PRD (-NONE- *T*-1))))))) 
-                      (, ,) 
-                      (SBAR-2 (WHNP-3 (WDT which)) (S (NP-SBJ (-NONE- *T*-3)) (VP (VBZ is) (ADVP (RB really)) (ADJP-PRD (RB quite) (JJ different)))))) (. .) (-DFL- E_S)))
 
 
-(TOP (SQ (VBZ Is) (NP-SBJ (DT that)) 
-  (SBAR-NOM-PRD (WHNP-1 (WP what)) (, ,) (S (NP-SBJ (PRP it)) (VP (VBZ does) (NP (-NONE- *T*-1))))) (. ?) (-DFL- E_S)))
+we were lucky in, that in one respect in that after she had her stroke she wasn't really, you know, really much aware of what *t*-1 was going on.
+
+(TOP (S (NP-SBJ (PRP We)) 
+        (VP (VBD were) 
+            (ADJP-PRD (JJ lucky) 
+                      (EDITED (RM (-DFL- [)) (SBAR-UNF (IN in) (, ,) (IN that)) (IP (-DFL- \+))) 
+                      (PP (IN in) (NP (CD one) (RS (-DFL- ])) (NN respect))) 
+                      (SBAR (IN in) (IN that) 
+                            (S (SBAR-TMP (IN after) (S (NP-SBJ (PRP she)) (VP (VBD had) (NP (PRP$ her) (NN stroke)))))
+                      (NP-SBJ (PRP she)) 
+                      (VP (VBD was) (RB n't) 
+                          (EDITED (RM (-DFL- [)) (ADVP (RB really)) (, ,) (IP (-DFL- \+))) 
+                          (PRN (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) 
+                          (ADVP (RB really)) 
+                          (RS (-DFL- ])) 
+                          (ADJP-PRD (RB much) 
+                                    (JJ aware) 
+                                    (PP (IN of) 
+                                        (SBAR-NOM (WHNP-1 (WP what)) 
+                                                  (S (NP-SBJ (-NONE- *T*-1)) (VP (VBD was) (VP (VBG going) (PRT (RP on))))))))))))) (. .) (-DFL- E_S)))
+
+
+
+is that what, it does *t*-1?
+(TOP (SQ (VBZ Is) 
+        (NP-SBJ (DT that)) 
+        (SBAR-NOM-PRD (WHNP-1 (WP what)) (, ,) (S (NP-SBJ (PRP it)) (VP (VBZ does) (NP (-NONE- *T*-1))))) (. ?) (-DFL- E_S)))
 
 
 
