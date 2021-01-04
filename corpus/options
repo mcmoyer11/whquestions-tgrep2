@@ -13,6 +13,7 @@ add CategoricalVar SubjectAuxInv=yes:SubjectAux
 add CategoricalVar WhAll=yes:WhAll
 add CategoricalVar MatrixNegPresent=yes:MatrixNegPresent
 add CategoricalVar EmbeddedNegPresent=yes:EmbeddedNegPresent
+add CategoricalVar SbarNomPresent=yes:SbarNom
 add StringVar QuantifiedSubject
 add StringVar QuantifiedPredicate
 add StringVar Wh
