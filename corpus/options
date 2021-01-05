@@ -7,7 +7,7 @@ add StringVar Sentence
 add CategoricalVar HaveNeedTo=yes:HaveNeed,no:NotHaveNeed
 add CategoricalVar Finite=no:Infinite,yes:Finite
 add CategoricalVar ModalPresent=yes:Modal,no:NotModal
-add CategoricalVar QuestionType=subject:QuestionSubject,adjunct:QuestionAdjunct,embadjunct:EmbAdjunct,exclamation:ExclamQ,root:RootQ,embedded:EmbQ,relative:RelClause,fragment:FragmentQ
+add CategoricalVar QuestionType=subject:QuestionSubject,adjunct:QuestionAdjunct,embadjunct:EmbAdjunct,exclamation:ExclamQ,root:RootQ,embedded:EmbQ,relative:RelClause,fragment:FragmentQ,cleft:Cleft
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
 add CategoricalVar SubjectAuxInv=yes:SubjectAux
 add CategoricalVar WhAll=yes:WhAll
