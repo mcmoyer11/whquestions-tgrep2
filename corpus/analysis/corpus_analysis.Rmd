@@ -40,6 +40,10 @@ table(d$QuestionType)
 # Make sure there are none without a tag
 nonya <- subset(d, d$QuestionType=="")
 nrow(nonya)
+# 
+#  adjunct       cleft  embadjunct    embedded exclamation    fragment    relative        
+#         775         586        2401        2432          34         126        1378        root     subject 
+#         1719         748 
 
 
 View(subset(d,d$QuestionType=="cleft"))
@@ -49,8 +53,8 @@ nrow(subset(d,d$QuestionType=="embedded"))
 d_emb = subset(d, d$QuestionType=="embedded")
 d_crit = d_emb %>%
   filter(Wh %in% c("who","where","how"))
-nrow(d_emb) # 3018
-nrow(d_crit) #1087
+nrow(d_emb) # 3018 --> 2421
+nrow(d_crit) #1087 --> 954
 set.seed(123)
 see <- sample_n(d_crit,30)
 # names(see)
@@ -58,12 +62,17 @@ see <- sample_n(d_crit,30)
 View(see[,c("Item_ID","Sentence","MatrixPred1","InvertedAuxVerb","MatVerbPart","Question","SentenceParse")])
 
 d[d["Item_ID"] == "331:188"] # shouldn't be embedded
+d[d["Item_ID"] == "107183:17"] # shouldn't be embedded
 d[d["Item_ID"] == "72099:29"]
 
 ```
 
 so i mean, how i would go about *-1 doing it *t*-2 is i would just call all my relatives.
+(TOP (S (RB so) 
+        (PRN (S (NP-SBJ (PRP I)) (VP (VBP mean))) (, ,)) 
+        (SBAR-NOM-SBJ (WHADVP-2 (WRB how)) (S (NP-SBJ-1 (PRP I)) (VP (MD would) (VP (VB go) (PRT (IN about)) (S (NP-SBJ (-NONE- *-1)) (VP (VBG doing) (NP (PRP it)))) (ADVP-MNR (-NONE- *T*-2)))))) (VP (VBZ is) (S-PRD (NP-SBJ (PRP I)) (VP (MD would) (ADVP (RB just)) (VP (VB call) (NP (DT all) (PRP$ my) (NNS relatives)))))) (. .) (-DFL- E_S)))
 
+but they do read. uh, where a lot of people don't have any interest in it at all *t*-1,
 
 
 Take a random sample of 200.
