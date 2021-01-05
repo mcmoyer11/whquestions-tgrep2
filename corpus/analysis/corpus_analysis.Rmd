@@ -51,97 +51,20 @@ set.seed(123)
 see <- sample_n(d_crit,30)
 # names(see)
 # look at just the columns of interest
-View(see)
-View(see[,c("Item_ID","Sentence","MatrixPred1","InvertedMatrixVerb","MatVerbPart","Question","SentenceParse")])
+View(see[,c("Item_ID","Sentence","MatrixPred1","InvertedAuxVerb","MatVerbPart","Question","SentenceParse")])
 
 d[d["Item_ID"] == "331:188"] # shouldn't be embedded
 d[d["Item_ID"] == "72099:29"]
 
 ```
 
-we have one of those * use it or lose it plans *ich*-1, too, where, uh, they'll basically pay for, uh, you know, child care type, uh, expenses *t*-2.
-(TOP (S (NP-SBJ (PRP we)) 
-        (VP (VBP have) 
-            (NP (NP (CD one)) 
-                (PP (IN of) 
-                    (NP (NP (DT those) 
-                            (S (NP-SBJ (-NONE- *)) 
-                              (VP (VP (VB use) (NP (PRP it))) (CC or) (VP (VB lose) (NP (PRP it))))) 
-                            (NNS plans)) 
-                        (SBAR (-NONE- *ICH*-1))))) 
-            (, ,) 
-            (ADVP (RB too)) 
-            (, ,) 
-            (SBAR-1 (WHADVP-2 (WRB where)) (, ,) (INTJ (UH uh)) (, ,) (S (NP-SBJ (PRP they)) (VP (MD 'll) (ADVP (RB basically)) (VP (VB pay) (PP (IN for) (, ,) (INTJ (UH uh)) (PRN (, ,) (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) (NP (NN child) (NN care) (NN type) (, ,) (INTJ (UH uh)) (, ,) (NNS expenses))) (ADVP (-NONE- *T*-2))))))) (. .) (-DFL- E_S)))
-
-
-
-uh, you know, i know that there are a lot of colleges and universities *ich*-3, particularly as they get *-1 to be a little bit on the smaller side where dormitory life is, uh, is right on campus as well *t*-2
-
-(TOP (S (INTJ (UH Uh)) 
-        (PRN (, ,) 
-             (S (NP-SBJ (PRP you)) (VP (VBP know))) 
-             (, ,)) 
-        (NP-SBJ (PRP I)) 
-        (VP (VBP know) 
-            (SBAR (IN that) 
-                  (S (NP-SBJ (EX there)) 
-                     (VP (VBP are) 
-                         (NP-PRD (NP (DT a) (NN lot)) (PP (IN of) (NP (NP (NNS colleges) (CC and) (NNS universities)) (SBAR (-NONE- *ICH*-3))))) 
-                     (, ,) 
-                     (SBAR-ADV (ADVP (RB particularly)) 
-                              (IN as) 
-                              (S (NP-SBJ-1 (PRP they)) 
-                                  (VP (VBP get) 
-                                      (S (NP-SBJ (-NONE- *-1)) 
-                                          (VP (TO to) 
-                                              (VP (VB be) 
-                                                  (PP-PRD 
-                                                        (NP-ADV (DT a) (JJ little) (NN bit)) 
-                                                        (IN on) (NP (DT the) (JJR smaller) (NN side)))))) 
-                                      (SBAR-3 (WHADVP-2 (WRB where)) 
-                                              (S (NP-SBJ (NN dormitory) (NN life)) 
-                                                  (EDITED (VP-UNF (VBZ is))) 
-                                                  (, ,) 
-                                                  (INTJ (UH uh)) 
-                                                  (, ,) 
-                                                  (VP (VBZ is) (PP-LOC-PRD (ADVP (RB right)) (IN on) (NP (NN campus))) (ADVP (RB as) (RB well)) (ADVP-LOC (-NONE- *T*-2)))))))))))) (-DFL- E_S)))
-
-
-
-uh, you know, i know that there are a lot of colleges and universities *ich*-3, particularly as they get *-1 to be a little bit on the smaller side where dormitory life is, uh, is right on campus as well *t*-2
-
-
-we have one of those * use it or lose it plans *ich*-1, too, where, uh, they'll basically pay for, uh, you know, child care type, uh, expenses *t*-2.
-(TOP (S (NP-SBJ (PRP we)) 
-        (VP (VBP have) 
-            (NP (NP (CD one)) 
-                (PP (IN of) 
-                    (NP (NP (DT those) 
-                            (S (NP-SBJ (-NONE- *)) 
-                               (VP (VP (VB use) (NP (PRP it))) 
-                                   (CC or) 
-                                   (VP (VB lose) (NP (PRP it))))) 
-                            (NNS plans)) 
-                        (SBAR (-NONE- *ICH*-1))))) 
-            (, ,) 
-            (ADVP (RB too)) 
-            (, ,) 
-            (SBAR-1 (WHADVP-2 (WRB where)) 
-                    (, ,) 
-                    (INTJ (UH uh)) 
-                    (, ,) 
-                    (S (NP-SBJ (PRP they)) 
-                       (VP (MD 'll) 
-                           (ADVP (RB basically)) (VP (VB pay) (PP (IN for) (, ,) (INTJ (UH uh)) (PRN (, ,) (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) (NP (NN child) (NN care) (NN type) (, ,) (INTJ (UH uh)) (, ,) (NNS expenses))) (ADVP (-NONE- *T*-2))))))) (. .) (-DFL- E_S)))
-
-
-
 Take a random sample of 200.
 ```{r}
 set.seed(123)
 s <- sample_n(d, 200)
 View(s)
+View(s[,c("Item_ID","QuestionType","Sentence","Question","SentenceParse")])
+
 nrow(s)
 # write to CSV
 
