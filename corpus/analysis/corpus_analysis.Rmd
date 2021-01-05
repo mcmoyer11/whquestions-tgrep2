@@ -67,12 +67,45 @@ d[d["Item_ID"] == "72099:29"]
 
 ```
 
-so i mean, how i would go about *-1 doing it *t*-2 is i would just call all my relatives.
-(TOP (S (RB so) 
-        (PRN (S (NP-SBJ (PRP I)) (VP (VBP mean))) (, ,)) 
-        (SBAR-NOM-SBJ (WHADVP-2 (WRB how)) (S (NP-SBJ-1 (PRP I)) (VP (MD would) (VP (VB go) (PRT (IN about)) (S (NP-SBJ (-NONE- *-1)) (VP (VBG doing) (NP (PRP it)))) (ADVP-MNR (-NONE- *T*-2)))))) (VP (VBZ is) (S-PRD (NP-SBJ (PRP I)) (VP (MD would) (ADVP (RB just)) (VP (VB call) (NP (DT all) (PRP$ my) (NNS relatives)))))) (. .) (-DFL- E_S)))
+i was like, god, how much were those bottles *t*-1 you know?
+(TOP (S (NP-SBJ (PRP I)) 
+        (VP (VBD was) 
+        (INTJ (IN like)) (, ,) 
+        (SBARQ-SEZ (INTJ (UH God)) 
+                    (, ,) 
+                    (WHNP-1 (WRB how) (JJ much)) (SQ (VBD were) (NP-SBJ (DT those) (NNS bottles)) (NP-PRD (-NONE- *T*-1)))) (PRN (S (NP-SBJ (PRP you)) (VP (VBP know))))) (. ?) (-DFL- E_S)))
 
-but they do read. uh, where a lot of people don't have any interest in it at all *t*-1,
+
+(TOP (S (NP-SBJ (DT that)) 
+        (VP (VBZ is) 
+            (SBAR-MNR-PRD (WHADVP-1 (WRB how)) (S (NP-SBJ (PRP I)) (VP (VBD got) (NP (PRP it)) (ADVP-MNR (-NONE- *T*-1))))) (ADVP (RB as) (RB well))) (-DFL- E_S)))
+
+SBAR-MNR-PRD, SBARQ-PRD, SBAR-MNR-PRD
+(TOP (S (EDITED (RM (-DFL- [)) 
+                (CC And) 
+                (, ,) 
+                (IP (-DFL- +))) 
+      (CC and) 
+      (RS (-DFL- ])) 
+      (NP-SBJ (DT the) (NN question)) 
+      (VP (VBZ is) 
+          (SBARQ-PRD (WHADVP-1 (WRB how)) (SQ (VBP do) (NP-SBJ (PRP you)) (VP (VB forecast) (NP (DT that)) (ADVP-MNR (-NONE- *T*-1)))))) (, ,) (-DFL- E_S)))
+
+(TOP (SQ (VBZ Is) 
+          (NP-SBJ (DT that)) 
+          (SBAR-MNR-PRD (WHADVP-2 (WRB how)) (S (NP-SBJ-1 (PRP you)) (VP (VBP 're) (VP (VBN supposed) (S (NP-SBJ (-NONE- *-1)) (VP (TO to) (VP (VB do) (ADVP-MNR (-NONE- *T*-2))))))))) (. ?) (-DFL- E_S)))
+
+
+(TOP (S (CC but) 
+        (, ,) 
+        (INTJ (UH uh)) 
+        (, ,) 
+        (NP-SBJ (PRP we)) 
+        (VP (VBP 're) 
+            (PP-PRD (IN to) (NP (NP (DT the) (NN point)) (SBAR (-NONE- *ICH*-1)))) 
+            (ADVP-TMP (RB now)) 
+            (SBAR-1 (WHADVP-3 (WRB where)) 
+                    (S (NP-SBJ (PRP$ our) (JJ financial) (NN income)) (VP (VBZ is) (ADJP-PRD (RB enough) (SBAR (IN that) (S (NP-SBJ-2 (PRP we)) (VP (MD can) (VP (VB consider) (S (NP-SBJ (-NONE- *-2)) (VP (VBG putting) (NP (DT some)) (ADVP (RB away)) (PP (IN for) (NP (NN college)))))))))) (ADVP (-NONE- *T*-3)))))) (, ,) (-DFL- E_S)))
 
 
 Take a random sample of 200.
