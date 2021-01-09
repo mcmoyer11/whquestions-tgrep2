@@ -19,9 +19,10 @@ add StringVar QuantifiedPredicate
 add StringVar Wh
 add StringVar MatrixNegation
 add StringVar InvertedAuxVerb
-add StringVar MatrixPred1
+add StringVar MatrixPredAux
+add StringVar MatrixPredVerb
+add StringVar MatrixPredParticle
 add StringVar MatrixPred2
-add StringVar MatVerbPart
 add StringVar Modal
 add StringVar EmbeddedNegation
 add StringVar Verb1
@@ -30,6 +31,7 @@ add StringVar Verb3
 add StringVar DeterminerSubject
 add StringVar DeterminerNonSubject
 add StringVar FullWhPhrase
+add StringVar JustMatrixClause
 add CategoricalVar DeterminerSubjPresent=yes:DeterminerSubject,no:NotDeterminerSubject
 add CategoricalVar DeterminerNonSubjPresent=yes:DeterminerNonSubject,no:NotDeterminerNonSubject
 add NodeVar WhNode
