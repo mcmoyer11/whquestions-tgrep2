@@ -69,9 +69,28 @@ d[d["Item_ID"] == "37590:29"]
 d[d["Item_ID"] == "72099:29"]
 # 
 
-```
-163362:21
+# and kind of a couple of people, they just took it from me without me knowing really and kind of passed it off, so i didn't know who *t*-1 had it.
 
+
+
+# for verb issues : 19249:155 (should not have MatPred1 filled)
+
+```
+for sentence.ptn: @WH >> (*=print !> *)
+for question.ptn: @WH >> /^S/=print
+for MatrixClause: @WH >> (/^WH/ > (/s/ ))
+
+163362:21
+@WH >> (/^WH/ > (/^SBAR/ [$ /^VB|^JJ|^RB/=vp | > (/^PP/=pp $ /^JJ|^VB|^RB/)])) >> (/S/=print < (/VP/ [< =vp | < =pp]))
+
+new MatrixPredVerb
+@WH >> (/^WH/ > (/^SBAR/ $ (/^VB/=vp ))) >> (/S/ < (/VP/ < =vp=print))
+
+MatrixPredOther
+@WH >> (/^WH/ > (/^SBAR/ $ (/^JJ|^RB/=pred ))) >> (/S/ < (/VP/ < =pred=print))
+
+MatrixPredParticle
+@WH >> (/^WH/ > (/^SBAR/ $ (/^PP|^IN/ < /^VB|^JJ|^RB/=pred ))) >> (/S/ < (/VP/ < =pred=print))
 
 (TOP (S (NP-SBJ (PRP$ Their) (NN military)) 
         (VP (VBZ is) 
