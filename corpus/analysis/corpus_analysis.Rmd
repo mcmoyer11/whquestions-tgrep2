@@ -56,6 +56,7 @@ d_crit = d_emb %>%
 nrow(d_emb) # 3018 --> 2421 --> 2357
 nrow(d_crit) #1087 --> 954 --> 912
 set.seed(123)
+set.seed(321)
 see <- sample_n(d_crit,30)
 # names(see)
 # look at just the columns of interest
@@ -72,15 +73,28 @@ d[d["Item_ID"] == "72099:29"]
 163362:21
 
 
-(TOP (S (NP-SBJ (PRP I)) 
-        (VP (VBD thought) (, ,) 
-            (SBARQ-SEZ (INTJ (UH well)) 
-                        (, ,) 
-                        (EDITED (RM (-DFL- \[)) 
-                        (SBARQ (WHADVP (WRB how)) 
-                                (SQ-UNF (VBP do) (NP-SBJ (PRP you)))) (, ,) (IP (-DFL- \+))) (WHADVP-1 (WRB how)) (SQ (VBP do) (NP-SBJ (PRP you)) (RS (-DFL- \])) (VP (VB weed) (NP (DT those)) (PRT (RP out)) (ADVP-MNR (-NONE- *T*-1)))))) (. ?) (-DFL- E_S)))
-            
+(TOP (S (NP-SBJ (PRP$ Their) (NN military)) 
+        (VP (VBZ is) 
+            (ADJP-PRD (JJ different) (PP (IN from) (NP (PRP ours))) (, ,)) 
+            (PP (IN to) 
+                (SBAR-NOM (WHADVP-6 (WRB where)) (S (NP-SBJ (EX there)) (VP (VBP are) (NP-PRD (NP (JJ extremist) (EDITED (RM (-DFL- \[)) (NNS gen-) (, ,) (IP (-DFL- \+))) (NNS generals)) (RS (-DFL- \])) (SBAR (WHNP-1 (WDT that)) (S (NP-SBJ (-NONE- *T*-1)) (ADVP (RB actually)) (VP (VBP control) (NP (NP (NNS tens) (CC and) (NNS thousands)) (PP (IN of) (NP (NNS troops))) (. .) (-DFL- E_S) (SBAR (WHNP-3 (IN That)) (-DFL- N_S) (S (ADVP (JJ irregardless) (PP (IN of) (SBAR-NOM (WHNP-2 (WP what)) (S (NP-SBJ (NNP Soviet) (NN policy)) (VP (VBZ is) (NP-PRD (-NONE- *T*-2))))))) (, ,) (NP-SBJ-4 (NP (-NONE- *T*-3)) (NP (PRP they))) (VP (VBP 're) (VP (VBG going) (S (NP-SBJ (-NONE- *-4)) (VP (TO to) (VP (VB do) (SBAR-NOM (WHNP-5 (WP what)) (S (NP-SBJ (DT the) (NN general)) (VP (VBZ tells) (NP (PRP them)) (NP (-NONE- *T*-5))))))))))))))))) (ADVP (-NONE- *T*-6))))))) (. .) (-DFL- E_S)))
 
+
+(TOP (S (INTJ (UH Well)) 
+        (, ,) (EDITED (RM (-DFL- [)) 
+        (S (NP-SBJ (PRP I)) (VP-UNF (VBP do))) 
+        (, ,) (IP (-DFL- +))) 
+        (NP-SBJ (PRP I)) 
+        (VP (VBP do) (RS (-DFL- ])) 
+            (VP (VB realize) 
+                (SBAR (IN that) 
+                      (S (NP-SBJ (DT the) (NNP Bush) (NNP Administration)) 
+                          (VP (VBZ is) 
+                              (RB n't) 
+                              (ADJP-PRD (RB too) (JJ happy) 
+                              (EDITED (RM (-DFL- [)) 
+                                      (PP (IN with) 
+                                          (SBAR (WHADVP-2 (WRB how)) (S (NP-SBJ (PRP they)) (VP (VBP 're) (VP (VBG handling) (NP (PRP$ their) (JJ internal) (, ,) (INTJ (UH uh)) (, ,) (NN strife)) (ADVP-MNR (-NONE- *T*-2)))))))) (PRN (, ,) (S (NP-SBJ (PRP you)) (VP (VBP know))) (, ,)) (ADVP (ADVP (RB as) (RB far)) (SBAR (IN as) (S (NP-SBJ-1 (NN diplomacy)) (VP (VBZ is) (VP (JJ concerned) (NP (-NONE- *-1)))))))))))) (. .) (-DFL- E_S)))
 
 Take a random sample of 200.
 ```{r}
