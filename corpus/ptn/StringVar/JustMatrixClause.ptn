@@ -1,1 +1,1 @@
-@WH >> (/^WH/ > (/^SBAR/ [$ /^VB|^JJ|^RB/=vp | > (/^PP/=pp $ /^JJ|^VB|^RB/)])) >> (/S/=print < (/VP/ [< =vp | < =pp]))
+@WH >> (/^WH/ > (/^SBAR/ [$ /^VB|^JJ|^RB/=vp | > (/^PP/=pp $ /^JJ|^VB|^RB/)])) >> (/S/=print [< (/VP/ [< =vp | < =pp]) | < (/VP/ < (/VP/ [< =vp | < =pp]))])

@@ -1,1 +1,1 @@
-@WH >> (/^WH/ > (/^SBAR/ $ (/^JJ|^RB/=pred ))) >> (/S/ < (/VP/ < =pred=print))
+@WH >> (/^WH/ > (/^SBAR/ $ /^JJ/=print))
