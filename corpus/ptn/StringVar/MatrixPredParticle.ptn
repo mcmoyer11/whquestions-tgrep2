@@ -1,1 +1,1 @@
-@WH >> (/^WH/ > (/^SBAR/ $ (/^PP|^IN/ < /^VB|^JJ|^RB/=print)))
+@WH >> (/^WH/ > (/^SBAR/ > (/PP|IN/ $ /^VB|^JJ/=print)))
