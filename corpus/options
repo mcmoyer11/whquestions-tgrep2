@@ -21,6 +21,7 @@ add StringVar MatrixNegation
 add StringVar InvertedAuxVerb
 add StringVar MatrixPredAux
 add StringVar MatrixPredVerb
+add StringVar MatrixPredOther
 add StringVar MatrixPredParticle
 add StringVar MatrixPred2
 add StringVar Modal
