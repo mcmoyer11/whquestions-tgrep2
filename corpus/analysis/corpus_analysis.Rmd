@@ -33,7 +33,30 @@ View(d)
 nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
 head(d)
 str(d)
-summary(d)
+names(d)
+
+wh = d %>%
+  filter(Wh %in% c("who","where","how","what","when","why") & QuestionType %in% c("root") &
+           WhPhaseType %in% c("monomorphemic") & IdentityQ %in% c("no") & DegreeQ %in% c("no"))
+View(wh)
+table(wh$ModalPresent,wh$Wh)
+
+# when --> times
+
+
+nrow(wh) # 
+
+root = d %>%
+  filter(QuestionType %in% c("root")) %>%
+  filter(Wh %in% c("whose","whereabouts","whatever","which"))
+View(root)
+unique(root$Wh)
+# exclude were & were
+# "whose","whereabouts","whatever","which")) because exhaustivity questions doesn't arise
+table(root$Wh)
+
+# convert all columns to factor
+d <- as.data.frame(unclass(d))
 
 str(d)
 table(d$QuestionType)
@@ -50,18 +73,28 @@ nrow(subset(d,d$QuestionType=="embedded")) #2357
 
 # randomly sample an embedded clause
 d_emb = subset(d, d$QuestionType=="embedded")
-View(sample_n(d_emb,10))
+# View(sample_n(d_emb,10))
 d_crit = d_emb %>%
   filter(Wh %in% c("who","where","how"))
-nrow(d_emb) # 3018 --> 2421 --> 2357
-nrow(d_crit) #1087 --> 954 --> 912
+nrow(d_emb) # 3018 --> 2421 --> 2357 --> 1692 (after removing SBAR-NOM)
+nrow(d_crit) #1087 --> 954 --> 912 --> 840 (after removing SBAR-NOM)
+
+d_crit2 = d_crit %>%
+  filter()
+
+
+table(d_crit$IdentityQ)
+
 set.seed(123)
 set.seed(321)
+se <- sample_n(d_crit,20)
+View(se[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","SentenceParse")])
 see <- sample_n(d_crit,30)
-names(see)
 View(see)
+names(see)
+View(see[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","Question","SentenceParse")])
 # look at just the columns of interest
-View(see[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","InvertedAuxVerb","Question","SentenceParse")])
+sub <- see[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","Question","SentenceParse")]
 
 d[d["Item_ID"] == "331:188"] # shouldn't be embedded
 d[d["Item_ID"] == "107183:17"] # shouldn't be embedded
@@ -71,72 +104,59 @@ d[d["Item_ID"] == "72099:29"]
 
 d[d["Item_ID"] == "416:58"]
 
+
+bann sbar nom
+d[d["Item_ID"] == "95116:24"]
+
 # 
 
-# and kind of a couple of people, they just took it from me without me knowing really and kind of passed it off, so i didn't know who *t*-1 had it.
-
-
+d[d["Item_ID"] == "19249:155"]
 
 # for verb issues : 19249:155 (should not have MatPred1 filled)
 
+
+106765:91
+
+d[d["Item_ID"] == "146693:65"]??? embedded 
+
 ```
-erroneeous embedded?
-(TOP (S (RB So) 
-        (NP-SBJ-1 (PRP I)) 
-        (VP (VBP tend) 
-            (S (NP-SBJ (-NONE- *-1)) 
-                (VP (TO to) 
-                    (VP (VP (VB get) (PRT (RP up)) (PP-TMP (IN in) (NP (DT the) (NN morning)))) 
-                    (, ,) 
-                    (VP (VBP put) 
-                        (PRT (RP on)) 
-                        (, ,) 
-                        (NP (NNS sweats))) 
-                    (, ,) (INTJ (UH um)) (, ,) 
-                    (VP (VB do) 
-                        (SBAR-NOM (WHNP-3 (WDT whatever)) (S (NP-SBJ-2 (PRP I)) (VP (VBP want) (S (NP-SBJ (-NONE- *-2)) (VP (TO to) (VP (VB do) (NP (-NONE- *T*-3)) (PP (IN with) (NP (DT the) (NNS kids)))))))))))))) (, ,)))"
-
-
-
-
-
-
-
-for sentence.ptn: @WH >> (*=print !> *)
-for question.ptn: @WH >> /^S/=print
-for MatrixClause: @WH >> (/^WH/ > (/s/ ))
-
-163362:21
-JustMartixClause
-@WH >> (/^WH/ > (/^SBAR/ [$ /^VB|^JJ|^RB/=vp | > (/^PP/=pp $ /^JJ|^VB|^RB/)])) >> (/S/=print < (/VP/ [< =vp | < =pp]))
-
-new MatrixPredVerb
-@WH >> (/^WH/ > (/^SBAR/=s1 $ (/^VB/=print > ((/VP/ | (/VP/ > /VP/)) [> (/S/  | > (/S/ > (/S/ << @WH << s1))]) )))
-<!-- >> (/S/ < (/VP/ < =vp=print)) -->
-@WH >> (/^WH/ > (/^SBAR/ $ /^VB/=print))
-
-MatrixPredOther
-@WH >> (/^WH/ > (/^SBAR/ $ (/^JJ|^RB/=pred ))) >> (/S/ < (/VP/ < =pred=print))
-@WH >> (/^WH/ > (/^SBAR/ $ (/^JJ|^RB/=print > (/VP/ [> (/S/ << @WH) | > (/S/ > (/S/ << @WH))]) )))
-
-MatrixPredParticle
-@WH >> (/^WH/ > (/^SBAR/ $ (/^PP|^IN/ < /^VB|^JJ|^RB/=pred ))) >> (/S/ < (/VP/ < =pred=print))
-@WH >> (/^WH/ > (/^SBAR/ $ (/^PP|^IN/ < (/^VB|^JJ|^RB/ > (/VP/ [> (/S/ << @WH) | > (/S/ > (/S/ << @WH))]) ))))
-
-
-
-
-Problems with JustMatrixClause Print:
-@WH >> (/^WH/ > (/^SBAR/ [$ /^VB|^JJ/=vp | > (/^PP/=pp $ /^JJ|^VB|^RB/)])) >> (/S/=print [< (/VP/ [< =vp | < =pp]) | < (/VP/ < (/VP/ [< =vp | < =pp]))])
-(TOP (S (INTJ (UH Uh)) (, ,) 
+(TOP (S (CC And) 
         (NP-SBJ (PRP I)) 
-        (VP (VBP do) 
-            (RB not) 
-            (VP 
-                (VB know) 
-                (SBAR (ADVP (RB exactly)) 
-                      (WHNP (WP what)) 
-                      (S-UNF (NP-SBJ (NP (DT the) (NN size)) (PP (IN of) (NP (DT the) (NNS juries)))))))) (. .) (-DFL- E_S)))
+        (VP (VBP think) 
+            (SBAR (-NONE- 0) 
+                  (S (NP-SBJ (DT that)) 
+                      (VP (VBZ is) 
+                          (SBAR-PRD (WHNP-3 (WP what)) (S (NP-SBJ-1 (PRP it)) (VP (VBZ is) (VP (VBG going) (S (NP-SBJ-2 (-NONE- *-1)) (VP (TO to) (VP (VB have) (S (NP-SBJ (-NONE- *-2)) (VP (TO to) (VP (VB come) (PP (IN to) (NP (-NONE- *T*-3)))))))))))))
+                          (. .) 
+                          (SBAR-TPC (WHADVP-5 (WRB Where)) (S (NP-SBJ-4 (PRP we)) (VP (VBP are) (ADVP (RB just)) (VP (VBN forced) (S (NP-SBJ (-NONE- *-4)) (VP-UNF (TO to) (ADVP (-NONE- *T*-5))))))))
+                          )
+                          )
+                          )
+                          ) (. .) (-DFL- N_S)))
+                          
+                          
+                          
+(TOP (S (NP-SBJ (PRP We)) 
+        (VP (VBD discovered) 
+            (SBAR (WHNP-1 (WHADJP (WRB how) (JJ much)) (NN work)) 
+                  (S (NP-SBJ (NP (PRP it)) (S (-NONE- *EXP*-4))) 
+                      (VP (VBZ is) 
+                          (NP-PRD (-NONE- *T*-1)) 
+                          (S-4 (NP-SBJ (-NONE- )) 
+                              (ADVP (RB just)) 
+                              (VP (TO to) 
+                                  (VP (VP (VB organize) (NP (-NONE- *RNR*-2))) 
+                                      (CC and) (VP (VB get) (NP (-NONE- *RNR*-2)) (ADVP (-NONE- *ICH*-3))) (NP-2 (PRP it)) (ADVP-3 (RB together))))))))) (. .)))
+                                      
+                                      
+(TOP (S (NP-SBJ (NNP D) (NNP C)) 
+        (VP (VBZ is) 
+            (INTJ (UH like)) 
+            (VP (VBG talking) 
+                (PP (IN about) 
+                    (SBAR (EDITED (RM (-DFL- \[)) (WHADVP (WRB how)) (, ,) (IP (-DFL- \+))) (WHADVP-2 (WRB how)) (RS (-DFL- \])) (S (NP-SBJ-1 (PRP they)) (VP (VBP 're) (VP (VBG going) (S (NP-SBJ (-NONE- *-1)) (VP (TO to) (VP (VP (VB get) (NP (DT a) (NN baseball) (NN team))) (CC and) (NP-ETC (NN everything))))) (ADVP-MNR (-NONE- *T*-2))))))))) (. .) (-DFL- E_S)))
+
+
 
 Take a random sample of 200.
 ```{r}
