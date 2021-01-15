@@ -1,5 +1,5 @@
 
-var path = 'https://raw.githubusercontent.com/mcmoyer11/whquestions-tgrep2/master/experiments/clean_corpus/corpus_1.txt'
+var path = 'https://raw.githubusercontent.com/mcmoyer11/whquestions-tgrep2/master/experiments/clean_corpus/03_experiment/corpus_3.txt'
 console.log(path);
  
 function get_data(fullpath) {
