@@ -112,9 +112,12 @@ d[d["Item_ID"] == "95116:24"]
 
 d[d["Item_ID"] == "19249:155"]
 
+
+d[d["Item_ID"] == "6220:90"]
+  168933:102
 # for verb issues : 19249:155 (should not have MatPred1 filled)
 
-
+6220:90
 106765:91
 
 d[d["Item_ID"] == "146693:65"]??? embedded 
