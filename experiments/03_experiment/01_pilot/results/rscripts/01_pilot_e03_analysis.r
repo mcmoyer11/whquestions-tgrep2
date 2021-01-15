@@ -6,8 +6,7 @@
 # ---
 
 ## Step 1: select stimuli for experiment
-setwd("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/02_experiment/01_pilot/results/rscripts/")
-source("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/helpers.R")
+
 library(ggplot2)
 library(tidyr)
 library(dplyr)
@@ -15,10 +14,16 @@ library(lme4)
 library(tidyverse)
 theme_set(theme_bw())
 
+this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(this.dir)
+source("../../../../../analysis/helpers.R")
 # Read the database into R.
-corp = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+corp = read.table("../../../../../corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
-d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/experiments/02_experiment/01_pilot/results/data/01_pilot_e02_try2-merged.csv")
+d1 = read.csv("../data/e03_pilot1-merged.csv")
+16*4*4+10*4
+
+
 
 str(d1)
 # Rename the Item_ID variable in the database to Tgrep_ID
@@ -49,7 +54,7 @@ str(d)
 
 
 # read in the contexts too:
-d_contexts = read.csv("../../../../clean_corpus/pilot2.txt",sep="\t",header=T,quote="")
+d_contexts = read.csv("../../../../clean_corpus/03_experiment/pilot1.txt",sep="\t",header=T,quote="")
 head(d_contexts)
 # look at comments
 unique(d$subject_information.comments)
@@ -88,14 +93,14 @@ practice = d %>%
   # write.csv(.,"practice_01_pilot_e01.csv")
 View(practice)
 
-
+############################################################
 # look at just the first practice trial
 prac_agr = practice %>%
   group_by(workerid,tgrep_id,paraphrase,rating) %>%
   summarise(count = n()) %>%
   group_by(workerid,tgrep_id) %>%
   mutate(total_per_ex = sum(count))
-nrow(prac_agr) # 542
+nrow(prac_agr)
 
 prac_agr_rem = practice %>%
   group_by(workerid,tgrep_id,paraphrase,rating) %>%
@@ -126,7 +131,7 @@ nrow(practice_first) #320
 
 seconds = prac_agr %>%
   group_b
-
+############################################################
 agr = practice %>%
   group_by(tgrep_id, paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -141,36 +146,28 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
   facet_wrap(~tgrep_id,labeller = labeller(tgrep_id = labels)) +
-  ggsave("../graphs/1_pilot_e02_practice_total_faceted_Sentence.pdf")
+  ggsave("../graphs/pilot_practice_total_faceted_Sentence.pdf")
 # theme(axis.text.x = element_text(angle = 90))
 
 d$tgrep_id
 # controls
 controls = d1 %>%
   filter(grepl("control",tgrep_id))
-nrow(controls) # 720
+nrow(controls) #96
 cntrls = read.csv("../../../../clean_corpus/controls.csv",header=TRUE,quote="")
 names(cntrls)[names(cntrls) == "TGrepID"] <- "tgrep_id"
-
-View(controls)
-
 c <- left_join(controls, cntrls, by="tgrep_id")
-View(c)
 
-
-View(controls)
 agr = c %>%
   group_by(EntireSentence,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-View(agr)
-
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
   facet_wrap(~EntireSentence, labeller = labeller(Sentence = label_wrap_gen(20))) +
-  ggsave("../graphs/01_pilot_e02_controls.pdf")
+  ggsave("../graphs/pilot_controls.pdf")
 
 
 # test
@@ -189,7 +186,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
   facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(20))) +
-  ggsave("../graphs/01_pilot_e02_test.pdf")
+  ggsave("../graphs/pilot_test.pdf")
 
 
 # subject variablility
