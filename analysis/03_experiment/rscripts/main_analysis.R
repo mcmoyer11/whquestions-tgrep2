@@ -16,7 +16,7 @@ theme_set(theme_bw())
 
 this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(this.dir)
-source("../helpers.R")
+source("../../helpers.R")
 
 cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
 
@@ -25,6 +25,8 @@ cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#
 d = read.csv("../data/normed.csv")
 
 contrasts(d$ModalPresent)
+
+contrasts(d$Wh)
 contrasts(d$Wh) = cbind("how.vs.where"=c(1,0,0),"who.vs.where"=c(0,0,1))
 contrasts(d$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
 
