@@ -24,6 +24,10 @@ cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#
 # Read the data into R.
 d = read.csv("../data/normed.csv")
 
+d$ModalPresent = as.factor(d$ModalPresent)
+d$Wh = as.factor(d$Wh)
+d$paraphrase = as.factor(d$paraphrase)
+
 contrasts(d$ModalPresent)
 
 contrasts(d$Wh)
