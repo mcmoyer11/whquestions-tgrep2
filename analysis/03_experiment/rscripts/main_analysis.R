@@ -1,7 +1,7 @@
 # ---
 # title: "Analysis of questions"
 # author: "mcmoyer"
-# date: "November 20, 2020"
+# date: "January 22, 2021"
 # ---
 
 ## Step 1: select stimuli for experiment

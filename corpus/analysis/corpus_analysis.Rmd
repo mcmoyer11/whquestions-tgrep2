@@ -35,6 +35,9 @@ head(d)
 str(d)
 names(d)
 
+
+table(d$QuestionType)
+
 wh = d %>%
   filter(Wh %in% c("who","where","how","what","when","why") & QuestionType %in% c("root") &
            WhPhaseType %in% c("monomorphemic") & IdentityQ %in% c("no") & DegreeQ %in% c("no"))

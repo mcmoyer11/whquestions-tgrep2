@@ -36,6 +36,12 @@ corp_match = corp %>%
 nrow(corp)
 nrow(d) #112031
 nrow(corp_match)
+length(unique(d$workerid)) # 656
+33*20
+table(d$proliferate.condition)
+
+exp28: 2974
+
 
 # join together
 d <- left_join(d, corp_match, by="tgrep_id")
@@ -181,17 +187,18 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
   facet_wrap(~EntireSentence, labeller = labeller(Sentence = label_wrap_gen(1)))
-ggsave("../graphs/main_controls.pdf")
+# ggsave("../graphs/main_controls.pdf")
 
 ########################################################################
 ########################################################################
 # remove subjects who failed 2/6 controls
 ########################################################################
 ########################################################################
-length(unique(d$workerid)) #385
+length(unique(d$workerid)) #656
 unique(c$tgrep_id)
-# [1] "movie"   "novels"  "tissue"  "book"    "napkin"  "cookies"
-#       the       all         a       the         a         all
+
+# for each control trial type, create a binary measure of whether the
+# trial was passed
 t = c %>%
   separate(tgrep_id,into=c("tgrep_id","para","trial"),sep="[_]") %>%
   group_by(workerid,paraphrase,trial) %>%
@@ -210,11 +217,13 @@ a2 = c %>%
   filter(trial %in% c("tissue", "napkin"), paraphrase %in% c("a")) %>%
   mutate(control_passed = ifelse(rating > .5,"1","0"))
 nrow(a2) #1312
+
+# combine all those files together
 con = rbind(t,a1,a2)
 nrow(con) #3936
 
-########################################################################
-# filter out participants who failed more than 2 controls
+# filter out participants who failed more than 2 controls by taking the sum of 
+# all the passed controls, and filtering out workerids who passed more than 2
 failed_controls = con %>%
   filter(control_passed == "1") %>%
   group_by(workerid, control_passed) %>%
@@ -238,7 +247,6 @@ test = d %>%
   filter(!grepl("control",tgrep_id))
 # rename all to every
 test$paraphrase[test$paraphrase == "all"] = "every"
-unique(test$proliferate.condition)
 
 # N after removing participants who failed 2/6 controls
 length(unique(test$workerid)) #621
@@ -259,7 +267,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   xlab("Paraphrase") +
   ylab("Mean rating") +
   theme(legend.position = "none")
-ggsave("../graphs/test_overall.pdf")
+# ggsave("../graphs/test_overall.pdf")
 
 agr = test %>%
   group_by(Wh,ModalPresent,paraphrase) %>%
@@ -271,7 +279,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
   facet_wrap(~Wh)
-ggsave("../graphs/test_ModxWh.pdf")
+# ggsave("../graphs/test_ModxWh.pdf")
 
 
 ########################################################################
@@ -298,255 +306,26 @@ or_ids = other_ratings$tgrep_id
 test_other = test %>%
   filter(tgrep_id %in% or_ids)
 
-# 15% of the items which are rhetorical questions
-nrow(test_other)/nrow(test)*100
+# 15% of the items are rhetorical questions
+nrow(test_other)
+length(unique(test$Sentence))
 
 # filter out those bad guys
 test_norm = test %>%
   filter(!tgrep_id %in% or_ids)
 nrow(test_norm)/nrow(test)*100 # 84.8%
 
-agr = test_norm %>%
-  group_by(paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
-  drop_na()
-
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
-  geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge", show.legend = FALSE) +
-  # ggtitle("Overall mean rating for each paraphrase") +
-  xlab("Paraphrase") +
-  ylab("Mean rating") +
-  theme(legend.position = "none")
-ggsave("../graphs/normed_overall.pdf")
-
-agr = test_norm %>%
-  group_by(Wh,ModalPresent,paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
-  drop_na()
-
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
-  geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh) +
-  xlab("Paraphrase") +
-  ylab("Mean rating")
-ggsave("../graphs/normed_ModxWh.pdf")
-
-
-agr = test_norm %>%
-  group_by(paraphrase) %>%
-  filter(paraphrase %in% c("every","a","the")) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
-  drop_na()
-
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
-  geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge", show.legend = FALSE) +
-  # ggtitle("Mean rating for 'a' vs. 'every'") +
-  xlab("Paraphrase") +
-  ylab("Mean rating") +
-  theme(legend.position = "none")
-ggsave("../graphs/main_test_aXeveryXthe.pdf")
-
-########################################################################
-########################################################################
-# WH
-########################################################################
-########################################################################
-agr = test_norm %>%
-  filter(paraphrase %in% c("every","a","the")) %>%
-  group_by(paraphrase,Wh) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
-  drop_na()
-
-ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
-  geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))  +
-  # ggtitle("Mean rating for Wh-Word") +
-  xlab("Wh-Word") +
-  ylab("Mean rating") +
-  theme(legend.title = element_blank()) +
-  theme(legend.key.size = unit(0.3, "cm"),
-        legend.position = "top", # c(.5,1)
-        legend.direction = "horizontal")
-  # theme(legend.position = "none")
-  # facet_wrap(~Wh)
-ggsave("../graphs/normed_Wh.pdf")
-
-
-
-########################################################################
-########################################################################
-# Modal
-########################################################################
-########################################################################
-agr = test_norm %>%
-  filter(paraphrase %in% c("every","a", "the")) %>%
-  group_by(paraphrase,ModalPresent) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
-  drop_na()
-
-ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
-  geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  # ggtitle("Mean rating ModalPresent") +
-  xlab("Modal Present") +
-  ylab("Mean rating") +
-  theme(legend.title = element_blank()) +
-  theme(legend.key.size = unit(0.3, "cm"),
-        legend.position = "top", # c(.5,1)
-        legend.direction = "horizontal")
-        # legend.spacing.y = unit(-10, 'cm'))
-  # guides(fill=guide_legend(title="Paraphrase"))
-ggsave("../graphs/normed_ModalPresent.pdf")
-
-# rename 'ca' in modals to 'can'
-test_norm$Modal[test_norm$Modal == "ca"] = "can"
-mod = test_norm %>%
-  filter(paraphrase %in% c("every","a","the")) %>%
-  filter(ModalPresent %in% c("yes")) %>%
-  group_by(Modal,paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
-
-ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
-  geom_bar(stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Modal)
-ggsave("../graphs/normed_modals.pdf")
-
-########################################################################
-# MODAL x WH
-########################################################################
-agr = test_norm %>%
-  filter(paraphrase %in% c("every","a")) %>%
-  # filter(ModalPresent %in% c("yes")) %>%
-  group_by(Wh,ModalPresent,paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
-  drop_na()
-
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
-  geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh) +
-  guides(fill=guide_legend(title="Modal?"))
-ggsave("../graphs/main_test_norm_ModalsxWh_allXa.pdf")
-
-agr = test_norm %>%
-  filter(ModalPresent %in% c("yes")) %>%
-  group_by(paraphrase,Question) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
-
-ggplot(agr, aes(x=mean_rating)) +
-  geom_histogram() +
-  facet_wrap(~paraphrase)
-
-
-########################################################################
-# NoModal
-########################################################################
-nomod = test_norm %>%
-  filter(ModalPresent %in% c("no")) %>%
-  group_by(paraphrase,Wh) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
-
-ggplot(nomod, aes(x=paraphrase,y=mean_rating,fill=Wh)) +
-  geom_bar(stat="identity",position = "dodge") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))
-
-ggsave("../graphs/main_NoModalXWh.pdf")
-
-ggplot(nomod, aes(x=mean_rating)) +
-  geom_histogram() +
-  facet_wrap(~Wh)
-
-########################################################################
-# Determiners
-# TODO: go back to the database and make sure everything is coded properly
-# Note Date: 12/2
-########################################################################
-nomod = test_norm %>%
-  filter(ModalPresent %in% c("no") & paraphrase == "a" & DeterminerNonSubjPresent == "yes") %>%
-# filter(grepl("a|the", DeterminerNonSubject)) %>%
-group_by(DeterminerNonSubject) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
-ggplot(nomod, aes(x=DeterminerNonSubject,y=mean_rating,fill=DeterminerNonSubject)) +
-  geom_bar(stat="identity",position = "dodge") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))
-
-
-
-head(test_norm)
-agr = test_norm %>%
-  group_by(paraphrase,Question) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
-
-ggplot(agr, aes(x=mean_rating)) +
-  geom_histogram(stat="count") +
-  facet_wrap(~paraphrase)
-  # theme(legend.position = "none")
-
-
-
-########################################################################
-# Perusing items
-########################################################################
-
-the_high = test_norm %>%
-  filter(paraphrase %in% c("the")) %>%
-  group_by(tgrep_id,Question) %>%
-  summarize(mean_rating = mean(rating)) %>%
-  filter(mean_rating > .5)
-View(the_high)
-
-a_high = test_norm %>%
-  filter(paraphrase %in% c("a")) %>%
-  group_by(tgrep_id,Question) %>%
-  summarize(mean_rating = mean(rating)) %>%
-  filter(mean_rating > .3)
-View(a_high)
-
-ex = d %>%
-  filter(tgrep_id %in% c("102025:30")) %>%
-  group_by(paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
-View(ex)  
-
-all_high = test_norm %>%
-  filter(paraphrase %in% c("every")) %>%
-  group_by(tgrep_id,Question) %>%
-  summarize(mean_rating = mean(rating)) %>%
-  filter(mean_rating > .4)
-View(all_high)
-
-other_high = test %>%
-  filter(paraphrase %in% c("other")) %>%
-  group_by(tgrep_id,Question) %>%
-  summarize(mean_rating = mean(rating)) %>%
-  filter(mean_rating > .5)
-View(other_high)
+table(test_norm$Wh,test_norm$ModalPresent)
   
 ########################################################################
 ########################################################################
-# NORMING ROUND 2
+# NORMALIZING TO MAKE A PROBABILITY DISTRIBUTION
+# for just "a", "every", and "the"
 
-# Paraphrase as predictor
-# only "a" and "every" and "the"
 ########################################################################
 critical = test_norm %>%
   filter(paraphrase %in% c("every","a","the"))
-View(critical)
+unique(critical$paraphrase)
 
 critical$ids = paste(critical$workerid,critical$tgrep_id)
 
@@ -560,54 +339,44 @@ nrow(critical) #47625
 
 cr = critical %>%
   group_by(ids) %>%
-  # summarize(rating_sum = rating[paraphrase=="a"] + rating[paraphrase=="every"] + rating[paraphrase=="the"])
-  mutate(rating_a = rating[paraphrase=="a"], rating_every = rating[paraphrase=="every"], rating_the = rating[paraphrase=="the"]) %>%
-  summarize(rating_sum = rating_a + rating_every + rating_the)
+  summarize(rating_sum = sum(rating))
 nrow(cr) #47625
 # remove duplicate rows
-xr = cr %>%
-  distinct(ids, .keep_all=TRUE)
-nrow(xr) #15875
 
-nrow(xr)==length(unique(xr$ids))
+critical = critical %>%
+  left_join(cr, by="ids")
 
-critical = merge(xr,critical,by='ids')
-nrow(critical) #47625
-View(critical)
+View(test[test$tgrep_id == "135330:4",])
+t = test %>%
+  filter(tgrep_id == "135330:4") %>%
+  group_by(paraphrase) %>%
+  summarise(mean = mean(rating))
 
+View(t)
 critical$factors = paste(critical$ids,critical$paraphrase)
+
 normed_agr = critical %>%
   group_by(factors) %>%
-  summarise(normed_rating = rating/rating_sum)
+  summarise(normed_rating = rating/rating_sum) %>%
+  drop_na()
 View(normed_agr)
+nrow(normed_agr) # 43392
 
 normed = merge(normed_agr,critical,by='factors')
 normed[is.na(normed$ModalPresent)] <- "no"
 
+# FIND OUT:
+# are there particular items that show bimodality between "other" and another para?
+
 # save to .csv to load into analysis script
-write.csv(normed,"../data/normed.csv")
+# write.csv(normed,"../data/normed.csv")
 
 nrow(normed)# 47625
 View(normed)
 
 agr = normed %>%
-  group_by(Wh,ModalPresent,paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
-  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
-  drop_na()
-
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
-  geom_bar(position="dodge",stat="identity") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh) +
-  xlab("Paraphrase") +
-  ylab("Mean rating")
-  ggsave("../graphs/final_norm_ModxWh.pdf")
-
-
-agr = normed %>%
   group_by(paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
 
@@ -617,8 +386,31 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   # ggtitle("Mean rating for 'a' vs. 'every'") +
   xlab("Paraphrase") +
   ylab("Mean rating") +
+  ylim(0,.6) +
   theme(legend.position = "none")
-ggsave("../graphs/final_normed_overall.pdf")
+# ggsave("../graphs/final_normed_overall.pdf")
+
+########################################################################
+#  MOD X WH
+########################################################################
+
+agr = normed %>%
+  group_by(Wh,ModalPresent,paraphrase) %>%
+  summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
+  mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
+  drop_na()
+
+ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
+  geom_bar(position="dodge",stat="identity") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
+  facet_wrap(~Wh, ncol=2) +
+  xlab("Paraphrase") +
+  ylab("Mean rating") +
+  theme(legend.key.size = unit(0.3, "cm"),
+        legend.position = "top", # c(.5,1)
+        legend.direction = "horizontal")
+ggsave("../graphs/final_norm_ModxWh.pdf")
+
 
 ########################################################################
 ########################################################################
@@ -651,7 +443,7 @@ ggsave("../graphs/final_normed_wh.pdf")
 ########################################################################
 agr = normed %>%
   group_by(paraphrase,ModalPresent) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
 
@@ -668,11 +460,13 @@ ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
 # guides(fill=guide_legend(title="Paraphrase"))
 ggsave("../graphs/final_normed_modalpresent.pdf")
 
-
+########################################################################
+# LOOKING AT INDIVIDUAL MODALS
+########################################################################
 mod = normed %>%
   filter(ModalPresent %in% c("yes")) %>%
   group_by(Modal,paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh)
 
 ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
@@ -681,5 +475,35 @@ ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
   facet_wrap(~Modal)
 ggsave("../graphs/final_normed_modals.pdf")
 
+########################################################################
+########################################################################
+# LOOKING AT ITEMS
+########################################################################
+########################################################################
 
+the_high = normed %>%
+  filter((paraphrase == "the") & (Wh == "what")) %>%
+  group_by(tgrep_id,Question) %>%
+  summarize(mean_rating = mean(normed_rating)) %>%
+  filter(mean_rating > .5)
+View(the_high)
 
+a_high = normed %>%
+  filter((paraphrase %in% c("a")) & (Wh == "when")) %>%
+  group_by(tgrep_id,Question) %>%
+  summarize(mean_rating = mean(normed_rating)) %>%
+  filter(mean_rating > .3)
+View(a_high)
+
+ex = d %>%
+  filter(tgrep_id %in% c("102025:30")) %>%
+  group_by(paraphrase) %>%
+  summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating))
+View(ex)  
+
+all_high = normed %>%
+  filter((paraphrase %in% c("every")) & (Wh == "when")) %>%
+  group_by(tgrep_id,Question) %>%
+  summarize(mean_rating = mean(normed_rating)) %>%
+  filter(mean_rating > .1)
+View(all_high)
