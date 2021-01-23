@@ -29,10 +29,19 @@ d$Wh = as.factor(d$Wh)
 d$paraphrase = as.factor(d$paraphrase)
 
 contrasts(d$ModalPresent)
+contrasts(d$paraphrase)
+#         every the
+# a         0   0
+# every     1   0
+# the       0   1
 
 contrasts(d$Wh)
-contrasts(d$Wh) = cbind("how.vs.where"=c(1,0,0),"who.vs.where"=c(0,0,1))
+contrasts(d$Wh) = cbind("how.vs.when"=c(0,1,0,0,0,0),"what.vs.when"=c(1,0,0,0,0,0),
+                "where.vs.when"=c(0,0,0,1,0,0),"who.vs.when"=c(0,0,0,0,1,0),
+                "why.vs.when"=c(0,0,0,0,0,1))
+
 contrasts(d$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
+
 
 # Full Model with random slopes
 m = lmerTest::lmer(rating ~ ModalPresent*Wh*paraphrase + (1+paraphrase|workerid) + (1+paraphrase|tgrep_id), data=d,REML=FALSE) 

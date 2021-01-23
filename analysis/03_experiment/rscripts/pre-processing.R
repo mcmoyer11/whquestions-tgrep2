@@ -358,7 +358,7 @@ critical$factors = paste(critical$ids,critical$paraphrase)
 normed_agr = critical %>%
   group_by(factors) %>%
   summarise(normed_rating = rating/rating_sum) %>%
-  drop_na()
+  drop_na() # this removes ALOT of rows
 View(normed_agr)
 nrow(normed_agr) # 43392
 
