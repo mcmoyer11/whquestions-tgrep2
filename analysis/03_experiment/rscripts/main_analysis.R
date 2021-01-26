@@ -69,3 +69,8 @@ str(centered)
 # full model with random slopes
 m.twowayinteraction.centered = lmerTest::lmer(rating ~ cModalPresent+Wh+paraphrase + cModalPresent:paraphrase + Wh:paraphrase + (1+paraphrase|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
 summary(m.twowayinteraction.centered)
+
+
+# full model with random slopes
+m.twowayinteraction.centered = lmerTest::lmer(rating ~ cModalPresent+Wh+paraphrase + cModalPresent:paraphrase + Wh:paraphrase + (1+paraphrase|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
+summary(m.twowayinteraction.centered)
