@@ -266,7 +266,9 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   # ggtitle("Overall mean rating for each paraphrase") +
   xlab("Paraphrase") +
   ylab("Mean rating") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
 # ggsave("../graphs/test_overall.pdf")
 
 agr = test %>%
@@ -278,7 +280,9 @@ agr = test %>%
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh)
+  facet_wrap(~Wh) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
 # ggsave("../graphs/test_ModxWh.pdf")
 
 
@@ -387,8 +391,10 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   xlab("Paraphrase") +
   ylab("Mean rating") +
   ylim(0,.6) +
-  theme(legend.position = "none")
-# ggsave("../graphs/final_normed_overall.pdf")
+  theme(legend.position = "none") +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("../graphs/final_normed_overall.pdf")
 
 ########################################################################
 #  MOD X WH
@@ -400,6 +406,9 @@ agr = normed %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
 
+# Re-Order the WH-levels by overall composition of DB
+agr$Wh <- factor(agr$Wh, levels=c("what","how","where","why","who","when"))
+
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
@@ -408,7 +417,9 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   ylab("Mean rating") +
   theme(legend.key.size = unit(0.3, "cm"),
         legend.position = "top", # c(.5,1)
-        legend.direction = "horizontal")
+        legend.direction = "horizontal") +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
 ggsave("../graphs/final_norm_ModxWh.pdf")
 
 
@@ -422,7 +433,8 @@ agr = normed %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-
+# Re-Order the WH-levels by overall composition of DB
+agr$Wh <- factor(agr$Wh, levels=c("what","how","where","why","who","when"))
 ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9))  +
@@ -432,7 +444,9 @@ ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
   theme(legend.title = element_blank()) +
   theme(legend.key.size = unit(0.3, "cm"),
         legend.position = "top", # c(.5,1)
-        legend.direction = "horizontal")
+        legend.direction = "horizontal") +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
 ggsave("../graphs/final_normed_wh.pdf")
 
 
@@ -455,7 +469,9 @@ ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
   theme(legend.title = element_blank()) +
   theme(legend.key.size = unit(0.3, "cm"),
         legend.position = "top", # c(.5,1)
-        legend.direction = "horizontal")
+        legend.direction = "horizontal") +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
 # legend.spacing.y = unit(-10, 'cm'))
 # guides(fill=guide_legend(title="Paraphrase"))
 ggsave("../graphs/final_normed_modalpresent.pdf")
@@ -472,7 +488,13 @@ mod = normed %>%
 ggplot(mod, aes(x=paraphrase,y=mean_rating,fill=paraphrase)) +
   geom_bar(stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Modal)
+  facet_wrap(~Modal,ncol=3) +
+  theme(legend.title = element_blank()) +
+  theme(legend.key.size = unit(0.3, "cm"),
+        legend.position = "top", # c(.5,1)
+        legend.direction = "horizontal") +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
 ggsave("../graphs/final_normed_modals.pdf")
 
 ########################################################################
@@ -482,28 +504,38 @@ ggsave("../graphs/final_normed_modals.pdf")
 ########################################################################
 
 the_high = normed %>%
-  filter((paraphrase == "the") & (Wh == "what")) %>%
+  filter((paraphrase == "the") & (Wh == "where")) %>% #  & (ModalPresent == "yes")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating)) %>%
   filter(mean_rating > .5)
 View(the_high)
 
 a_high = normed %>%
-  filter((paraphrase %in% c("a")) & (Wh == "when")) %>%
+  filter((paraphrase %in% c("a")) & (Wh == "where")) %>% #   & (ModalPresent == "no")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating)) %>%
   filter(mean_rating > .3)
 View(a_high)
 
-ex = d %>%
-  filter(tgrep_id %in% c("102025:30")) %>%
+ex = normed %>%
+  filter(tgrep_id %in% c("125234:4")) %>%
   group_by(paraphrase) %>%
-  summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating))
+  summarize(mean_rating = mean(normed_rating))
 View(ex)  
 
 all_high = normed %>%
-  filter((paraphrase %in% c("every")) & (Wh == "when")) %>%
+  filter((paraphrase %in% c("every")) & (Wh == "when")) %>% #  & (Wh == "when") & (ModalPresent == "yes")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating)) %>%
   filter(mean_rating > .1)
 View(all_high)
+
+# all_highest = normed %>%
+#   group_by(tgrep_id,Question,paraphrase) %>%
+#   summarize(mean_rating = mean(normed_rating)) %>%
+#   group_by(tgrep_id,Question) %>%
+#   filter(mean_rating[paraphrase=="the"] > (mean_rating[paraphrase=="a"] & mean_rating[paraphrase=="the"]))
+# View(all_highest)
+
+
+View
