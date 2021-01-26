@@ -5,12 +5,9 @@
 # ---
 
 ## Step 1: select stimuli for experiment
-library(ggplot2)
-library(tidyr)
-library(dplyr)
+library(tidyverse)
 library(lme4)
 library(lmerTest)
-library(tidyverse)
 library(multcomp) # not available for this version of R
 theme_set(theme_bw())
 
@@ -67,10 +64,45 @@ summary(centered)
 str(centered)
 
 # full model with random slopes
-m.twowayinteraction.centered = lmerTest::lmer(rating ~ cModalPresent+Wh+paraphrase + cModalPresent:paraphrase + Wh:paraphrase + (1+paraphrase|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
+m.full = lmer(rating ~ cModalPresent*Wh*paraphrase + (1+paraphrase+Wh+cModalPresent|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
 summary(m.twowayinteraction.centered)
+save(m.full, "m.full.RData")
+
+table(centered$ModalPresent,centered$Wh,centered$paraphrase)
+table(centered$workerid,centered$paraphrase)
+table(centered$workerid,centered$Wh)
+table(centered$workerid,centered$ModalPresent)
+
+# "when" model
+d_when = d %>% 
+  filter(Wh=="when") %>% 
+  mutate(cModalPresent = as.numeric(ModalPresent)-mean(as.numeric(ModalPresent))) %>% 
+  droplevels()
+contrasts(d_when$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
+
+m.when = lmer(rating ~ cModalPresent*paraphrase + (1+paraphrase|tgrep_id), data=d_when) 
+summary(m.when)
+
+m.when.simple = lmer(rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase|tgrep_id), data=d_when) 
+summary(m.when.simple)
+
+# "what" model
+d_what = d %>% 
+  filter(Wh=="what") %>% 
+  mutate(cModalPresent = as.numeric(ModalPresent)-mean(as.numeric(ModalPresent))) %>% 
+  droplevels()
+contrasts(d_what$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
+
+m.what = lmer(rating ~ cModalPresent*paraphrase + (1+paraphrase|tgrep_id), data=d_what) 
+summary(m.what)
+
+m.what.simple = lmer(rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase|tgrep_id), data=d_what) 
+summary(m.what.simple)
 
 
-# full model with random slopes
-m.twowayinteraction.centered = lmerTest::lmer(rating ~ cModalPresent+Wh+paraphrase + cModalPresent:paraphrase + Wh:paraphrase + (1+paraphrase|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
-summary(m.twowayinteraction.centered)
+
+table(d_when$workerid)
+table(d_when$workerid,d_when$paraphrase)
+table(d_when$tgrep_id,d_when$paraphrase)
+table(d_when$workerid,d_when$ModalPresent)
+
