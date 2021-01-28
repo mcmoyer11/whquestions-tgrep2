@@ -511,7 +511,7 @@ the_high = normed %>%
 View(the_high)
 
 a_high = normed %>%
-  filter((paraphrase %in% c("a")) & (Wh == "where")) %>% #   & (ModalPresent == "no")
+  filter((paraphrase %in% c("a")) & (ModalPresent == "no")) %>% #    & (Wh == "where")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating)) %>%
   filter(mean_rating > .3)
