@@ -253,7 +253,7 @@ length(unique(test$workerid)) #621
 
 
 test[is.na(test)] <- 0
-
+nrow(test)
 agr = test %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -288,7 +288,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
 
 ########################################################################
 ########################################################################
-# Normalize the data by removing rhetorical questions 
+# REMOVE RHETORICAL QUESTIONS
 # (questions with "other" as the highest rating)
 ########################################################################
 ########################################################################
@@ -306,10 +306,13 @@ other_ratings = test %>%
 nrow(other_ratings)/nrow(test_agr)*100 # 15%
 nrow(test_agr)#1340
 
+# View(other_ratings)
+
 or_ids = other_ratings$tgrep_id
 test_other = test %>%
   filter(tgrep_id %in% or_ids)
 
+# View(unique(test_other$Sentence))
 # 15% of the items are rhetorical questions
 nrow(test_other)
 length(unique(test$Sentence))
@@ -350,20 +353,18 @@ nrow(cr) #47625
 critical = critical %>%
   left_join(cr, by="ids")
 
-View(test[test$tgrep_id == "135330:4",])
+# View(test[test$tgrep_id == "135330:4",])
 t = test %>%
   filter(tgrep_id == "135330:4") %>%
   group_by(paraphrase) %>%
   summarise(mean = mean(rating))
 
-View(t)
 critical$factors = paste(critical$ids,critical$paraphrase)
 
 normed_agr = critical %>%
   group_by(factors) %>%
   summarise(normed_rating = rating/rating_sum) %>%
   drop_na() # this removes ALOT of rows
-View(normed_agr)
 nrow(normed_agr) # 43392
 
 normed = merge(normed_agr,critical,by='factors')
@@ -376,7 +377,6 @@ normed[is.na(normed$ModalPresent)] <- "no"
 # write.csv(normed,"../data/normed.csv")
 
 nrow(normed)# 47625
-View(normed)
 
 agr = normed %>%
   group_by(paraphrase) %>%
@@ -504,29 +504,29 @@ ggsave("../graphs/final_normed_modals.pdf")
 ########################################################################
 
 the_high = normed %>%
-  filter((paraphrase == "the") & (Wh == "where")) %>% #  & (ModalPresent == "yes")
+  filter((paraphrase == "the") & (Wh == "why")) %>% #  & (ModalPresent == "yes")
   group_by(tgrep_id,Question) %>%
-  summarize(mean_rating = mean(normed_rating)) %>%
+  summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .5)
 View(the_high)
 
 a_high = normed %>%
-  filter((paraphrase %in% c("a")) & (ModalPresent == "no")) %>% #    & (Wh == "where")
+  filter((paraphrase %in% c("a"))) %>% #    
   group_by(tgrep_id,Question) %>%
-  summarize(mean_rating = mean(normed_rating)) %>%
+  summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .3)
 View(a_high)
 
 ex = normed %>%
-  filter(tgrep_id %in% c("125234:4")) %>%
+  filter(tgrep_id %in% c("61796:21")) %>%
   group_by(paraphrase) %>%
-  summarize(mean_rating = mean(normed_rating))
+  summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating))
 View(ex)  
 
 all_high = normed %>%
-  filter((paraphrase %in% c("every")) & (Wh == "when")) %>% #  & (Wh == "when") & (ModalPresent == "yes")
+  filter((paraphrase %in% c("every"))) %>% #  & (Wh == "when") & (ModalPresent == "yes")
   group_by(tgrep_id,Question) %>%
-  summarize(mean_rating = mean(normed_rating)) %>%
+  summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .1)
 View(all_high)
 
