@@ -518,7 +518,7 @@ a_high = normed %>%
 View(a_high)
 
 ex = normed %>%
-  filter(tgrep_id %in% c("61796:21")) %>%
+  filter(tgrep_id %in% c("102292:4")) %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating))
 View(ex)  
