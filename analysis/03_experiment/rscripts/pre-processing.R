@@ -373,6 +373,7 @@ normed[is.na(normed$ModalPresent)] <- "no"
 # FIND OUT:
 # are there particular items that show bimodality between "other" and another para?
 
+length(unique(normed$tgrep_id))
 # save to .csv to load into analysis script
 # write.csv(normed,"../data/normed.csv")
 
