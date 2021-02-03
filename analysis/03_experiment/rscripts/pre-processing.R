@@ -505,27 +505,27 @@ ggsave("../graphs/final_normed_modals.pdf")
 ########################################################################
 
 the_high = normed %>%
-  filter((paraphrase == "the") & (Wh == "why")) %>% #  & (ModalPresent == "yes")
+  filter((paraphrase == "the") & (Wh == "why")) %>% # 
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .5)
 View(the_high)
 
 a_high = normed %>%
-  filter((paraphrase %in% c("a"))) %>% #    
+  filter((paraphrase %in% c("a")) & (Wh == "who")) %>% #     & (ModalPresent == "no")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .3)
 View(a_high)
 
 ex = normed %>%
-  filter(tgrep_id %in% c("102292:4")) %>%
+  filter(tgrep_id %in% c("14478:20")) %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating))
 View(ex)  
 
 all_high = normed %>%
-  filter((paraphrase %in% c("every"))) %>% #  & (Wh == "when") & (ModalPresent == "yes")
+  filter((paraphrase %in% c("every")) & (Wh == "where")) %>% #  & (Wh == "when") & (ModalPresent == "yes")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .1)
