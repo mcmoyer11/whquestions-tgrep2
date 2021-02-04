@@ -29,6 +29,10 @@ d = read.csv("../data/exp03_main-merged.csv")
 # Rename the Item_ID variable in the database to Tgrep_ID
 names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
 
+# see = corp %>%
+#   filter((Wh == "which") & (QuestionType == "root")) %>%
+#   View()
+
 # filter from the database the tgrep_ids from the data
 corp_match = corp %>%
   filter(tgrep_id %in% d$tgrep_id)
@@ -395,7 +399,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   theme(legend.position = "none") +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
-ggsave("../graphs/final_normed_overall.pdf")
+ggsave("../graphs/overall.pdf",width=2.5,height=2)
 
 ########################################################################
 #  MOD X WH
@@ -410,19 +414,29 @@ agr = normed %>%
 # Re-Order the WH-levels by overall composition of DB
 agr$Wh <- factor(agr$Wh, levels=c("what","how","where","why","who","when"))
 
-ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
+ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
   facet_wrap(~Wh, ncol=2) +
   xlab("Paraphrase") +
   ylab("Mean rating") +
+  guides(fill=FALSE) +
+  guides(alpha=guide_legend(title="Modal present")) +
   theme(legend.key.size = unit(0.3, "cm"),
         legend.position = "top", # c(.5,1)
-        legend.direction = "horizontal") +
-  scale_fill_manual(values=cbPalette) +
-  scale_color_manual(values=cbPalette)
-ggsave("../graphs/final_norm_ModxWh.pdf")
+        legend.direction = "horizontal",
+        legend.margin=margin(0,0,0,0),
+        legend.box.margin=margin(0,0,-5,-5),legend.spacing.y = unit(0.001, 'cm')) +
+    scale_fill_manual(values=cbPalette) +
+    scale_color_manual(values=cbPalette) +
+    scale_alpha_discrete(range = c(.5,1))
 
+ggsave("../graphs/modxwh.pdf",width=3,height=4)
+
+
+also, if you wanted to make 2b even cooler, you could have the colors mean the same thing as in 1a, 
+and just make the bars lighter or darker depending on whether 
+they're modal/non-modal (ie, with alpha=modalpresent instead of color=modalpresen)
 
 ########################################################################
 ########################################################################
