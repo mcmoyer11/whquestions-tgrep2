@@ -11,6 +11,7 @@ add CategoricalVar QuestionType=subject:QuestionSubject,adjunct:QuestionAdjunct,
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
 add CategoricalVar SubjectAuxInv=yes:SubjectAux
 add CategoricalVar WhAll=yes:WhAll
+add CategoricalVar WhAdvP=yes:WhAdvP
 add CategoricalVar MatrixNegPresent=yes:MatrixNegPresent
 add CategoricalVar EmbeddedNegPresent=yes:EmbeddedNegPresent
 add CategoricalVar SbarNomPresent=yes:SbarNom
