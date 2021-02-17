@@ -6,8 +6,6 @@
 # ---
 
 ## Step 1: select stimuli for experiment
-setwd("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/rscripts/")
-source("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/helpers.R")
 library(ggplot2)
 library(tidyr)
 library(dplyr)
@@ -18,13 +16,17 @@ library(multcomp) # not available for this version of R
 theme_set(theme_bw())
 cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
 
+
+this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(this.dir)
+source("../../helpers.R")
 ########################################################################
 # Read the database into R.
-corp = read.table("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/corpus/results/swbd.tab",sep="\t",header=T,quote="")
+corp = read.table("../../../corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
-d1 = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/data/main-merged.csv")
+d1 = read.csv("../data/main-merged.csv")
 nrow(d1)
-d2  = read.csv("/Users/momo/Dropbox/Stanford/whquestions-tgrep2/analysis/data/main2-merged.csv")
+d2  = read.csv("../data/main2-merged.csv")
 nrow(d2)
 d3 = rbind(d1,d2)
 nrow(d3)
