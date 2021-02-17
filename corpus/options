@@ -17,6 +17,7 @@ add CategoricalVar SbarNomPresent=yes:SbarNom
 add StringVar QuantifiedSubject
 add StringVar QuantifiedPredicate
 add StringVar Wh
+add StringVar MatrixSubject
 add StringVar MatrixNegation
 add StringVar InvertedAuxVerb
 add StringVar MatrixPredAux
