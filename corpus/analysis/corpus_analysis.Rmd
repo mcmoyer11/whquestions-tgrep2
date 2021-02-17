@@ -39,8 +39,7 @@ names(d)
 table(d$QuestionType)
 
 wh = d %>%
-  filter(Wh %in% c("who","where","how","what","when","why") & QuestionType %in% c("root") &
-           WhPhaseType %in% c("monomorphemic") & IdentityQ %in% c("no") & DegreeQ %in% c("no"))
+  filter(QuestionType %in% c("embedded")) # Wh %in% c("who","where","how","what","when","why") & WhPhaseType %in% c("monomorphemic") & IdentityQ %in% c("no") & DegreeQ %in% c("no")
 View(wh)
 table(wh$ModalPresent,wh$Wh)
 
@@ -90,7 +89,7 @@ table(d_crit$IdentityQ)
 
 set.seed(123)
 set.seed(321)
-se <- sample_n(d_crit,20)
+se <- sample_n(d_emb,20)
 View(se[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","SentenceParse")])
 see <- sample_n(d_crit,30)
 View(see)
