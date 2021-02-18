@@ -27,6 +27,7 @@ add StringVar MatrixPredOther
 add StringVar MatrixPredParticle
 add StringVar MatrixPred2
 add StringVar Modal
+add StringVar EmbeddedSubject
 add StringVar EmbeddedNegation
 add StringVar Verb1
 add StringVar Verb2
