@@ -1,1 +1,1 @@
-@WH >> (/^SBAR/ > /FRAG/)
+@WH >> (/^SBAR/ [> /FRAG/ | !<< /^VP/])
