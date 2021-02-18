@@ -38,7 +38,7 @@ names(d)
 table(d$WhAdvP,d$QuestionType)
 
 table(d$QuestionType)
-650 cleft
+# 650 cleft
 
 wh = d %>%
   filter(QuestionType %in% c("embedded")) # Wh %in% c("who","where","how","what","when","why") & WhPhaseType %in% c("monomorphemic") & IdentityQ %in% c("no") & DegreeQ %in% c("no")
@@ -83,10 +83,7 @@ d_crit = d_emb %>%
 nrow(d_emb) # 3018 --> 2421 --> 2357 --> 1692 (after removing SBAR-NOM)
 nrow(d_crit) #1087 --> 954 --> 912 --> 840 (after removing SBAR-NOM)
 
-whadv = d_emb %>%
-  filter(WhAdvP == "yes")
 
-View(whadv)
 set.seed(123)
 set.seed(321)
 se <- sample_n(d_emb,20)
@@ -101,16 +98,13 @@ View(se[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVe
 # shouldnt be embedded:
 d[d["Item_ID"] == "138690:33"]
 
-
-# frag: 19521:13
-
 ```
-(TOP (S-CLF (NP-SBJ (PRP it)) 
-            (VP (VBD was) 
-                (ADVP-TMP-PRD (NP (QP (RB about) (DT a)) (NN year) (QP (CC or) (RB so))) (RB ago)) 
-                (, ,) 
-                (SBAR (WHADVP-1 (WRB when)) (S (NP-SBJ (PRP we)) (VP (VBD went) (ADVP-TMP (-NONE- *T*-1)))))) (. .) (-DFL- E_S)))
-
+(TOP (S (CC But) 
+        (NP-SBJ (PRP you)) 
+        (VP (VBP wonder) 
+            (SBAR (WHADVP (WRB how) (, ,) (UH well)) 
+                  (, ,) 
+                  (S-UNF (NP-SBJ (DT this) (NN thing))))) (, ,) (-DFL- N_S)))
 
 Take a random sample of 200.
 ```{r}
