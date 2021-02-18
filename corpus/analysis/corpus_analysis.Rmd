@@ -90,20 +90,19 @@ View(whadv)
 set.seed(123)
 set.seed(321)
 se <- sample_n(d_emb,20)
+View(se)
+
 View(se[,c("Item_ID","Sentence","MatrixSubject","SentenceParse")])
 View(se[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","SentenceParse")])
-see <- sample_n(d_crit,30)
-View(see)
-names(see)
-View(see[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","Question","SentenceParse")])
-# look at just the columns of interest
-sub <- see[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","Question","SentenceParse")]
+
 
 
 
 # shouldnt be embedded:
 d[d["Item_ID"] == "138690:33"]
 
+
+# frag: 19521:13
 
 ```
 (TOP (S-CLF (NP-SBJ (PRP it)) 
