@@ -35,8 +35,10 @@ head(d)
 str(d)
 names(d)
 
+table(d$WhAdvP,d$QuestionType)
 
 table(d$QuestionType)
+650 cleft
 
 wh = d %>%
   filter(QuestionType %in% c("embedded")) # Wh %in% c("who","where","how","what","when","why") & WhPhaseType %in% c("monomorphemic") & IdentityQ %in% c("no") & DegreeQ %in% c("no")
@@ -81,15 +83,14 @@ d_crit = d_emb %>%
 nrow(d_emb) # 3018 --> 2421 --> 2357 --> 1692 (after removing SBAR-NOM)
 nrow(d_crit) #1087 --> 954 --> 912 --> 840 (after removing SBAR-NOM)
 
-d_crit2 = d_crit %>%
-  filter()
+whadv = d_emb %>%
+  filter(WhAdvP == "yes")
 
-
-table(d_crit$IdentityQ)
-
+View(whadv)
 set.seed(123)
 set.seed(321)
 se <- sample_n(d_emb,20)
+View(se[,c("Item_ID","Sentence","MatrixSubject","SentenceParse")])
 View(se[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","SentenceParse")])
 see <- sample_n(d_crit,30)
 View(see)
@@ -98,69 +99,18 @@ View(see[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredV
 # look at just the columns of interest
 sub <- see[,c("Item_ID","Sentence","JustMatrixClause","MatrixPredAux","MatrixPredVerb","MatrixPredOther","MatrixPredParticle","Question","SentenceParse")]
 
-d[d["Item_ID"] == "331:188"] # shouldn't be embedded
-d[d["Item_ID"] == "107183:17"] # shouldn't be embedded
-d[d["Item_ID"] == "155340:11"] # shouldn't be embedded
-d[d["Item_ID"] == "37590:29"]
-d[d["Item_ID"] == "72099:29"]
-
-d[d["Item_ID"] == "416:58"]
 
 
-bann sbar nom
-d[d["Item_ID"] == "95116:24"]
+# shouldnt be embedded:
+d[d["Item_ID"] == "138690:33"]
 
-# 
-
-d[d["Item_ID"] == "19249:155"]
-
-
-d[d["Item_ID"] == "6220:90"]
-  168933:102
-# for verb issues : 19249:155 (should not have MatPred1 filled)
-
-6220:90
-106765:91
-
-d[d["Item_ID"] == "146693:65"]??? embedded 
 
 ```
-(TOP (S (CC And) 
-        (NP-SBJ (PRP I)) 
-        (VP (VBP think) 
-            (SBAR (-NONE- 0) 
-                  (S (NP-SBJ (DT that)) 
-                      (VP (VBZ is) 
-                          (SBAR-PRD (WHNP-3 (WP what)) (S (NP-SBJ-1 (PRP it)) (VP (VBZ is) (VP (VBG going) (S (NP-SBJ-2 (-NONE- *-1)) (VP (TO to) (VP (VB have) (S (NP-SBJ (-NONE- *-2)) (VP (TO to) (VP (VB come) (PP (IN to) (NP (-NONE- *T*-3)))))))))))))
-                          (. .) 
-                          (SBAR-TPC (WHADVP-5 (WRB Where)) (S (NP-SBJ-4 (PRP we)) (VP (VBP are) (ADVP (RB just)) (VP (VBN forced) (S (NP-SBJ (-NONE- *-4)) (VP-UNF (TO to) (ADVP (-NONE- *T*-5))))))))
-                          )
-                          )
-                          )
-                          ) (. .) (-DFL- N_S)))
-                          
-                          
-                          
-(TOP (S (NP-SBJ (PRP We)) 
-        (VP (VBD discovered) 
-            (SBAR (WHNP-1 (WHADJP (WRB how) (JJ much)) (NN work)) 
-                  (S (NP-SBJ (NP (PRP it)) (S (-NONE- *EXP*-4))) 
-                      (VP (VBZ is) 
-                          (NP-PRD (-NONE- *T*-1)) 
-                          (S-4 (NP-SBJ (-NONE- )) 
-                              (ADVP (RB just)) 
-                              (VP (TO to) 
-                                  (VP (VP (VB organize) (NP (-NONE- *RNR*-2))) 
-                                      (CC and) (VP (VB get) (NP (-NONE- *RNR*-2)) (ADVP (-NONE- *ICH*-3))) (NP-2 (PRP it)) (ADVP-3 (RB together))))))))) (. .)))
-                                      
-                                      
-(TOP (S (NP-SBJ (NNP D) (NNP C)) 
-        (VP (VBZ is) 
-            (INTJ (UH like)) 
-            (VP (VBG talking) 
-                (PP (IN about) 
-                    (SBAR (EDITED (RM (-DFL- \[)) (WHADVP (WRB how)) (, ,) (IP (-DFL- \+))) (WHADVP-2 (WRB how)) (RS (-DFL- \])) (S (NP-SBJ-1 (PRP they)) (VP (VBP 're) (VP (VBG going) (S (NP-SBJ (-NONE- *-1)) (VP (TO to) (VP (VP (VB get) (NP (DT a) (NN baseball) (NN team))) (CC and) (NP-ETC (NN everything))))) (ADVP-MNR (-NONE- *T*-2))))))))) (. .) (-DFL- E_S)))
-
+(TOP (S-CLF (NP-SBJ (PRP it)) 
+            (VP (VBD was) 
+                (ADVP-TMP-PRD (NP (QP (RB about) (DT a)) (NN year) (QP (CC or) (RB so))) (RB ago)) 
+                (, ,) 
+                (SBAR (WHADVP-1 (WRB when)) (S (NP-SBJ (PRP we)) (VP (VBD went) (ADVP-TMP (-NONE- *T*-1)))))) (. .) (-DFL- E_S)))
 
 
 Take a random sample of 200.
