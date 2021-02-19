@@ -84,9 +84,9 @@ function make_slides(f) {
       var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Do you have a list of the people involved in helping with outreach? <br> <b>Speaker #2 </b>: Yes, here it is. <br> <b>Speaker #1 </b>: "
       var entirehtml = "Great. " + "<font color=#FF0000> " + "I wonder who can help spread the word."
       contexthtml = contexthtml + entirehtml
-      exp.theParaphrase.value = "...wonder who is the person..."
-      exp.aParaphrase.value = "...wonder who is a person..."
-      exp.allParaphrase.value = "...wonder who is every person..."
+      exp.theParaphrase.value = "...who is the person..."
+      exp.aParaphrase.value = "...who is a person..."
+      exp.allParaphrase.value = "...who is every person..."
 
       for (i = 0; i < 3; i++) {
         $(`#sent1_${i + 1}`).text(exp.paraphraseArray[i].value)
@@ -178,9 +178,9 @@ function make_slides(f) {
       var entirehtml = "Thanks! I'm glad" + "<font color=#FF0000> " + "you knew where I can get coffee."
       contexthtml = contexthtml + entirehtml
 
-      exp.theParaphrase.value = "...knew what is the place..."
-      exp.aParaphrase.value = "...knew what is a place..."
-      exp.allParaphrase.value = "...knew what is every place..."
+      exp.theParaphrase.value = "...what is the place..."
+      exp.aParaphrase.value = "...what is a place..."
+      exp.allParaphrase.value = "...what is every place..."
 
       for (i = 0; i < 3; i++) {
         $(`#sent2_${i + 1}`).text(exp.paraphraseArray[i].value)
@@ -272,9 +272,9 @@ function make_slides(f) {
       var entirehtml = "<font color=#FF0000> " + "Who came to the party?"
       contexthtml = contexthtml + entirehtml
 
-      exp.aParaphrase.value = "Who is a person...?"
-      exp.theParaphrase.value = "Who is the person...?"
-      exp.allParaphrase.value = "Who is every person...?"
+      exp.aParaphrase.value = "...who is a person...?"
+      exp.theParaphrase.value = "...who is the person...?"
+      exp.allParaphrase.value = "...who is every person...?"
 
       for (i = 0; i < 3; i++) {
         $(`#sent3_${i + 1}`).text(exp.paraphraseArray[i].value)
@@ -679,8 +679,8 @@ function init() {
     "instructions_slider",
     "example1",
     "example2",
-    "example3",
-    "example4",
+    // "example3",
+    // "example4",
     "startExp",
     "generateEntities",// This is where the test trials come in.
     "subj_info",
