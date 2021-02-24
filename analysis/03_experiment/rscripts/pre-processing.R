@@ -49,6 +49,47 @@ exp28: 2974
 
 # join together
 d <- left_join(d, corp_match, by="tgrep_id")
+View(d)
+
+
+d_lm = d %>%
+  filter(!grepl("control",tgrep_id) & !grepl("example",tgrep_id) & d["tgrep_id"] != "bot_check") 
+d_lm = d_lm[,c("Sentence","rating","paraphrase","Wh")]
+d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "who")] = "who is every person"
+d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "who")] = "who is the person"
+d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "who")] = "who is a person"
+d_lm$paraphrase[d_lm$paraphrase == "other"] = "Something else"
+
+d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "what")] = "what is every thing"
+d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "what")] = "what is the thing"
+d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "what")] = "what is a thing"
+
+d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "where")] = "what is every place"
+d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "where")] = "what is the place"
+d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "where")] = "what is a place"
+
+d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "when")] = "what is every time"
+d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "when")] = "what is the time"
+d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "when")] = "what is a time"
+
+d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "how")] = "what is every way"
+d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "how")] = "what is the way"
+d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "how")] = "what is a way"
+
+d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "why")] = "what is every reason"
+d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "why")] = "what is the reason"
+d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "why")] = "what is a reason"
+
+
+View(d_lm)
+
+
+
+d_LM = d+LM %>%
+  filter()
+
+View(d_LM)
+write.csv(d,"raw.csv")
 
 length(unique(d$workerid)) # 656
 table(d$proliferate.condition)
