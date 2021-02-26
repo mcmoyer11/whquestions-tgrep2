@@ -679,8 +679,8 @@ function init() {
     "instructions_slider",
     "example1",
     "example2",
-    // "example3",
-    // "example4",
+    "example3",
+    "example4",
     "startExp",
     "generateEntities",// This is where the test trials come in.
     "subj_info",
