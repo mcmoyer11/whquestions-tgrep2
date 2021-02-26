@@ -472,7 +472,6 @@ function make_slides(f) {
     present: exp.stimuli, // This the array generated from stimuli.js
     present_handle: function (stim) { // this function is called bascially on exp.stim (more or less)
       $(".err").hide();
-      // $("#str").prop("checked", false);
 
       var generic = stim;
       this.generic = generic;
