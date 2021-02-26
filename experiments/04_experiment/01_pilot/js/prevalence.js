@@ -269,7 +269,7 @@ function make_slides(f) {
       // $("#str3").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: The party last night was packed, and everyone there was interesting! <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
-      var entirehtml = "<font color=#FF0000> " + "Who came to the party?"
+      var entirehtml = "<font color=#FF0000> " + "Can you tell me who came to the party?"
       contexthtml = contexthtml + entirehtml
 
       exp.aParaphrase.value = "...who is a person...?"
@@ -363,12 +363,12 @@ function make_slides(f) {
       $(".err_answer").hide();
 
       var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
-      var entirehtml = "<font color=#FF0000> " + "How do I get to Central Park?"
+      var entirehtml = "<font color=#FF0000> " + "I'm wondering how I get to Central Park."
       contexthtml = contexthtml + entirehtml
 
-      exp.theParaphrase.value = "What is the way...?"
-      exp.aParaphrase.value = "What is a way...?"
-      exp.allParaphrase.value = "What is every way...?"
+      exp.theParaphrase.value = "...what is the way...?"
+      exp.aParaphrase.value = "...what is a way...?"
+      exp.allParaphrase.value = "...what is every way...?"
 
       for (i = 0; i < 3; i++) {
         $(`#sent4_${i + 1}`).text(exp.paraphraseArray[i].value)
