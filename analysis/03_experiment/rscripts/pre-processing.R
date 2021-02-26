@@ -28,16 +28,11 @@ d = read.csv("../data/exp03_main-merged.csv")
 ########################################################################
 # Rename the Item_ID variable in the database to Tgrep_ID
 names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
-
-# see = corp %>%
-#   filter((Wh == "which") & (QuestionType == "root")) %>%
-#   View()
-
 # filter from the database the tgrep_ids from the data
 corp_match = corp %>%
   filter(tgrep_id %in% d$tgrep_id)
 
-nrow(corp)
+nrow(corp) #10199
 nrow(d) #112031
 nrow(corp_match)
 length(unique(d$workerid)) # 656
@@ -52,13 +47,16 @@ d <- left_join(d, corp_match, by="tgrep_id")
 View(d)
 
 
+# create cleaned-up data set for LM study with Dhara Yu
+d_lm = d[,c("tgrep_id","workerid","rating","paraphrase","Wh","ModalPresent","Sentence")]
+
 d_lm = d %>%
   filter(!grepl("control",tgrep_id) & !grepl("example",tgrep_id) & d["tgrep_id"] != "bot_check") 
-d_lm = d_lm[,c("Sentence","rating","paraphrase","Wh")]
+
 d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "who")] = "who is every person"
 d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "who")] = "who is the person"
 d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "who")] = "who is a person"
-d_lm$paraphrase[d_lm$paraphrase == "other"] = "Something else"
+d_lm$paraphrase[d_lm$paraphrase == "other"] = "something else"
 
 d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "what")] = "what is every thing"
 d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "what")] = "what is the thing"
@@ -80,16 +78,18 @@ d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "why")] = "what is ever
 d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "why")] = "what is the reason"
 d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "why")] = "what is a reason"
 
+# # read in the contexts :
+# d_contexts = read.csv("../../../corpus/analysis/swbd_contexts.csv")
+# head(d_contexts)
+# names(d_contexts)[names(d_contexts) == "TGrepID"] <- "tgrep_id"
+# # filter from the database the tgrep_ids from the data
+# ids = d_contexts %>%
+#   filter(tgrep_id %in% d_lm$tgrep_id)
+# 
+# # join together
+# d_lm <- left_join(d_lm, ids, by="tgrep_id")
 
-View(d_lm)
-
-
-
-d_LM = d+LM %>%
-  filter()
-
-View(d_LM)
-write.csv(d,"raw.csv")
+write.csv(d_lm,"../data/lm_data.csv")
 
 length(unique(d$workerid)) # 656
 table(d$proliferate.condition)
@@ -99,8 +99,7 @@ d$time_in_minutes = as.numeric(as.character(d$time_in_minutes))
 d$rating = as.numeric(d$rating)
 # write.csv(df,"df_nested.csv")
 
-# read in the contexts too:
-# d_contexts = read.csv("../../../experiments/clean_corpus/pilot2.txt",sep="\t",header=T,quote="")
+
 
 
 ########################################################################
@@ -475,9 +474,6 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)
 ggsave("../graphs/modxwh.pdf",width=3,height=4)
 
 
-also, if you wanted to make 2b even cooler, you could have the colors mean the same thing as in 1a, 
-and just make the bars lighter or darker depending on whether 
-they're modal/non-modal (ie, with alpha=modalpresent instead of color=modalpresen)
 
 ########################################################################
 ########################################################################
@@ -560,7 +556,7 @@ ggsave("../graphs/final_normed_modals.pdf")
 ########################################################################
 
 the_high = normed %>%
-  filter((paraphrase == "the") & (Wh == "why")) %>% # 
+  filter((paraphrase == "the")) %>% #  & (Wh == "why")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .5)
