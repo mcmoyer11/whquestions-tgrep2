@@ -82,7 +82,7 @@ function make_slides(f) {
       $(".err_answer").hide();
 
       var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Do you have a list of the people involved in helping with outreach? <br> <b>Speaker #2 </b>: Yes, here it is. <br> <b>Speaker #1 </b>: "
-      var entirehtml = "Great. " + "<font color=#FF0000> " + "I wonder who can help spread the word."
+      var entirehtml = "Great. " + "<font color=#FF0000> " + "I wonder <b>who can help spread the word</b>."
       contexthtml = contexthtml + entirehtml
       exp.theParaphrase.value = "...who is the person..."
       exp.aParaphrase.value = "...who is a person..."
@@ -175,7 +175,7 @@ function make_slides(f) {
       // $("#str2").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: My phone has died. Where can I get coffee around here? <br> <b>Speaker #2</b>: There's a cafe just around the corner. <br> <b>Speaker #1</b>: "
-      var entirehtml = "Thanks! I'm glad" + "<font color=#FF0000> " + "you knew where I can get coffee."
+      var entirehtml = "Thanks! I'm glad" + "<font color=#FF0000> " + "you knew <b>where I can get coffee</b>."
       contexthtml = contexthtml + entirehtml
 
       exp.theParaphrase.value = "...what is the place..."
@@ -269,7 +269,7 @@ function make_slides(f) {
       // $("#str3").prop("checked", false);
 
       var contexthtml = "<b>Speaker #1</b>: The party last night was packed, and everyone there was interesting! <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
-      var entirehtml = "<font color=#FF0000> " + "Can you tell me who came to the party?"
+      var entirehtml = "<font color=#FF0000> " + "Can you tell me <b>who came to the party</b>?"
       contexthtml = contexthtml + entirehtml
 
       exp.aParaphrase.value = "...who is a person...?"
@@ -363,7 +363,7 @@ function make_slides(f) {
       $(".err_answer").hide();
 
       var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
-      var entirehtml = "<font color=#FF0000> " + "I'm wondering how I get to Central Park."
+      var entirehtml = "<font color=#FF0000> " + "I'm wondering <b>how I get to Central Park</b>."
       contexthtml = contexthtml + entirehtml
 
       exp.theParaphrase.value = "...what is the way...?"
@@ -478,7 +478,7 @@ function make_slides(f) {
       this.generic = generic;
 
       var contexthtml = this.format_context(generic.PreceedingContext);
-      var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.EntireSentence)
+      var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.Matrix) + "<b>" + this.format_sentence(generic.Question) + "</b>"
       contexthtml = contexthtml + entirehtml
       exp.theParaphrase.value = generic.TheResponse
       exp.aParaphrase.value = generic.AResponse
