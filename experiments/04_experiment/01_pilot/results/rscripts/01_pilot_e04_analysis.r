@@ -20,7 +20,7 @@ source("../../../../../analysis/helpers.R")
 # Read the database into R.
 corp = read.table("../../../../../corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
-d1 = read.csv("../data/e03_pilot1-merged.csv")
+d1 = read.csv("../data/e04_pilot1-merged.csv")
 16*4*4+10*4
 
 
