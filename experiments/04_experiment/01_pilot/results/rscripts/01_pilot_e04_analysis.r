@@ -20,12 +20,8 @@ source("../../../../../analysis/helpers.R")
 # Read the database into R.
 corp = read.table("../../../../../corpus/results/swbd.tab",sep="\t",header=T,quote="")
 # Read the data into R.
-d1 = read.csv("../data/e04_pilot1-merged.csv")
-16*4*4+10*4
+d1 = read.csv("../data/e04_pilot-merged.csv")
 
-
-
-str(d1)
 # Rename the Item_ID variable in the database to Tgrep_ID
 names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
 
@@ -47,14 +43,14 @@ d$time_in_minutes = as.numeric(as.character(d$time_in_minutes))
 d$rating = as.numeric(d$rating)
 # write.csv(df,"df_nested.csv")
 
-head(d)
-# until i can find a way to unnest, save this as csv and unnest in python,
-# then read the csv back in here
-str(d)
-
-
 # read in the contexts too:
-d_contexts = read.csv("../../../../clean_corpus/03_experiment/pilot1.txt",sep="\t",header=T,quote="")
+d_contexts = read.csv("../../../../clean_corpus/04_experiment/pilot.txt",sep="\t",header=T,quote="")
+
+names(d_contexts)[names(d_contexts) == "TGrepID"] <- "tgrep_id"
+
+d <- left_join(d, d_contexts, by="tgrep_id")
+
+
 head(d_contexts)
 # look at comments
 unique(d$subject_information.comments)
@@ -90,8 +86,6 @@ mean(d$time_in_minutes)
 # Practice trials
 practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4"))
-  # write.csv(.,"practice_01_pilot_e01.csv")
-View(practice)
 
 ############################################################
 # look at just the first practice trial
@@ -129,8 +123,7 @@ nrow(prac_agr_keep) # 392
 practice_first = rbind(fixed,prac_agr_keep)
 nrow(practice_first) #320
 
-seconds = prac_agr %>%
-  group_b
+
 ############################################################
 agr = practice %>%
   group_by(tgrep_id, paraphrase) %>%
@@ -149,11 +142,11 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   ggsave("../graphs/pilot_practice_total_faceted_Sentence.pdf")
 # theme(axis.text.x = element_text(angle = 90))
 
-d$tgrep_id
+
 # controls
 controls = d1 %>%
   filter(grepl("control",tgrep_id))
-nrow(controls) #96
+
 cntrls = read.csv("../../../../clean_corpus/controls.csv",header=TRUE,quote="")
 names(cntrls)[names(cntrls) == "TGrepID"] <- "tgrep_id"
 c <- left_join(controls, cntrls, by="tgrep_id")
@@ -173,19 +166,19 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 # test
 test = d %>%
   filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
-  filter(!grepl("control",tgrep_id))
+  filter(!grepl("control",tgrep_id)) %>%
+  mutate()
 
 agr = test %>%
   group_by(Sentence,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
-View(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge") +
-  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(40)))
+  facet_wrap(~Sentence, labeller = labeller(Sentence = label_wrap_gen(30)))
   ggsave("../graphs/pilot_test.pdf")
 
 
