@@ -39,15 +39,15 @@ length(unique(d$workerid)) # 656
 33*20
 table(d$proliferate.condition)
 
-exp28: 2974
 
 
 # join together
 d <- left_join(d, corp_match, by="tgrep_id")
-View(d)
 
+########################################################################
+########################################################################
 
-# create cleaned-up data set for LM study with Dhara Yu
+# create cleaned-up data set for Modeling study with Dhara Yu
 d_lm = d[,c("tgrep_id","workerid","rating","paraphrase","Wh","ModalPresent","Sentence")]
 
 d_lm = d %>%
@@ -78,23 +78,14 @@ d_lm$paraphrase[(d_lm$paraphrase == "all") & (d_lm$Wh == "why")] = "what is ever
 d_lm$paraphrase[(d_lm$paraphrase == "the") & (d_lm$Wh == "why")] = "what is the reason"
 d_lm$paraphrase[(d_lm$paraphrase == "a") & (d_lm$Wh == "why")] = "what is a reason"
 
-# # read in the contexts :
-# d_contexts = read.csv("../../../corpus/analysis/swbd_contexts.csv")
-# head(d_contexts)
-# names(d_contexts)[names(d_contexts) == "TGrepID"] <- "tgrep_id"
-# # filter from the database the tgrep_ids from the data
-# ids = d_contexts %>%
-#   filter(tgrep_id %in% d_lm$tgrep_id)
-# 
-# # join together
-# d_lm <- left_join(d_lm, ids, by="tgrep_id")
-
 write.csv(d_lm,"../data/lm_data.csv")
+########################################################################
+########################################################################
 
 length(unique(d$workerid)) # 656
 table(d$proliferate.condition)
 
-nrow(d)
+nrow(d) #112031
 d$time_in_minutes = as.numeric(as.character(d$time_in_minutes))
 d$rating = as.numeric(d$rating)
 # write.csv(df,"df_nested.csv")
@@ -210,7 +201,7 @@ ggsave("../graphs/main_practice_total.pdf")
 # Control Items
 ########################################################################
 ########################################################################
-nrow(d)
+
 controls = d %>%
   filter(grepl("control",tgrep_id))
 nrow(controls) # 15744
@@ -275,7 +266,7 @@ failed_controls = con %>%
   filter(sum_control_passed < 4)
 
 length(unique(failed_controls$workerid)) # 35
-length(unique(failed_controls$workerid))/length(unique(d$workerid))*100 # 4.9% ---> 5.3%
+length(unique(failed_controls$workerid))/length(unique(d$workerid))*100 # 5.3%
 
 ########################################################################
 ########################################################################
@@ -297,7 +288,9 @@ length(unique(test$workerid)) #621
 
 
 test[is.na(test)] <- 0
-nrow(test)
+nrow(test) # 74860
+
+########################################################################
 agr = test %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -348,9 +341,7 @@ other_ratings = test %>%
            (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="the"]))
 
 nrow(other_ratings)/nrow(test_agr)*100 # 15%
-nrow(test_agr)#1340
-
-# View(other_ratings)
+nrow(test_agr)#3980
 
 or_ids = other_ratings$tgrep_id
 test_other = test %>%
@@ -358,8 +349,8 @@ test_other = test %>%
 
 # View(unique(test_other$Sentence))
 # 15% of the items are rhetorical questions
-nrow(test_other)
-length(unique(test$Sentence))
+nrow(test_other) 11360
+length(unique(test$Sentence)) #345
 
 # filter out those bad guys
 test_norm = test %>%
@@ -370,9 +361,8 @@ table(test_norm$Wh,test_norm$ModalPresent)
   
 ########################################################################
 ########################################################################
-# NORMALIZING TO MAKE A PROBABILITY DISTRIBUTION
+# RE-NORMALIZING TO MAKE A PROBABILITY DISTRIBUTION
 # for just "a", "every", and "the"
-
 ########################################################################
 critical = test_norm %>%
   filter(paraphrase %in% c("every","a","the"))
@@ -417,11 +407,13 @@ normed[is.na(normed$ModalPresent)] <- "no"
 # FIND OUT:
 # are there particular items that show bimodality between "other" and another para?
 
-length(unique(normed$tgrep_id))
+length(unique(normed$tgrep_id)) #842
 # save to .csv to load into analysis script
 # write.csv(normed,"../data/normed.csv")
 
-nrow(normed)# 47625
+nrow(normed)# 47625 ---> 43392
+
+########################################################################
 
 agr = normed %>%
   group_by(paraphrase) %>%
@@ -570,13 +562,13 @@ a_high = normed %>%
 View(a_high)
 
 ex = normed %>%
-  filter(tgrep_id %in% c("14478:20")) %>%
+  filter(tgrep_id %in% c("83839:35")) %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating))
 View(ex)  
 
 all_high = normed %>%
-  filter((paraphrase %in% c("every")) & (Wh == "where")) %>% #  & (Wh == "when") & (ModalPresent == "yes")
+  filter((paraphrase %in% c("every")) & (Wh == "what")) %>% #  & (Wh == "when") & (ModalPresent == "yes")
   group_by(tgrep_id,Question) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating)) %>%
   filter(mean_rating > .1)
