@@ -477,7 +477,7 @@ function make_slides(f) {
       this.generic = generic;
 
       var contexthtml = this.format_context(generic.PreceedingContext);
-      var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.Matrix) + " <b>" + this.format_sentence(generic.Question) + "</b>"
+      var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.Matrix) + " <b>" + this.format_sentence(generic.Question) + "</b>" + generic.punct
       contexthtml = contexthtml + entirehtml
       exp.theParaphrase.value = generic.TheResponse
       exp.aParaphrase.value = generic.AResponse
