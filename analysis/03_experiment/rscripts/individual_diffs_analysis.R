@@ -28,3 +28,4 @@ d_means <- d %>%
   group_by(Question, paraphrase) %>%
   summarize(mean_rating = mean(normed_rating))
 
+# collapse three ratings into a data matrix
