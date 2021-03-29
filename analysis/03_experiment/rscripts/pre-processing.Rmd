@@ -40,7 +40,7 @@ d <- left_join(d, corp_match, by="tgrep_id")
 ```{r comments and demographic information}
 length(unique(d$workerid)) # 656
 
-= as.numeric(as.character(d$time_in_minutes))
+d$time_in_minutes = as.numeric(as.character(d$time_in_minutes))
 d$rating = as.numeric(d$rating)
 
 length(unique(d$workerid)) #656
@@ -70,6 +70,7 @@ ggplot(d, aes(x=time_in_minutes)) +
   geom_histogram(stat="count")
 mean(d$time_in_minutes)
 ```
+
 ```{r Look at practice trials}
 practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4"))
@@ -324,6 +325,7 @@ agr = normed %>%
   summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
+View(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
@@ -351,7 +353,7 @@ agr$Wh <- factor(agr$Wh, levels=c("what","how","where","why","who","when"))
 ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh, ncol=2) +
+  facet_wrap(~Wh, ncol=3) +
   xlab("Paraphrase") +
   ylab("Mean rating") +
   guides(fill=FALSE) +
@@ -365,7 +367,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)
     scale_color_manual(values=cbPalette) +
     scale_alpha_discrete(range = c(.5,1))
 
-# ggsave("../graphs/modxwh.pdf",width=3,height=4)
+ggsave("../graphs/modxwh_long.pdf",width=5,height=3)
 ```
 
 
