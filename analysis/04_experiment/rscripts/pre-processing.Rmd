@@ -11,9 +11,9 @@ library(tidyr)
 library(dplyr)
 library(lme4)
 library(lmerTest)
-library(tidyverse)
 library(multcomp) # not available for this version of R
 library(stringr)
+library(tidyverse)
 theme_set(theme_bw())
 cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
 this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
@@ -40,8 +40,21 @@ corp_match = corp %>%
 d <- left_join(d, corp_match, by="tgrep_id")
 ```
 
+```{r take a look at the raw distribution}
+ggplot(d, aes(x=rating)) +
+  geom_histogram()
 
-```{r comments and demographic information}
+summary(d$rating)
+
+negs = d %>%
+  filter(rating < 0)
+summary(negs$rating)
+
+nrow(negs) # 140 negative ratings
+```
+
+
+```{r comments and demographic information, eval=FALSE, include=FALSE}
 length(unique(d$workerid)) #1073
 d$time_in_minutes = as.numeric(as.character(d$time_in_minutes))
 d$rating = as.numeric(d$rating)
@@ -92,7 +105,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 # theme(axis.text.x = element_text(angle = 90))
 ```
 
-```{r TODO: look at first response on practice trials only}
+```{r TODO: look at first response on practice trials only, eval=FALSE, include=FALSE}
 prac_agr = practice %>%
   group_by(workerid,tgrep_id,paraphrase,rating) %>%
   summarise(count = n()) %>%
@@ -130,7 +143,7 @@ nrow(practice_first) #320
 
 ```{r Look at control trials}
 controls = d %>%
-  filter(grepl("control",tgrep_id))
+  filter((grepl("control",tgrep_id)) & (rating >= 0))
 
 # read in the file to have access to the items
 cntrls = read.csv("../../../experiments/clean_corpus/controls.csv",header=TRUE,quote="")
@@ -199,24 +212,28 @@ length(unique(failed_controls$workerid))/length(unique(d$workerid))*100 # 3.4%
 
 ```{r Look at raw test items}
 test = d %>%
-  # remove participants who fail 2/6 controls
+  # Remove participants who fail 2/6 controls
   filter(!workerid %in% c(failed_controls$workerid)) %>%
-  # remove non-test items
+  # Remove non-test items
   filter(!tgrep_id %in% c("example1", "example2", "example3", "example4","bot_check")) %>%
   filter(!grepl("control",tgrep_id)) %>%
-  # make a single matrix verb column
+  # Include only ratings >=0
+  filter(rating >= 0) %>%
+  # Make a single matrix verb column
   unite("MatrixVerb", c("MatrixPredVerb", "MatrixPredOther", "MatrixPredParticle"), na.rm = TRUE, sep = " ", remove = FALSE) %>%
-  # remove leading and trailing whitespace
+  # Remove leading and trailing whitespace
   mutate(MatrixVerb = str_trim(MatrixVerb))
 
 # replace the empty values in MatrixVerb with the value for Aux verb column
 test$MatrixVerb = ifelse(test$MatrixVerb=="",test$MatrixPredAux,test$MatrixVerb)
-
 # rename all to every
 test$paraphrase[test$paraphrase == "all"] = "every"
 
 test[is.na(test)] <- 0
 nrow(test) # 116484
+
+# View(test)
+
 ```
 
 ```{r Graph raw test items}
@@ -270,11 +287,11 @@ ggplot(agr,aes(x=MatrixVerb, y=mean_rating, fill=MatrixVerb)) + # alpha=ModalPre
 ```{r Remove rhetorical questions}
 test_agr = test %>%
   group_by(tgrep_id, paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
+  summarize(mean_rating = mean(rating))
 
 other_ratings = test %>%
   group_by(tgrep_id, paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  summarize(mean_rating = mean(rating)) %>%
   filter((mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="a"]) & 
            (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="every"]) & 
            (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="the"]))
@@ -297,8 +314,8 @@ nrow(test_norm)/nrow(test)*100 # 84%
 ```{r Normalize ratings to make a probability distribution}
 # remove 'other' ratings
 critical = test_norm %>%
-  filter(paraphrase %in% c("every","a","the"))
-
+  filter((paraphrase %in% c("every","a","the"))) # & (rating >= 0)
+# View(critical)
 # unique by-item/by-participant combo
 critical$ids = paste(critical$workerid,critical$tgrep_id)
 
@@ -310,6 +327,7 @@ critical$paraphrase = as.factor(critical$paraphrase)
 # Determine for each observation (by-participant by-item), get the sum of the 
 # 3 ratings
 cr = critical %>%
+  # select(ids,rating) %>%
   group_by(ids) %>%
   summarize(rating_sum = sum(rating))
 
@@ -336,10 +354,8 @@ View(normed)
 # by-participant variability using KL divergence from the mean
 
 # save to .csv to load into analysis script
-# write.csv(normed,"../data/normed.csv")
+write.csv(normed,"../data/normed.csv")
 
-ggplot(normed,aes(x=normed_rating)) +
-  geom_histogram(binwidth = 10)
 
 ```
 
@@ -349,11 +365,10 @@ agr = normed %>%
   summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
+
 View(agr)
 
-
 dodge = position_dodge(.9)
-
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position=dodge,stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=dodge, show.legend = FALSE) +
@@ -364,7 +379,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   theme(legend.position = "none") +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
-# ggsave("../graphs/overall.pdf",width=2.5,height=2)
+# ggsave("../graphs/overall.pdf",width=2,height=2)
 ```
 
 ```{r Look at Interaction between Modal and Wh}
@@ -446,14 +461,32 @@ ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
 ```
 
 ```{r Graph MatrixVerb only}
+unique(normed$MatrixVerb)
+
+normed$VerbLemma = as.factor(
+  ifelse(normed$MatrixVerb %in% c("believe","believed"),"believe",
+         ifelse(normed$MatrixVerb %in% c("thinking","thinks","thought","think"),"think",
+                ifelse(normed$MatrixVerb %in% c("saw","see","seeing"),"see",
+                       ifelse(normed$MatrixVerb %in% c("know","knows","knew","known","knowing"),"know",
+                              ifelse(normed$MatrixVerb %in% c("realize","realized"),"realize",
+                                     ifelse(normed$MatrixVerb %in% c("notice","noticed"),"notice",
+                                            ifelse(normed$MatrixVerb %in% c("wonder","wondered","wondering"),"wonder",
+                                                   ifelse(normed$MatrixVerb %in% c("ask","asking","asked"),"ask",
+                                                          ifelse(normed$MatrixVerb %in% c("remember","remembered","remembering"),"remember",
+                                                                 ifelse(normed$MatrixVerb %in% c("is","are","was","were","am"),"be", 
+                                                                        ifelse(normed$MatrixVerb %in% c("say","said","saying"),"say",
+                                                   "other"))))))))))))
+
+
 agr = normed %>%
-  group_by(paraphrase,MatrixVerb) %>%
+  filter(VerbLemma %in% c("know","see","wonder","realize","think","notice","ask","remember","say","believe")) %>%
+  group_by(paraphrase,VerbLemma) %>%
   summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
   drop_na()
 View(agr)
 
-ggplot(agr,aes(x=MatrixVerb, y=mean_rating, fill=paraphrase)) +
+ggplot(agr,aes(x=VerbLemma, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax), width=.25,position=position_dodge(0.9)) +
   xlab("Matrix Verb") +
@@ -466,7 +499,7 @@ ggplot(agr,aes(x=MatrixVerb, y=mean_rating, fill=paraphrase)) +
   scale_color_manual(values=cbPalette)
 # legend.spacing.y = unit(-10, 'cm'))
 # guides(fill=guide_legend(title="Paraphrase"))
-# ggsave("../graphs/final_normed_modalpresent.pdf")
+ggsave("../graphs/final_normed_modalpresent.pdf")
 ```
 
 ```{r Look at individual modals}
@@ -515,7 +548,7 @@ View(all_high)
 
 # Look at all ratings for a specific example
 ex = normed %>%
-  filter(tgrep_id %in% c("14478:20")) %>%
+  filter(tgrep_id %in% c("132641:45")) %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(normed_rating), sd = sd(normed_rating))
 View(ex)  
