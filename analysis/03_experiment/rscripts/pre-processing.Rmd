@@ -278,7 +278,6 @@ nrow(test_norm)/nrow(test)*100 # 84.8%
 # Remove 'other' ratings
 critical = test_norm %>%
   filter(paraphrase %in% c("every","a","the"))
-unique(critical$paraphrase)
 
 # unique by-item/by-participant combo
 critical$ids = paste(critical$workerid,critical$tgrep_id)
@@ -329,11 +328,13 @@ View(agr)
 
 ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
+  # geom_errorbar(aes(ymin = YMin, ymax = YMax),width=.25, position=position_dodge(width = 0.9)) +
+  # 
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position="dodge", show.legend = FALSE) +
   # ggtitle("Mean rating for 'a' vs. 'every'") +
   xlab("Paraphrase") +
   ylab("Mean rating") +
-  ylim(0,.6) +
+  # ylim(0,.6) +
   theme(legend.position = "none") +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
@@ -353,7 +354,7 @@ agr$Wh <- factor(agr$Wh, levels=c("what","how","where","why","who","when"))
 ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)) +
   geom_bar(position="dodge",stat="identity") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25,position=position_dodge(0.9)) +
-  facet_wrap(~Wh, ncol=3) +
+  facet_wrap(~Wh, ncol=2) +
   xlab("Paraphrase") +
   ylab("Mean rating") +
   guides(fill=FALSE) +
@@ -367,7 +368,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)
     scale_color_manual(values=cbPalette) +
     scale_alpha_discrete(range = c(.5,1))
 
-ggsave("../graphs/modxwh_long.pdf",width=5,height=3)
+# ggsave("../graphs/modxwh_long.pdf",width=5,height=3)
 ```
 
 
@@ -394,7 +395,7 @@ ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
 # ggsave("../graphs/final_normed_wh.pdf")
 ```
 
-```{r Graphy ModalPresent only}
+```{r Graph ModalPresent only}
 agr = normed %>%
   group_by(paraphrase,ModalPresent) %>%
   summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
