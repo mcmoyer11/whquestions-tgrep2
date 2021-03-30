@@ -571,6 +571,9 @@ function make_slides(f) {
       console.log("total: ", total)
       console.log("slider1: ", $("#slider5_1").slider("option", "value"))
       console.log("slider2: ", $("#slider5_2").slider("option", "value"))
+      console.log("slider3: ", $("#slider5_3").slider("option", "value"))
+      console.log("slider4: ", $("#slider5_4").slider("option", "value"))
+      console.log("***")
 
       if (total < .99) {
         $(".err").show();

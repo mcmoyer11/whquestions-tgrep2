@@ -210,6 +210,13 @@ length(unique(test$workerid)) #621
 
 test[is.na(test)] <- 0
 nrow(test) # 74860
+
+agr = test %>%
+  group_by(paraphrase) %>%
+  mutate(mean_rating = mean(rating))
+ 
+
+View(agr[,c("")])
 ```
 
 ```{r Graph raw test items}
@@ -250,11 +257,11 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
 ```{r Remove rhetorical questions}
 test_agr = test %>%
   group_by(tgrep_id, paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating))
+  summarize(mean_rating = mean(rating))
 
 other_ratings = test %>%
   group_by(tgrep_id, paraphrase) %>%
-  summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
+  summarize(mean_rating = mean(rating)) %>%
   filter((mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="a"]) & 
            (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="every"]) & 
            (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="the"]))
@@ -291,6 +298,7 @@ critical$paraphrase = as.factor(critical$paraphrase)
 cr = critical %>%
   group_by(ids) %>%
   summarize(rating_sum = sum(rating))
+View(cr)
 
 # Join the dfs together
 critical = critical %>%
@@ -303,6 +311,7 @@ normed_agr = critical %>%
   summarise(normed_rating = rating/rating_sum) %>%
   drop_na() # this removes ALOT of rows
 
+View(normed_agr)
 normed = merge(normed_agr,critical,by='factors')
 normed[is.na(normed$ModalPresent)] <- "no"
 
