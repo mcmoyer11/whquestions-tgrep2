@@ -1,16 +1,18 @@
 # TDTlite test
 
+This file is modified from [the original](https://github.com/thegricean/TDTlite/tree/master/project_name), an example project created by [Judith Degen](https://thegricean.github.io/) for a course at Stanford.
+
 On `myth.stanford.edu`, follow the instructions below to check that everything is set up for you to use TDTlite.
 
 Start by copying the example project that's included in TDTlite to your home directory. From your home directory, type:
 
-`cp -r example_project .`
+`cp -r projects/project_name`.
 
-Navigate into `example_project`.
+Navigate into `projects/project_name`.
 
-`cd example_project`
+`cd projects/project_name`
 
-Open the `options` file and set the `data` and `results` paths to the `data` and `results` subdirectories of `example_project` (use `pwd` to find out the path to the current directory).  
+Open the `options` file and set the `data` and `results` paths to the `data` and `results` subdirectories of `project_name` (use `pwd` to find out the path to the current directory).  
 
 To test whether everything is running as it should:
 
@@ -24,7 +26,7 @@ This provides step by step instructions for logging on to the server, setting al
 
 1. Log on and set environment variables (or check that they are set).
 
-2. Copy the TDTlite example project into your home directory and set your project specific paths.
+2. Copy the TDTlite project into your home directory and set your project specific paths.
 
 3. Run TDTlite!
 
@@ -47,11 +49,12 @@ To set environment variables, first open your .cshrc file in the vim editor:
 Open for editing by pressing `i`. Copy the following lines and paste them into the file:
 
 ```bash
-export TGREP2ABLE /afs/ir/data/linguistic-data/Treebank/tgrep2able/
-export TGREP2_CORPUS $TGREP2ABLE/swbd.t2c.gz
-export TDTlite /afs/ir/data/linguistic-data/TDTlite/
-export TDT_DATABASES /afs/ir/data/linguistic-data/TDTlite/databases
-export PATH /afs/ir/data/linguistic-data/TDTlite:$PATH
+export PATH=$PATH:/afs/ir/data/linguistic-data/TDTlite:~/bin
+export TGREP2ABLE=/afs/ir/data/linguistic-data/Treebank/tgrep2able/
+export TDTlite=/afs/ir/data/linguistic-data/TDTlite/
+export TGREP2_CORPUS=$TGREP2ABLE/swbd.t2c.gz
+export TDT_DATABASES=/afs/ir/data/linguistic-data/TDTlite/databases/
+export PATH="/afs/ir/data/linguistic-data/TDTlite:$PATH"
 export PATH="/afs/ir/data/linguistic-data/bin/linux_2_4/:$PATH"
 ```
 
@@ -63,7 +66,7 @@ Once the lines are pasted, hit `Esc`, then the combination `Shift+:`. Type `wq` 
 
 `TDT_DATABASES` Set this to the directory that contains the TDT databases. 
 
-The last line adds the TDTlite directory to your `PATH` so you can run the basic `run` command from anywhere. 
+The last two lines adds the TDTlite directory to your `PATH` so you can run the basic `run` command from anywhere. 
 
 If you just updated your `.cshrc` file, you need to source it in order to actually set the variables:
 
@@ -73,23 +76,23 @@ Now, testing whether your environment variables are set should yield a path to t
 
 `$ echo $TGREP2ABLE`
 
-## Copying the TDTlite example project and setting project specific paths
+## Copying the TDTlite project and setting project specific paths
 
 It's good practice to have a `projects` directory that you have all your (TDTlite or otherwise) projects organized in. Create this directory in your home directory:
 
 `$ mkdir projects`
 
-Now move into `projects` and copy the TDTlite example_project to your current location:
+Now move into `projects` and copy the TDTlite project_name to your current location:
 
-`$ cp -r $TDTlite/example_project/ .`
+`$ cp -r $TDTlite/project_name/ .`
 
 Test to see wether it was properly copied:
 
 `$ ls`
 
-You should see an item `example_project`. Move into it:
+You should see an item `project_name`. Move into it:
 
-`$ cd example_project`
+`$ cd project_name`
 `$ ls`
 
 You will see three directories: `data`, `ptn`, and `results`. More on those in a bit. There are also two files, `MACROS.ptn` and `options`. The last thing left to do before we can run TDTlite is to specify project-specific paths in the `options` file. First, you need to find out the path to your home directory:
@@ -104,7 +107,7 @@ At the top of the file you will see two path assignments: one for `data` and one
 
 ## Run TDTlite
 
-Running TDTlite is incredibly simple once everything is set up. Simply type, from the top level of the example_project:
+Running TDTlite is incredibly simple once everything is set up. Simply type, from the top level of the project_name:
 
 `$ run -c swbd -e -o`
 
