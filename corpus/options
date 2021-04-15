@@ -8,6 +8,7 @@ add CategoricalVar HaveNeedTo=yes:HaveNeed,no:NotHaveNeed
 add CategoricalVar Finite=no:Infinite,yes:Finite
 add CategoricalVar ModalPresent=yes:Modal,no:NotModal
 add CategoricalVar QuestionType=subject:QuestionSubject,adjunct:QuestionAdjunct,embadjunct:EmbAdjunct,exclamation:ExclamQ,root:RootQ,embedded:EmbQ,relative:RelClause,fragment:FragmentQ,cleft:Cleft
+add CategoricalVar EmbeddedSQ=yes:EmbeddedSQ
 add CategoricalVar DegreeQ=yes:DegQ,no:NotDegQ
 add CategoricalVar SubjectAuxInv=yes:SubjectAux
 add CategoricalVar WhAll=yes:WhAll
@@ -15,7 +16,6 @@ add CategoricalVar WhAdvP=yes:WhAdvP
 add CategoricalVar MatrixNegPresent=yes:MatrixNegPresent
 add CategoricalVar EmbeddedNegPresent=yes:EmbeddedNegPresent
 add CategoricalVar SbarNomPresent=yes:SbarNom
-add CategoricalVar EmbeddedSQ=yes:EmbeddedSQ
 add StringVar QuantifiedSubject
 add StringVar QuantifiedPredicate
 add StringVar Wh
