@@ -5,11 +5,6 @@ date: "October 22, 2020"
 output: html_document
 ---
   
-## Step 1: select stimuli for experiment
-  
-Set your path here and load some packages that are necessary for visualization 
-(ggplot), tidy data handling (tidyr and dplyr), and mixed effects modeling (lme4:
-                                                                                                                                                               
 ```{r}  
 library(ggplot2)
 library(tidyr)
@@ -29,6 +24,15 @@ d = read.table("../results/swbd.tab",sep="\t",header=T,quote="")
 # Load in the .csv with the contexts removed
 # d = read.csv("swbd_nocntxt.csv",header=T)
 View(d)
+
+table(d$trace)
+
+n = d %>%
+  filter(Trace == "")
+
+n = subset(d, d$Trace == "")
+n = filter(d, d$Trace == "")
+
 # old
 nrow(d) # 10667.....10278....10192 (added MACRO (@WH > /^WH/)...10199 (@WH >> /^WH)
 head(d)
@@ -39,6 +43,37 @@ table(d$WhAdvP,d$QuestionType)
 
 table(d$QuestionType)
 # 650 cleft
+View(d[d["Item_ID"] == "138690:33"])
+
+(TOP 
+  (S 
+    (NP-SBJ (DT That)) 
+    (VP 
+      (BES 's) 
+      (NP-PRD 
+          (NP (CD one)) 
+          (PP 
+              (IN of) 
+              (NP 
+                  (NP 
+                      (PRP$ my) 
+                      (JJ favorite) 
+                      (NNS things)) 
+                  (SBAR 
+                      (WHNP-1 (-NONE- 0)) 
+                      (S 
+                          (NP-SBJ (-NONE- *)) 
+                          (EDITED 
+                              (RM (-DFL- \[)) 
+                              (VP-UNF (TO to)) 
+                              (, ,) 
+                              (IP (-DFL- \+))) 
+                          (VP (TO to) 
+                              (RS (-DFL- ])) 
+                              (VP 
+                                  (VB serve) 
+                                  (NP (-NONE- *T*-1)))))))))) (. .) (-DFL- E_S)))
+
 
 
 # exclude were & were
