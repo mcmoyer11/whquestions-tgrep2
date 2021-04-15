@@ -15,6 +15,7 @@ add CategoricalVar WhAdvP=yes:WhAdvP
 add CategoricalVar MatrixNegPresent=yes:MatrixNegPresent
 add CategoricalVar EmbeddedNegPresent=yes:EmbeddedNegPresent
 add CategoricalVar SbarNomPresent=yes:SbarNom
+add CategoricalVar EmbeddedSQ=yes:EmbeddedSQ
 add StringVar QuantifiedSubject
 add StringVar QuantifiedPredicate
 add StringVar Wh
