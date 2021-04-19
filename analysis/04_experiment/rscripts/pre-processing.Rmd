@@ -412,8 +412,6 @@ other_ratings = test %>%
 nrow(other_ratings)/nrow(test_agr)*100 # 15.8%
 nrow(test_agr) # 4052
 
-
-
 or_ids = other_ratings$tgrep_id
 test_other = test %>%
   filter(tgrep_id %in% or_ids)
@@ -423,6 +421,16 @@ test_norm = test %>%
   filter(!tgrep_id %in% or_ids)
 
 nrow(test_norm)/nrow(test)*100 # 84%
+```
+
+```{r Look at the removed qs and Embedded SQ questions}
+test_removed = test %>%
+  filter(tgrep_id %in% or_ids)
+
+sq = test %>%
+  filter(EmbeddedSQ == "yes")
+
+
 ```
   
 ```{r Normalize ratings to make a probability distribution}
