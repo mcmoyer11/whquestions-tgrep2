@@ -35,13 +35,15 @@ corp_match = corp %>%
 d <- left_join(d, corp_match, by="tgrep_id")
 
 # take a look at the data
-View(d)
-summary(d)
-nrow(d)
+# summary(d)
+# nrow(d)
 
+
+# assign the negative values 0
+d$rating[d$rating < 0] = 0
 ```
 
-```{r take a look at the raw distribution}
+```{r take a look at the raw distribution, include = FALSE}
 ggplot(d, aes(x=rating)) +
   geom_histogram()
 
@@ -53,25 +55,21 @@ negs = d %>%
   filter(rating < 0)
 nrow(negs) # 140 negative ratings
 
-View(d)
-
-# assign the negative values 0
-d$rating[d$rating < 0] = 0
 ```
 
 # Native speakers
 ## We exclude any speakers who did not report English as a native language in the post-survey demographic questions.
 ```{r filter native English speakers, warning = FALSE}
 nrow(d) # 174549
-length(unique(d$workerid)) # 1073
+length(unique(d$workerid)) # 656
 #filter out participants who did not report English as native language
 d <- d %>%
   mutate(language = tolower(subject_information.language)) %>%
   filter(., grepl("eng", language))
 
 # 25 participants removed for reporting non-english native language
-nrow(d) #170068
-length(unique(d$workerid)) # 1048
+nrow(d) # 107868
+length(unique(d$workerid)) # 632
 ```
 
 ```{r comments and demographic information, eval=FALSE, include=FALSE}
@@ -108,7 +106,7 @@ ggplot(d, aes(x=time_in_minutes)) +
 mean(d$time_in_minutes)
 ```
 
-```{r Look at practice trials}
+```{r Look at practice trials, include= FALSE}
 practice = d %>%
   filter(tgrep_id %in% c("example1", "example2", "example3", "example4"))
 
@@ -233,7 +231,7 @@ length(unique(failed_controls$workerid))/length(unique(d$workerid))*100 # 5.3%
 
 ```{r Look at raw test items}
 # N before removing ppl who failed 2 controls 
-length(unique(d$workerid)) #656
+length(unique(d$workerid)) #632
 
 test = d %>%
   filter(!workerid %in% c(failed_controls$workerid)) %>%
@@ -243,7 +241,7 @@ test = d %>%
 test$paraphrase[test$paraphrase == "all"] = "every"
 
 # N after removing participants who failed 2/6 controls
-length(unique(test$workerid)) #621
+length(unique(test$workerid)) #597
 
 test[is.na(test)] <- 0
 nrow(test) # 74860
@@ -301,7 +299,7 @@ other_ratings = test %>%
            (mean_rating[paraphrase == "other"] > mean_rating[paraphrase=="the"]))
 
 # How much data removed?
-nrow(other_ratings)/nrow(test_agr)*100 # 15%
+nrow(other_ratings)/nrow(test_agr)*100 # 15.8%
 nrow(test_agr)#3980
 
 or_ids = other_ratings$tgrep_id
@@ -313,6 +311,7 @@ test_norm = test %>%
   filter(!tgrep_id %in% or_ids)
 nrow(test_norm)/nrow(test)*100 # 84.8%
 
+# write.csv(test_norm,"../data/root_no_rhetorical.csv")
 ```
 
 ```{r Normalize ratings to make a probability distribution}

@@ -22,7 +22,7 @@ cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#
 d = read.csv("../data/normed.csv")
 
 d$ModalPresent = as.factor(d$ModalPresent)
-d$Wh = as.factor(d$Wh)
+d$Wh = as.factor(d $Wh)
 d$paraphrase = as.factor(d$paraphrase)
 
 # Need to first figure out which verbs to look at
@@ -42,50 +42,23 @@ contrasts(d$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
 ########################################################################
 # mean center modalpresent (2-level variables only)
 
-
-# d$ModalPresent[d$ModalPresent == "no"] = "0"
-# d$ModalPresent[d$ModalPresent == "yes"] = "1"
-
 str(d)
 centered = cbind(d,myCenter(d["ModalPresent"]))
-
-head(centered)
-summary(centered)
-str(centered)
-
-
-# model with random slopes no matrix verb predictor
-m. = lmer(rating ~ cModalPresent*Wh*VerbLemma*paraphrase + (1+paraphrase+Wh+cModalPresent|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
-summary(m.full)
-
-# Error message(s) when including VerbLemma as random slope:
-
-# Error: number of observations (=64911) <= number of random effects (=90440) 
-# for term (1 + paraphrase + Wh + cModalPresent + VerbLemma | workerid); the 
-# random-effects parameters and the residual variance (or scale parameter) 
-# are probably unidentifiable
-
-
-# fixed-effect model matrix is rank deficient so dropping 2508 columns / coefficients
-
-
-
-saveRDS(m.full, "EQ-model-full.rds")
-my_model <- readRDS("EQ-model-full.rds")
-
 table(centered$ModalPresent,centered$Wh,centered$paraphrase)
 table(centered$workerid,centered$paraphrase)
 table(centered$workerid,centered$Wh)
 table(centered$workerid,centered$ModalPresent)
 
-
+########################################################################
 # model with random slopes no matrix verb predictor
-m.mid = lmer(rating ~ cModalPresent*Wh*paraphrase + (1+paraphrase+Wh+cModalPresent|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
-summary(m.mid)
-# Model takes FOREVER to run (like, 30 mins)
-saveRDS(m.mid, "EQ-model-noMV.rds")
-my_model <- readRDS("EQ-model-noMV.rds")
+m.full = lmer(rating ~ cModalPresent*Wh*paraphrase + (1+paraphrase+Wh+cModalPresent|workerid) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
+summary(m.full)
 
+saveRDS(m., "EQ-model-full-nomv.rds")
+my_model <- readRDS("EQ-model-full-nomv.rds")
+
+
+# THIS IS THE MODEL WITHOUT EMBEDDED SQ REMOVED
 # Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite's method ['lmerModLmerTest']
 # Formula: rating ~ cModalPresent * Wh * paraphrase + (1 + paraphrase +  
 #     Wh + cModalPresent | workerid) + (1 + paraphrase | tgrep_id)
@@ -162,6 +135,174 @@ my_model <- readRDS("EQ-model-noMV.rds")
 # 
 # convergence code: 0
 # boundary (singular) fit: see ?isSingular
+
+
+########################################################################
+my_model_noMV_noSQ <- readRDS("EQ-model-full-nomv.rds")
+summary(my_model_noMV_noSQ)
+
+# THIS IS THE MODEL WITH THE EMBEDDED SQ QUESTIONS REMOVED
+
+# Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite's method ['lmerModLmerTest']
+# Formula: rating ~ cModalPresent * Wh * paraphrase + (1 + paraphrase +  
+#     Wh + cModalPresent | workerid) + (1 + paraphrase | tgrep_id)
+#    Data: centered
+# 
+#      AIC      BIC   logLik deviance df.resid 
+#  36993.5  37786.1 -18408.7  36817.5    60191 
+# 
+# Scaled residuals: 
+#     Min      1Q  Median      3Q     Max 
+# -3.3193 -0.6175 -0.1690  0.5439  3.4396 
+# 
+# Random effects:
+#  Groups   Name                   Variance  Std.Dev.  Corr                                           
+#  workerid (Intercept)            1.243e-02 0.1114986                                                
+#           paraphrasea.vs.every   3.289e-02 0.1813433 -0.80                                          
+#           paraphrasethe.vs.every 5.346e-02 0.2312127 -0.84  0.34                                    
+#           Whhow.vs.when          6.953e-08 0.0002637 -0.65  0.07  0.96                              
+#           Whwhat.vs.when         4.482e-07 0.0006695 -0.62  0.02  0.95  1.00                        
+#           Whwhere.vs.when        4.047e-06 0.0020118 -0.90  0.98  0.52  0.26  0.21                  
+#           Whwho.vs.when          1.638e-05 0.0040476  0.08  0.53 -0.61 -0.81 -0.83  0.36            
+#           Whwhy.vs.when          2.220e-06 0.0014898  0.15  0.47 -0.67 -0.85 -0.87  0.29  1.00      
+#           cModalPresent          2.474e-06 0.0015727 -0.63  0.04  0.95  1.00  1.00  0.23 -0.82 -0.86
+#  tgrep_id (Intercept)            2.593e-02 0.1610212                                                
+#           paraphrasea.vs.every   3.652e-02 0.1911091 -0.88                                          
+#           paraphrasethe.vs.every 1.095e-01 0.3308864 -0.96  0.71                                    
+#  Residual                        9.667e-02 0.3109212                                                
+# Number of obs: 60279, groups:  workerid, 952; tgrep_id, 797
+# 
+# Fixed effects:
+#                                                        Estimate Std. Error         df t value Pr(>|t|)    
+# (Intercept)                                            0.179976   0.040813 815.338434   4.410 1.17e-05 ***
+# cModalPresent                                         -0.041913   0.098079 810.311212  -0.427 0.669248    
+# Whhow.vs.when                                          0.104872   0.041629 802.422880   2.519 0.011955 *  
+# Whwhat.vs.when                                        -0.011089   0.042223 802.672874  -0.263 0.792905    
+# Whwhere.vs.when                                        0.006005   0.045843 799.974880   0.131 0.895820    
+# Whwho.vs.when                                          0.091257   0.048739 794.144127   1.872 0.061524 .  
+# Whwhy.vs.when                                         -0.039297   0.046254 800.192449  -0.850 0.395798    
+# paraphrasea.vs.every                                   0.132067   0.050036 819.665719   2.639 0.008462 ** 
+# paraphrasethe.vs.every                                 0.253765   0.080858 803.005595   3.138 0.001761 ** 
+# cModalPresent:Whhow.vs.when                            0.052039   0.101919 811.756272   0.511 0.609776    
+# cModalPresent:Whwhat.vs.when                           0.088260   0.104063 811.532710   0.848 0.396613    
+# cModalPresent:Whwhere.vs.when                         -0.016012   0.113586 808.265981  -0.141 0.887929    
+# cModalPresent:Whwho.vs.when                            0.174368   0.158543 792.476488   1.100 0.271749    
+# cModalPresent:Whwhy.vs.when                            0.066939   0.112609 802.862210   0.594 0.552386    
+# cModalPresent:paraphrasea.vs.every                     0.198709   0.120058 806.459733   1.655 0.098293 .  
+# cModalPresent:paraphrasethe.vs.every                  -0.064529   0.194276 796.780811  -0.332 0.739864    
+# Whhow.vs.when:paraphrasea.vs.every                    -0.239076   0.050873 795.376116  -4.699 3.07e-06 ***
+# Whwhat.vs.when:paraphrasea.vs.every                   -0.076253   0.051601 795.675845  -1.478 0.139873    
+# Whwhere.vs.when:paraphrasea.vs.every                  -0.103947   0.056002 792.182971  -1.856 0.063806 .  
+# Whwho.vs.when:paraphrasea.vs.every                    -0.199583   0.059496 784.271319  -3.355 0.000833 ***
+# Whwhy.vs.when:paraphrasea.vs.every                    -0.074937   0.056516 792.152669  -1.326 0.185246    
+# Whhow.vs.when:paraphrasethe.vs.every                  -0.060759   0.082450 788.196876  -0.737 0.461395    
+# Whwhat.vs.when:paraphrasethe.vs.every                  0.126746   0.083629 788.532805   1.516 0.130027    
+# Whwhere.vs.when:paraphrasethe.vs.every                 0.102840   0.090806 786.070486   1.133 0.257759    
+# Whwho.vs.when:paraphrasethe.vs.every                  -0.049553   0.096620 782.828079  -0.513 0.608187    
+# Whwhy.vs.when:paraphrasethe.vs.every                   0.239143   0.091673 788.009529   2.609 0.009262 ** 
+# cModalPresent:Whhow.vs.when:paraphrasea.vs.every      -0.092150   0.124801 808.263646  -0.738 0.460502    
+# cModalPresent:Whwhat.vs.when:paraphrasea.vs.every     -0.144709   0.127414 807.870441  -1.136 0.256404    
+# cModalPresent:Whwhere.vs.when:paraphrasea.vs.every    -0.049181   0.139001 803.335835  -0.354 0.723569    
+# cModalPresent:Whwho.vs.when:paraphrasea.vs.every      -0.325885   0.193580 781.637317  -1.683 0.092684 .  
+# cModalPresent:Whwhy.vs.when:paraphrasea.vs.every      -0.099021   0.137693 795.671167  -0.719 0.472263    
+# cModalPresent:Whhow.vs.when:paraphrasethe.vs.every    -0.071946   0.201931 798.811871  -0.356 0.721718    
+# cModalPresent:Whwhat.vs.when:paraphrasethe.vs.every   -0.144948   0.206160 798.274137  -0.703 0.482207    
+# cModalPresent:Whwhere.vs.when:paraphrasethe.vs.every   0.059791   0.225063 795.315344   0.266 0.790568    
+# cModalPresent:Whwho.vs.when:paraphrasethe.vs.every    -0.255438   0.314696 784.959228  -0.812 0.417211    
+# cModalPresent:Whwhy.vs.when:paraphrasethe.vs.every    -0.110268   0.223248 791.720289  -0.494 0.621494  
+
+
+########################################################################
+
+m.full = lmer(rating ~ cModalPresent*Wh*paraphrase + (1+paraphrase+Wh+cModalPresent|workerid) + (1+paraphrase|VerbLemma) + (1+paraphrase|tgrep_id), data=centered,REML=FALSE) 
+summary(m.full)
+saveRDS(m.full, "EQ-model-full-mvRE.rds")
+my_model_mvRE <- readRDS("EQ-model-full-mvRE.rds")
+summary(my_model_mvRE)
+# Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite's method ['lmerModLmerTest']
+# Formula: rating ~ cModalPresent * Wh * paraphrase + (1 + paraphrase +  
+#     Wh + cModalPresent | workerid) + (1 + paraphrase | VerbLemma) +      (1 + paraphrase | tgrep_id)
+#    Data: centered
+# 
+#      AIC      BIC   logLik deviance df.resid 
+#  36980.5  37827.2 -18396.3  36792.5    60185 
+# 
+# Scaled residuals: 
+#     Min      1Q  Median      3Q     Max 
+# -3.3082 -0.6174 -0.1690  0.5445  3.4443 
+# 
+# Random effects:
+#  Groups    Name                   Variance  Std.Dev.  Corr                                           
+#  workerid  (Intercept)            1.248e-02 0.1116974                                                
+#            paraphrasea.vs.every   3.292e-02 0.1814313 -0.80                                          
+#            paraphrasethe.vs.every 5.339e-02 0.2310708 -0.84  0.34                                    
+#            Whhow.vs.when          1.980e-07 0.0004449 -0.83  0.33  0.99                              
+#            Whwhat.vs.when         7.177e-07 0.0008472 -0.74  0.19  0.99  0.99                        
+#            Whwhere.vs.when        4.821e-06 0.0021958 -0.93  0.97  0.57  0.56  0.43                  
+#            Whwho.vs.when          1.605e-05 0.0040061  0.03  0.57 -0.57 -0.58 -0.70  0.34            
+#            Whwhy.vs.when          1.967e-06 0.0014024  0.00  0.60 -0.54 -0.55 -0.67  0.38  1.00      
+#            cModalPresent          2.693e-06 0.0016411 -0.63  0.04  0.95  0.95  0.99  0.30 -0.79 -0.77
+#  tgrep_id  (Intercept)            2.429e-02 0.1558445                                                
+#            paraphrasea.vs.every   3.504e-02 0.1871773 -0.88                                          
+#            paraphrasethe.vs.every 1.008e-01 0.3174589 -0.96  0.72                                    
+#  VerbLemma (Intercept)            3.201e-03 0.0565740                                                
+#            paraphrasea.vs.every   2.663e-03 0.0516029 -0.84                                          
+#            paraphrasethe.vs.every 1.774e-02 0.1331752 -0.98  0.71                                    
+#  Residual                         9.667e-02 0.3109218                                                
+# Number of obs: 60279, groups:  workerid, 952; tgrep_id, 797; VerbLemma, 86
+# 
+# Fixed effects:
+#                                                        Estimate Std. Error         df t value Pr(>|t|)    
+# (Intercept)                                            0.197573   0.041330 744.784166   4.780 2.11e-06 ***
+# cModalPresent                                         -0.036717   0.096714 808.000586  -0.380 0.704309    
+# Whhow.vs.when                                          0.099899   0.041148 803.657231   2.428 0.015408 *  
+# Whwhat.vs.when                                        -0.016053   0.041872 805.578929  -0.383 0.701543    
+# Whwhere.vs.when                                       -0.001575   0.045547 802.159718  -0.035 0.972420    
+# Whwho.vs.when                                          0.087438   0.048172 796.838332   1.815 0.069883 .  
+# Whwhy.vs.when                                         -0.054707   0.046479 789.225570  -1.177 0.239541    
+# paraphrasea.vs.every                                   0.121972   0.050632 739.405821   2.409 0.016241 *  
+# paraphrasethe.vs.every                                 0.209751   0.082086 731.529575   2.555 0.010812 *  
+# cModalPresent:Whhow.vs.when                            0.041040   0.100437 807.980644   0.409 0.682930    
+# cModalPresent:Whwhat.vs.when                           0.073492   0.102606 808.692888   0.716 0.474045    
+# cModalPresent:Whwhere.vs.when                         -0.034503   0.111978 805.122126  -0.308 0.758070    
+# cModalPresent:Whwho.vs.when                            0.160365   0.157394 786.425667   1.019 0.308575    
+# cModalPresent:Whwhy.vs.when                            0.051846   0.111156 799.815297   0.466 0.641039    
+# cModalPresent:paraphrasea.vs.every                     0.192058   0.119073 794.330947   1.613 0.107153    
+# cModalPresent:paraphrasethe.vs.every                  -0.073804   0.190589 795.685857  -0.387 0.698683    
+# Whhow.vs.when:paraphrasea.vs.every                    -0.235743   0.050579 793.633223  -4.661 3.69e-06 ***
+# Whwhat.vs.when:paraphrasea.vs.every                   -0.074101   0.051433 796.136362  -1.441 0.150058    
+# Whwhere.vs.when:paraphrasea.vs.every                  -0.103687   0.055896 792.090209  -1.855 0.063967 .  
+# Whwho.vs.when:paraphrasea.vs.every                    -0.202337   0.059119 783.460546  -3.423 0.000653 ***
+# Whwhy.vs.when:paraphrasea.vs.every                    -0.059138   0.057024 758.482884  -1.037 0.300038    
+# Whhow.vs.when:paraphrasethe.vs.every                  -0.048848   0.081119 788.420673  -0.602 0.547230    
+# Whwhat.vs.when:paraphrasethe.vs.every                  0.139865   0.082625 790.398311   1.693 0.090894 .  
+# Whwhere.vs.when:paraphrasethe.vs.every                 0.125981   0.089931 787.125307   1.401 0.161650    
+# Whwho.vs.when:paraphrasethe.vs.every                  -0.034885   0.095088 784.549608  -0.367 0.713815    
+# Whwhy.vs.when:paraphrasethe.vs.every                   0.270452   0.091980 787.073690   2.940 0.003375 ** 
+# cModalPresent:Whhow.vs.when:paraphrasea.vs.every      -0.083466   0.123732 793.885473  -0.675 0.500146    
+# cModalPresent:Whwhat.vs.when:paraphrasea.vs.every     -0.131488   0.126388 796.231899  -1.040 0.298494    
+# cModalPresent:Whwhere.vs.when:paraphrasea.vs.every    -0.039004   0.137877 791.576809  -0.283 0.777335    
+# cModalPresent:Whwho.vs.when:paraphrasea.vs.every      -0.309433   0.192645 780.012784  -1.606 0.108627    
+# cModalPresent:Whwhy.vs.when:paraphrasea.vs.every      -0.084277   0.136773 786.430509  -0.616 0.537951    
+# cModalPresent:Whhow.vs.when:paraphrasethe.vs.every    -0.046874   0.197928 796.775640  -0.237 0.812856    
+# cModalPresent:Whwhat.vs.when:paraphrasethe.vs.every   -0.112843   0.202206 796.560455  -0.558 0.576960    
+# cModalPresent:Whwhere.vs.when:paraphrasethe.vs.every   0.106763   0.220701 793.276125   0.484 0.628702    
+# cModalPresent:Whwho.vs.when:paraphrasethe.vs.every    -0.228955   0.311814 769.579988  -0.734 0.463009    
+# cModalPresent:Whwhy.vs.when:paraphrasethe.vs.every    -0.078666   0.219214 788.942019  -0.359 0.719801    
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Correlation matrix not shown by default, as p = 36 > 12.
+# Use print(x, correlation=TRUE)  or
+#     vcov(x)        if you need it
+# 
+# convergence code: 0
+# boundary (singular) fit: see ?isSingular
+
+
+########################################################################
+
+
 
 ########################################################################
 # breaking up by wh-word so that 3-way interaction is more interpretable
