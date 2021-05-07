@@ -29,6 +29,7 @@ rq$QuestionType = "root"
 rq$VerbLemma = ""
 
 d = rbind(rq,eq)
+# write.csv(d,"total_data.csv")
 
 prop.table(table(eq$Wh,eq$ModalPresent))
 
@@ -256,13 +257,13 @@ ggsave("graphs/matrixverbs_frequent.pdf",width=6,height=5)
 
 
 a_high = d %>%
-  filter((paraphrase == "a") & (VerbLemma == "doubt")) %>%
+  filter((paraphrase == "a")) %>% # & (VerbLemma == "doubt")
   group_by(tgrep_id,Sentence,VerbLemma,Question) %>%
   summarize(mean_rating = mean(rating), sd = sd(rating)) %>%
   View()
 
 every_high = d %>%
-  filter((paraphrase == "every") & (VerbLemma == "know")) %>%
+  filter((paraphrase == "every")) %>%
   group_by(tgrep_id,Sentence) %>%
   summarize(mean_rating = mean(rating), sd = sd(rating)) %>%
   View()
@@ -335,7 +336,7 @@ summary(m.what)
 
 saveRDS(m.what, "QT_what.rds")
 model_what <- readRDS("QT_what.rds")
-
+summary(model_what)
 
 # m.what.simple = lmer(normed_rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|VerbLemma)  + (1+paraphrase|tgrep_id), data=d_what) 
 # summary(m.what.simple)
@@ -418,3 +419,29 @@ model_when <- readRDS("QT_when.rds")
 # summary(m.when.simple)
 # 
 
+
+
+########################################################################
+########################################################################
+########################################################################
+# definite and indefinite
+# Read database
+corp = read.table("../../corpus/results/swbd.tab",sep="\t",header=T,quote="")
+names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
+# join dfs together
+d <- left_join(d, corp_match, by="tgrep_id")
+
+d$DeterminerSubject = as.factor(d$DeterminerSubject)
+d$DeterminerSubjPresent = as.factor(d$DeterminerSubjPresent)
+str(d$DeterminerSubjPresent)
+d$DeterminerNonSubject = as.factor(d$DeterminerNonSubject)
+d$DeterminerNonSubjPresent = as.factor(d$DeterminerNonSubjPresent)
+names(d)
+det_sbj = d %>%
+  filter(DeterminerSubjPresent != "no")
+View(det_sbj)
+
+str(d$DeterminerSubjPresent)
+
+det_non_sbj = d %>%
+  filter(DeterminerNonSubjPresent == "no")

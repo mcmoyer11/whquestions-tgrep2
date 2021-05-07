@@ -1,0 +1,48 @@
+---
+title: "Hand Annotating MS Contexts for Domain Restriction"
+author: Morgan Moyer
+date: May 7, 2021
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
+library(ggplot2)
+library(lme4)
+library(lmerTest)
+library(multcomp) # not available for this version of R
+library(stringr)
+library(textstem)
+library(tidyverse)
+theme_set(theme_bw())
+cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
+this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(this.dir)
+source("../helpers.R")
+```
+
+# Read in the data
+```{r}
+data = read.csv("total_data.csv")
+names(data)[names(data) == "tgrep_id"] <- "TGrepID"
+contexts = read.csv("../../corpus/analysis/swbd_contexts.csv")
+d <- left_join(data, contexts, by="TGrepID")
+```
+
+```{r}
+agr = d %>%
+  distinct() %>%
+  filter(paraphrase == "a") %>%
+  group_by(TGrepID,Question) %>%
+  summarize(mean_rating = mean(rating), sd = sd(rating))
+
+agr <- left_join(agr,contexts,by="TGrepID")
+
+str(agr)
+
+# Random sample
+set.seed(666)
+s = sample_n(agr,100)
+
+View(s)
+
+```
