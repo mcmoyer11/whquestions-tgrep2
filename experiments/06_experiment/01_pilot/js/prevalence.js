@@ -135,14 +135,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider1_" + (i + 1)).slider("option", "value") < .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -229,14 +222,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider2_" + (i + 1)).slider("option", "value") > .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -324,14 +310,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider3_" + (i + 1)).slider("option", "value") < .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -418,14 +397,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider4_" + (i + 1)).slider("option", "value") > .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
