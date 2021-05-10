@@ -35,6 +35,8 @@ agr = d %>%
   group_by(TGrepID,Question) %>%
   summarize(mean_rating = mean(rating), sd = sd(rating))
 
+write.csv(agr,"MS_contexts.csv")
+
 agr <- left_join(agr,contexts,by="TGrepID")
 
 str(agr)
@@ -43,6 +45,6 @@ str(agr)
 set.seed(666)
 s = sample_n(agr,100)
 
-View(s)
+View(agr)
 
 ```
