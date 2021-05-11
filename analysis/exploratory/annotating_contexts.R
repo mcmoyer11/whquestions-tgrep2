@@ -23,7 +23,9 @@ data = read.csv("total_data.csv")
 names(data)[names(data) == "tgrep_id"] <- "TGrepID"
 contexts = read.csv("../../corpus/analysis/swbd_contexts.csv")
 d <- left_join(data, contexts, by="TGrepID")
+d = as.data.frame.matrix(d) 
 
+View(d)
 agr_ms = d %>%
   distinct() %>%
   filter(paraphrase == "a") %>%
@@ -32,15 +34,21 @@ agr_ms = d %>%
   # filter(mean_rating >= mean(mean_rating)) %>% # this isn't working?
   left_join(., contexts,by="TGrepID")
 agr_ms = subset(agr_ms, agr_ms$mean_rating > mean(agr_ms$mean_rating))
-agr_ms = as.data.frame.matrix(agr_ms) 
+agr_ms = as.data.frame(agr_ms)
+View(agr_ms)
+
 set.seed(333)
 ms_sample = sample_n(agr_ms,100)
+View(ms_sample)
+nrow(ms_sample)
+
 ms_sample["domain_size_question"] = ""
 ms_sample["domain_type_question"] = ""
 ms_sample["domain_granularity_question"] = ""
 ms_sample["domain_size_context"] = ""
 ms_sample["domain_type_context"] = ""
 ms_sample["domain_granularity_context"] = ""
+
 # write.csv(ms_sample,"MS_contexts.csv")
 
 agr_ma = d %>%
@@ -51,14 +59,15 @@ agr_ma = d %>%
   # filter(mean_rating >= mean(mean_rating)) %>%
   left_join(., contexts,by="TGrepID")
 agr_ma = subset(agr_ma, agr_ma$mean_rating > mean(agr_ma$mean_rating))
-agr_ma = as.data.frame.matrix(agr_ma) 
+agr_ma = as.data.frame(agr_ma) 
 set.seed(666)
 ma_sample = sample_n(agr_ma,100)
+View(ma_sample)
 ma_sample["domain_size_question"] = ""
 ma_sample["domain_type_question"] = ""
 ma_sample["domain_granularity_question"] = ""
 ma_sample["domain_size_context"] = ""
 ma_sample["domain_type_context"] = ""
 ma_sample["domain_granularity_context"] = ""
-# write.csv(agr_ma,"MA_contexts.csv")
+write.csv(agr_ma,"MA_contexts.csv")
 
