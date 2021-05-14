@@ -81,9 +81,9 @@ function make_slides(f) {
       $(".err").hide();
       $(".err_answer").hide();
 
-      var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Do you have a list of the people involved in helping with outreach? <br> <b>Speaker #2 </b>: Yes, here it is. <br> <b>Speaker #1 </b>: "
-      var entirehtml = "Great. " + "<font color=#FF0000> " + "Who can help spread the word?"
-      contexthtml = contexthtml + entirehtml
+      // var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Do you have a list of the people involved in helping with outreach? <br> <b>Speaker #2 </b>: Yes, here it is. <br> <b>Speaker #1 </b>: "
+      var entirehtml = "<font color=#FF0000> " + "Who can help spread the word?"
+      contexthtml = entirehtml
       exp.theParaphrase.value = "Who is the person...?"
       exp.aParaphrase.value = "Who is a person...?"
       // exp.someParaphrase.value = "Who is some person...?"
@@ -136,14 +136,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for(var i = 0; i< 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider1_" + (i + 1)).slider("option", "value") < .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -175,9 +168,9 @@ slides.example2 = slide({
     $(".err_answer").hide();
     // $("#str2").prop("checked", false);
 
-    var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
-    var entirehtml = "My phone has died." + "<font color=#FF0000> " + "Where can I get coffee around here?"
-    contexthtml = contexthtml + entirehtml
+    // var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: "
+    var entirehtml = "<font color=#FF0000> " + "Where can I get coffee around here?"
+    contexthtml = entirehtml
 
     exp.theParaphrase.value = "What is the place...?"
     exp.aParaphrase.value = "What is a place...?"
@@ -231,14 +224,7 @@ slides.example2 = slide({
       $(".err").show();
     } else {
       this.log_responses();
-      for(var i = 0; i< 3; i++) {
-        if (exp.paraphraseArray[i].name == "all") {
-          if ($("#slider2_" + (i + 1)).slider("option", "value") > .5)
-            $(".err_answer").show();
-          else
-            exp.go()
-        }
-      }
+      exp.go()
     }
   },
 
@@ -270,9 +256,9 @@ slides.example3 = slide({
     $('.err_answer').hide();
     // $("#str3").prop("checked", false);
 
-    var contexthtml = "<b>Speaker #1</b>: The party last night was packed, and everyone there was interesting! <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
+    // var contexthtml = "<b>Speaker #1</b>: The party last night was packed, and everyone there was interesting! <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
     var entirehtml = "<font color=#FF0000> " + "Who came to the party?"
-    contexthtml = contexthtml + entirehtml
+    contexthtml = entirehtml
 
     exp.aParaphrase.value = "Who is a person...?"
     exp.theParaphrase.value = "Who is the person...?"
@@ -327,14 +313,7 @@ slides.example3 = slide({
       $(".err").show();
     } else {
       this.log_responses();
-      for(var i = 0; i< 3; i++) {
-        if (exp.paraphraseArray[i].name == "all") {
-          if ($("#slider3_" + (i + 1)).slider("option", "value") < .5)
-            $(".err_answer").show();
-          else
-            exp.go()
-        }
-      }
+      exp.go()
     }
   },
 
@@ -365,9 +344,9 @@ slides.example4 = slide({
     $(".err").hide();
     $(".err_answer").hide();
 
-    var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
+    // var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
     var entirehtml = "<font color=#FF0000> " + "How do I get to Central Park?"
-    contexthtml = contexthtml + entirehtml
+    contexthtml = entirehtml
 
     exp.theParaphrase.value = "What is the way...?"
     exp.aParaphrase.value = "What is a way...?"
@@ -421,14 +400,7 @@ slides.example4 = slide({
       $(".err").show();
     } else {
       this.log_responses();
-      for(var i = 0; i< 3; i++) {
-        if (exp.paraphraseArray[i].name == "all") {
-          if ($("#slider4_" + (i + 1)).slider("option", "value") > .5)
-            $(".err_answer").show();
-          else
-            exp.go()
-        }
-      }
+      exp.go()
     }
   },
 
@@ -480,9 +452,9 @@ slides.generateEntities = slide({
     var generic = stim;
     this.generic = generic;
 
-    var contexthtml = this.format_context(generic.PreceedingContext);
+    // var contexthtml = this.format_context(generic.PreceedingContext);
     var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.EntireSentence)
-    contexthtml = contexthtml + entirehtml
+    contexthtml = entirehtml
     exp.theParaphrase.value = generic.TheResponse
     exp.aParaphrase.value = generic.AResponse
     exp.allParaphrase.value = generic.AllResponse
