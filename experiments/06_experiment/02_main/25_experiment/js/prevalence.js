@@ -81,9 +81,9 @@ function make_slides(f) {
       $(".err").hide();
       $(".err_answer").hide();
 
-      var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Do you have a list of the people involved in helping with outreach? <br> <b>Speaker #2 </b>: Yes, here it is. <br> <b>Speaker #1 </b>: "
-      var entirehtml = "Great. " + "<font color=#FF0000> " + "I wonder <b>who can help spread the word</b>."
-      contexthtml = contexthtml + entirehtml
+      // var contexthtml = "<b>Speaker #1</b>: We need to promote this fundraiser as widely as possible. Do you have a list of the people involved in helping with outreach? <br> <b>Speaker #2 </b>: Yes, here it is. <br> <b>Speaker #1 </b>: "
+      var entirehtml = "<font color=#FF0000> " + "I wonder <b>who can help spread the word</b>."
+      contexthtml = entirehtml
       exp.theParaphrase.value = "...who is the person..."
       exp.aParaphrase.value = "...who is a person..."
       exp.allParaphrase.value = "...who is every person..."
@@ -135,14 +135,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider1_" + (i + 1)).slider("option", "value") < .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -174,9 +167,9 @@ function make_slides(f) {
       $(".err_answer").hide();
       // $("#str2").prop("checked", false);
 
-      var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: My phone has died. Where can I get coffee around here? <br> <b>Speaker #2</b>: There's a cafe just around the corner. <br> <b>Speaker #1</b>: "
-      var entirehtml = "Thanks! I'm glad" + "<font color=#FF0000> " + "you knew <b>where I can get coffee</b>."
-      contexthtml = contexthtml + entirehtml
+      // var contexthtml = "<b>Speaker #1</b>: Excuse me, could you help me please? <br> <b>Speaker #2</b>: Sure, how can I help?<br> <b>Speaker #1</b>: My phone has died. Where can I get coffee around here? <br> <b>Speaker #2</b>: There's a cafe just around the corner. <br> <b>Speaker #1</b>: "
+      var entirehtml = "<font color=#FF0000> " + "You knew <b>where I can get coffee</b>."
+      contexthtml = entirehtml
 
       exp.theParaphrase.value = "...what is the place..."
       exp.aParaphrase.value = "...what is a place..."
@@ -229,14 +222,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider2_" + (i + 1)).slider("option", "value") > .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -268,9 +254,9 @@ function make_slides(f) {
       $('.err_answer').hide();
       // $("#str3").prop("checked", false);
 
-      var contexthtml = "<b>Speaker #1</b>: The party last night was packed, and everyone there was interesting! <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
+      // var contexthtml = "<b>Speaker #1</b>: The party last night was packed, and everyone there was interesting! <br> <b>Speaker #2</b>: I wish I could have gone, but I had to study. "
       var entirehtml = "<font color=#FF0000> " + "Can you tell me <b>who came to the party</b>?"
-      contexthtml = contexthtml + entirehtml
+      contexthtml = entirehtml
 
       exp.aParaphrase.value = "...who is a person...?"
       exp.theParaphrase.value = "...who is the person...?"
@@ -324,14 +310,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider3_" + (i + 1)).slider("option", "value") < .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -362,9 +341,9 @@ function make_slides(f) {
       $(".err").hide();
       $(".err_answer").hide();
 
-      var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
+      // var contexthtml = "<b>Speaker #1</b>: I can't read this map. <br> <b>Speaker #2</b>: What do you need?<br> <b>Speaker #1</b>: "
       var entirehtml = "<font color=#FF0000> " + "I'm wondering <b>how I get to Central Park</b>."
-      contexthtml = contexthtml + entirehtml
+      contexthtml = entirehtml
 
       exp.theParaphrase.value = "...what is the way...?"
       exp.aParaphrase.value = "...what is a way...?"
@@ -418,14 +397,7 @@ function make_slides(f) {
         $(".err").show();
       } else {
         this.log_responses();
-        for (var i = 0; i < 3; i++) {
-          if (exp.paraphraseArray[i].name == "all") {
-            if ($("#slider4_" + (i + 1)).slider("option", "value") > .5)
-              $(".err_answer").show();
-            else
-              exp.go()
-          }
-        }
+        exp.go()
       }
     },
 
@@ -476,9 +448,9 @@ function make_slides(f) {
       var generic = stim;
       this.generic = generic;
 
-      var contexthtml = this.format_context(generic.PreceedingContext);
-      var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.Matrix) + " <b>" + this.format_sentence(generic.Question) + "</b>" + generic.punct
-      contexthtml = contexthtml + entirehtml
+      // var contexthtml = this.format_context(generic.PreceedingContext);
+      var entirehtml = "<font color=#FF0000> " + this.format_sentence(generic.Matrix) + " <b>" + this.format_sentence(generic.Question) + "</b>"
+      contexthtml = entirehtml
       exp.theParaphrase.value = generic.TheResponse
       exp.aParaphrase.value = generic.AResponse
       exp.allParaphrase.value = generic.AllResponse
@@ -571,9 +543,6 @@ function make_slides(f) {
       console.log("total: ", total)
       console.log("slider1: ", $("#slider5_1").slider("option", "value"))
       console.log("slider2: ", $("#slider5_2").slider("option", "value"))
-      console.log("slider3: ", $("#slider5_3").slider("option", "value"))
-      console.log("slider4: ", $("#slider5_4").slider("option", "value"))
-      console.log("***")
 
       if (total < .99) {
         $(".err").show();
