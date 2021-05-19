@@ -1,0 +1,108 @@
+---
+title: "Exploratory analysis of context"
+author: Morgan Moyer
+date: May 18, 2021
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
+library(ggplot2)
+library(lme4)
+library(lmerTest)
+library(multcomp) # not available for this version of R
+library(stringr)
+library(textstem)
+library(tidyverse)
+theme_set(theme_bw())
+cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
+this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(this.dir)
+source("../helpers.R")
+```
+
+# Read the data into r
+```{r}
+context = read.csv("total_data.csv") 
+context$context <- "context"
+
+nocontext = read.csv("../05_06_experiment/data/no_rhetorical.csv")
+# corp = read.table("../../corpus/results/swbd.tab",sep="\t",header=T,quote="")
+# names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
+# filter from the database the tgrep_ids from the raw data
+# corp_match = corp %>%
+  filter(tgrep_id %in% nocontext$tgrep_id)
+# join dfs together
+# nocontext <- left_join(nocontext, corp_match, by="tgrep_id")
+# assign the negative values 0
+nocontext = nocontext[,c("workerid","tgrep_id","ModalPresent","Modal","QuestionType","Question","Sentence","paraphrase","rating","Finite","Wh")]
+nocontext$context <- "nocontext"
+
+
+d <- full_join(context,nocontext)
+nrow(context) + nrow(nocontext)
+nrow(d)
+d$rating[d$rating < 0] = 0
+```
+
+
+```{r}
+
+names(d)
+ggplot(data = d, aes(x = rating, fill = paraphrase, color=paraphrase)) +
+  geom_density(alpha = .4) +
+  facet_grid(~context)
+ 
+agr = d %>%
+  group_by(context, tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating),sd = sd(rating))
+
+# look at differences in mean_rating
+ggplot(data = agr, aes(x = mean_rating, fill = paraphrase, color=paraphrase)) +
+  geom_density(alpha = .4) +
+  facet_grid(~context) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_ratings.pdf",width=6,height=3)
+
+# look at differences in SD 
+ggplot(data = agr, aes(x = sd, fill = paraphrase, color=paraphrase)) +
+  geom_density(alpha = .4) +
+  facet_grid(~context) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_sd.pdf",width=6,height=3)
+
+
+# MODALPRESENT
+agr = d %>%
+  group_by(context,ModalPresent,tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating),sd = sd(rating))
+
+# look at differences in mean_rating
+ggplot(data = agr, aes(x = mean_rating, fill = paraphrase, color=paraphrase)) +
+  geom_density(alpha = .4) +
+  facet_grid(ModalPresent~context) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_MP_ratings.pdf",width=6,height=3)
+
+# look at differences in SD 
+ggplot(data = agr, aes(x = sd, fill = paraphrase, color=paraphrase)) +
+  geom_density(alpha = .4) +
+  facet_grid(ModalPresent~context) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_MP_sd.pdf",width=6,height=3)
+
+```
+# KL Divergence
+```{r}
+
+def kl_divergence(p, q):
+	return sum(p[i] * log2(p[i]/q[i]) for i in range(len(p)))
+
+KLD <- function(x,y) {
+
+  }
+
+```

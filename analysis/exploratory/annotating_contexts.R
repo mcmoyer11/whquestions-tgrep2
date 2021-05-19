@@ -25,6 +25,13 @@ contexts = read.csv("../../corpus/analysis/swbd_contexts.csv")
 d <- left_join(data, contexts, by="TGrepID")
 d = as.data.frame.matrix(d) 
 
+
+ex = d %>%
+  filter(TGrepID == "132813:10") %>%
+  group_by(paraphrase) %>%
+  summarize(mean_rating = mean(rating))
+View(ex)
+
 View(d)
 agr_ms = d %>%
   distinct() %>%
