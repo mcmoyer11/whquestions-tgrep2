@@ -29,7 +29,6 @@ nocontext = read.csv("../05_06_experiment/data/no_rhetorical.csv")
 nocontext = nocontext[,c("workerid","tgrep_id","ModalPresent","Modal","QuestionType","Question","Sentence","paraphrase","rating","Finite","Wh")]
 nocontext$Task <- "nocontext"
 
-
 d <- full_join(context,nocontext)
 nrow(context) + nrow(nocontext)
 nrow(d)
@@ -118,7 +117,7 @@ cr = agr %>%
 # # Join the dfs together
 agr = agr %>%
   left_join(cr, by="tgrep_id")
-View(agr)
+
 # For each of the paraphrase ratings, divide by sum of ratings for that item
 normed = agr %>%
   group_by(factors) %>%
@@ -133,9 +132,9 @@ for each tgrep_id
 ```{r}
 d_wide = normed %>% 
   group_by(tgrep_id) %>%
-  spread(paraphrase, normed_rating) %>%
+  spread(paraphrase, normed_rating)
   # collapse all the duplicates
-  summarise_all(funs(.[which(!is.na(.))])) # this is no longer working :/
+  # summarise_all(funs(.[which(!is.na(.))])) # this is no longer working :/
 # d_wide = d_wide[,c("workerid","tgrep_id","a","every","other","the")]
 # d_wide <- unique(d_wide)
 ```
@@ -164,10 +163,9 @@ kl_divergence <- function(x) {
 d_wide$KLD_from_uniform <- kl_divergence(d_wide[,3:6])
 ```
 
+# Plot the KLD between context and no context
 
-```{r}
-
-
+```{r, include=FALSE}
 d_long <- d_wide %>%
   gather(paraphrase, mean_rating,a:the,factor_key=TRUE)
 
@@ -178,4 +176,198 @@ ggplot(data = d_long, aes(x = KLD_from_uniform, fill=Task, color=Task)) +
   scale_color_manual(values=cbPalette)
 # ggsave("graphs/denisty_context_MP_sd.pdf",width=6,height=3)
 
+```
+# Remove rhetorical and renormalize
+```{r}
+# remove 'other' ratings
+critical = d %>%
+  filter(paraphrase %in% c("every","a","the"))
+  # filter((MatrixPredParticle == "") & (EmbeddedSQ != "yes"))
+
+# unique by-item/by-participant combo
+critical$ids = paste(critical$workerid,critical$tgrep_id)
+
+critical$ModalPresent = as.factor(critical$ModalPresent)
+critical$Wh = as.factor(critical$Wh)
+# critical$MatrixVerb = as.factor(critical$MatrixVerb)
+critical$paraphrase = as.factor(critical$paraphrase)
+
+# Determine for each observation (by-participant by-item), get the sum of the 
+# 3 ratings
+cr = critical %>%
+  # select(ids,rating) %>%
+  group_by(ids) %>%
+  summarize(rating_sum = sum(rating))
+
+# Join the dfs together
+critical = critical %>%
+  left_join(cr, by="ids")
+
+# For each of the three paraphrase ratings, divide by sum of ratings for that item
+critical$factors = paste(critical$ids,critical$paraphrase)
+normed_agr = critical %>%
+  group_by(factors) %>%
+  summarise(normed_rating = rating/rating_sum) %>%
+  drop_na() # this removes ALOT of rows
+
+# Merge the dfs together
+d_normed = merge(normed_agr,critical,by='factors')
+d_normed[is.na(d_normed$ModalPresent)] <- "no"
+
+```
+
+# Regression analyses
+
+## Center the data and set the reference levels
+```{r}
+# center the data
+centered = cbind(d_normed,myCenter(d_normed["ModalPresent"]))
+centered = cbind(centered,myCenter(centered["Task"]))
+
+# make relevant columns factors just in case
+centered$Wh = as.factor(centered$Wh)
+centered$workerid = as.factor(centered$workerid)
+centered$tgrep_id = as.factor(centered$tgrep_id)
+centered$paraphrase = as.factor(centered$paraphrase)
+centered$QuestionType = as.factor(centered$QuestionType)
+centered$Task = as.factor(centered$Task)
+centered$cTask = as.factor(centered$cTask)
+centered$cModalPresent = as.factor(centered$cModalPresent)
+
+# Set the reference levels
+contrasts(centered$paraphrase)
+contrasts(centered$Wh)
+
+contrasts(centered$Wh) = cbind("how.vs.when"=c(0,1,0,0,0,0),"what.vs.when"=c(1,0,0,0,0,0),
+                "where.vs.when"=c(0,0,0,1,0,0),"who.vs.when"=c(0,0,0,0,1,0),
+                "why.vs.when"=c(0,0,0,0,0,1))
+
+# this won't work if the 'other' category is included, so REDO
+contrasts(centered$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
+```
+## Big model
+```{r, include=FALSE}
+
+View(centered)
+centered <- drop_na(centered)
+m.full.norandm = lmer(normed_rating ~ cModalPresent*Wh*paraphrase*cTask + (1|workerid) + (1|tgrep_id), data=centered,REML=FALSE) 
+summary(m.full)
+
+saveRDS(m., "EQ-model-full-nomv.rds")
+my_model <- readRDS("EQ-model-full-nomv.rds")
+
+
+m.full = lmer(normed_rating ~ cModalPresent*Wh*paraphrase*cTask + (1+paraphrase+Wh+cModalPresent|workerid) + (1+paraphrase+Task|tgrep_id), data=centered,REML=FALSE) 
+summary(m.full)
+
+saveRDS(m., "EQ-model-full-nomv.rds")
+my_model <- readRDS("EQ-model-full-nomv.rds")
+```
+## Split models up into wh
+
+```{r,include=FALSE}
+
+
+
+########################################################################
+# breaking up by wh-word so that 3-way interaction is more interpretable
+########################################################################
+# some of them cannot have the full random effects, so random effects
+# have to be what is justified by the data
+########################################################################
+
+
+########################################################################
+# "what" model
+d_what = centered %>% 
+  filter(Wh=="what") %>% 
+  droplevels()
+
+m.what = lmer(normed_rating ~ cModalPresent*paraphrase*cQuestionType + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|VerbLemma) + (1+paraphrase|tgrep_id), data=d_what) 
+summary(m.what)
+
+saveRDS(m.what, "QT_what.rds")
+model_what <- readRDS("QT_what.rds")
+summary(model_what)
+
+# m.what.simple = lmer(normed_rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|VerbLemma)  + (1+paraphrase|tgrep_id), data=d_what) 
+# summary(m.what.simple)
+
+########################################################################
+# "how" model
+d_how = centered %>% 
+  filter(Wh=="how") %>% 
+  droplevels()
+
+m.how = lmer(normed_rating ~ cModalPresent*paraphrase*cQuestionType + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|VerbLemma)  + (1+paraphrase|tgrep_id), data=d_how) 
+summary(m.how)
+
+saveRDS(m.how, "QT_how.rds")
+model_how <- readRDS("QT_how.rds")
+
+# m.how.simple = lmer(normed_rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase|tgrep_id), data=d_how) 
+# summary(m.how.simple)
+
+########################################################################
+# "where" model
+d_where = centered %>% 
+  filter(Wh=="where") %>% 
+  droplevels()
+
+m.where = lmer(normed_rating ~ cModalPresent*paraphrase*cQuestionType + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|VerbLemma) + (1+paraphrase|tgrep_id), data=d_where) 
+summary(m.where)
+
+saveRDS(m.where, "QT_where.rds")
+model_where <- readRDS("QT_where.rds")
+
+# m.where.simple = lmer(normed_rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|tgrep_id), data=d_where) 
+# summary(m.where.simple)
+
+########################################################################
+# "why" model
+d_why = centered %>% 
+  filter(Wh=="why") %>% 
+  droplevels()
+
+m.why = lmer(normed_rating ~ cModalPresent*paraphrase*cQuestionType + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|VerbLemma) + (1+paraphrase|tgrep_id), data=d_why) 
+summary(m.why)
+
+saveRDS(m.why, "QT_why.rds")
+model_why <- readRDS("QT_why.rds")
+
+# m.why.simple = lmer(rating ~ paraphrase*cQuestionType*cModalPresent-cModalPresent + (1+paraphrase+cModalPresent|workerid) + (1+paraphrase|tgrep_id), data=d_why) 
+# summary(m.why.simple)
+
+########################################################################
+# "who" model
+d_who = centered %>% 
+  filter(Wh=="who") %>% 
+  droplevels()
+
+m.who = lmer(normed_rating ~ cModalPresent*paraphrase*cQuestionType + (1+paraphrase|workerid)+ (1+paraphrase|VerbLemma) + (1+paraphrase|tgrep_id), data=d_who) 
+summary(m.who)
+
+saveRDS(m.who, "QT_who.rds")
+model_who <- readRDS("QT_who.rds")
+
+# m.who.simple = lmer(normed_rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase|workerid) + (1+paraphrase|tgrep_id), data=d_who) 
+# summary(m.who.simple)
+
+########################################################################
+# "when" model
+# have to use less random effects structure
+d_when = centered %>% 
+  filter(Wh=="when") %>% 
+  droplevels()
+
+m.when = lmer(normed_rating ~ cModalPresent*paraphrase*cQuestionType + (1+paraphrase|VerbLemma) + (1+paraphrase|tgrep_id), data=d_when) 
+summary(m.when)
+
+saveRDS(m.when, "QT_when.rds")
+model_when <- readRDS("QT_when.rds")
+
+# simple effects
+# m.when.simple = lmer(normed_rating ~ paraphrase*cModalPresent-cModalPresent + (1+paraphrase|tgrep_id), data=d_when) 
+# summary(m.when.simple)
+# 
 ```
