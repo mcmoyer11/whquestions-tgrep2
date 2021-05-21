@@ -33,7 +33,6 @@ d = rbind(rq,eq)
 
 prop.table(table(eq$Wh,eq$ModalPresent))
 
-View(d)
 
 d$ModalPresent = as.factor(d$ModalPresent)
 d$Wh = as.factor(d$Wh)

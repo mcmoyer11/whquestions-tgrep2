@@ -23,19 +23,11 @@ source("../helpers.R")
 # Read the data into r
 ```{r}
 context = read.csv("total_data.csv") 
-context$context <- "context"
+context$Task <- "context"
 
 nocontext = read.csv("../05_06_experiment/data/no_rhetorical.csv")
-# corp = read.table("../../corpus/results/swbd.tab",sep="\t",header=T,quote="")
-# names(corp)[names(corp) == "Item_ID"] <- "tgrep_id"
-# filter from the database the tgrep_ids from the raw data
-# corp_match = corp %>%
-  filter(tgrep_id %in% nocontext$tgrep_id)
-# join dfs together
-# nocontext <- left_join(nocontext, corp_match, by="tgrep_id")
-# assign the negative values 0
 nocontext = nocontext[,c("workerid","tgrep_id","ModalPresent","Modal","QuestionType","Question","Sentence","paraphrase","rating","Finite","Wh")]
-nocontext$context <- "nocontext"
+nocontext$Task <- "nocontext"
 
 
 d <- full_join(context,nocontext)
@@ -44,65 +36,150 @@ nrow(d)
 d$rating[d$rating < 0] = 0
 ```
 
-
-```{r}
-
+# Plot the differences between context and no context
+```{r, include=FALSE}
 names(d)
 ggplot(data = d, aes(x = rating, fill = paraphrase, color=paraphrase)) +
   geom_density(alpha = .4) +
-  facet_grid(~context)
+  facet_grid(~Task)
  
 agr = d %>%
-  group_by(context, tgrep_id,paraphrase) %>%
+  group_by(Task, tgrep_id,paraphrase) %>%
   summarize(mean_rating = mean(rating),sd = sd(rating))
 
 # look at differences in mean_rating
-ggplot(data = agr, aes(x = mean_rating, fill = paraphrase, color=paraphrase)) +
+ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
   geom_density(alpha = .4) +
-  facet_grid(~context) +
+  facet_grid(~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
 ggsave("graphs/denisty_context_ratings.pdf",width=6,height=3)
 
 # look at differences in SD 
-ggplot(data = agr, aes(x = sd, fill = paraphrase, color=paraphrase)) +
+ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
   geom_density(alpha = .4) +
-  facet_grid(~context) +
+  facet_grid(~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
 ggsave("graphs/denisty_context_sd.pdf",width=6,height=3)
+```
 
 
+# plot mean differences with linguistic factors too
+```{r,include=FALSE}
 # MODALPRESENT
 agr = d %>%
-  group_by(context,ModalPresent,tgrep_id,paraphrase) %>%
+  group_by(Task,ModalPresent,tgrep_id,paraphrase) %>%
   summarize(mean_rating = mean(rating),sd = sd(rating))
 
 # look at differences in mean_rating
-ggplot(data = agr, aes(x = mean_rating, fill = paraphrase, color=paraphrase)) +
+ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
   geom_density(alpha = .4) +
-  facet_grid(ModalPresent~context) +
+  facet_grid(ModalPresent~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
 ggsave("graphs/denisty_context_MP_ratings.pdf",width=6,height=3)
 
 # look at differences in SD 
-ggplot(data = agr, aes(x = sd, fill = paraphrase, color=paraphrase)) +
+ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
   geom_density(alpha = .4) +
-  facet_grid(ModalPresent~context) +
+  facet_grid(ModalPresent~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
 ggsave("graphs/denisty_context_MP_sd.pdf",width=6,height=3)
 
+# WH
+agr = d %>%
+  group_by(Task,Wh,tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating),sd = sd(rating))
+
+# look at differences in mean_rating
+ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(Wh~paraphrase) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
 ```
-# KL Divergence
+
+# Calculate KL-Divergence
+
+## Aggregate ratings and renormalize
 ```{r}
+agr <- d %>%
+    group_by(Task,tgrep_id,paraphrase) %>%
+    summarize(mean_rating = mean(rating))
+View(agr)
 
-def kl_divergence(p, q):
-	return sum(p[i] * log2(p[i]/q[i]) for i in range(len(p)))
+agr$factors = paste(agr$Task,agr$tgrep_id,agr$paraphrase)
+cr = agr %>%
+  # select(ids,rating) %>%
+  group_by(tgrep_id) %>%
+  summarize(rating_sum = sum(mean_rating))
 
-KLD <- function(x,y) {
+# # Join the dfs together
+agr = agr %>%
+  left_join(cr, by="tgrep_id")
+View(agr)
+# For each of the paraphrase ratings, divide by sum of ratings for that item
+normed = agr %>%
+  group_by(factors) %>%
+  summarise(normed_rating = mean_rating/rating_sum) %>%
+  drop_na() %>% # this removes ALOT of rows
+  left_join(agr, by="factors")
+View(normed)
+```
 
+## Convert from long to wide so can compute the four ratings as a vector/list 
+for each tgrep_id
+```{r}
+d_wide = normed %>% 
+  group_by(tgrep_id) %>%
+  spread(paraphrase, normed_rating) %>%
+  # collapse all the duplicates
+  summarise_all(funs(.[which(!is.na(.))])) # this is no longer working :/
+View(d_wide)
+# d_wide = d_wide[,c("workerid","tgrep_id","a","every","other","the")]
+# d_wide <- unique(d_wide)
+```
+
+
+## Calculate KL-Divergence, compare to the uniform distribution
+KLD(P || Q) = sum x in X: (P(x) * log2(P(x)/Q(x)))
+```{r}
+# # log2(P/Q)
+pre_kld <- function(x) {
+    l <- log2(x/.25) # divide by the uniform distribution
+    m <- ifelse(is.na(x),0,x * l)
+  # }
+  return(m)
+}
+
+kl_divergence <- function(x) {
+  for (row in 1:nrow(x)) {
+    pp <- pre_kld(x[,row])
+    p <- ifelse(is.na(pp),0,pp)
+    sum.p <- Reduce(`+`, p) # if you feed in a df slice, then it's a list
+    # sum.p <- sum(p) # if you feed in a vector, then you can use sum()
+    return(sum.p)
   }
+}
+d_wide$KLD_from_uniform <- kl_divergence(d_wide[,3:6])
+```
+
+
+```{r}
+View(d_wide)
+
+View(d_wide)
+
+d_long <- d_wide %>%
+  gather(paraphrase, mean_rating,a:the,factor_key=TRUE)
+
+ggplot(data = d_long, aes(x = KLD_from_uniform, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_wrap(~paraphrase) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+# ggsave("graphs/denisty_context_MP_sd.pdf",width=6,height=3)
 
 ```
