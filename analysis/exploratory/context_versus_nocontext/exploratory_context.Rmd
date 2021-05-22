@@ -1,0 +1,262 @@
+---
+title: "Exploratory analysis of context"
+author: Morgan Moyer
+date: May 18, 2021
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
+library(ggplot2)
+library(lme4)
+library(lmerTest)
+library(multcomp) # not available for this version of R
+library(philentropy)
+library(stringr)
+library(textstem)
+library(tidyverse)
+theme_set(theme_bw())
+cbPalette <- c("#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73","#56B4E9", "#D55E00", "#009E73","#999999", "#E69F00","#009E73")
+this.dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+setwd(this.dir)
+source("../helpers.R")
+```
+
+# Read the data into r
+```{r}
+context = read.csv("total_data.csv") 
+context$Task <- "context"
+
+nocontext = read.csv("../05_06_experiment/data/no_rhetorical.csv")
+nocontext = nocontext[,c("workerid","tgrep_id","ModalPresent","Modal","QuestionType","Question","Sentence","paraphrase","rating","Finite","Wh")]
+nocontext$Task <- "nocontext"
+
+d <- full_join(context,nocontext)
+nrow(context) + nrow(nocontext)
+nrow(d)
+d$rating[d$rating < 0] = 0
+```
+
+# Plot the differences between context and no context
+```{r, include=FALSE}
+names(d)
+ggplot(data = d, aes(x = rating, fill = paraphrase, color=paraphrase)) +
+  geom_density(alpha = .4) +
+  facet_grid(~Task)
+ 
+agr = d %>%
+  group_by(Task, tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating),sd = sd(rating))
+
+# look at differences in mean_rating
+ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(~paraphrase) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_ratings.pdf",width=6,height=3)
+
+# look at differences in SD 
+ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(~paraphrase) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_sd.pdf",width=6,height=3)
+```
+
+
+# plot mean differences with linguistic factors too
+```{r,include=FALSE}
+# MODALPRESENT
+agr = d %>%
+  group_by(Task,ModalPresent,tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating),sd = sd(rating))
+
+# look at differences in mean_rating
+ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(ModalPresent~paraphrase) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_MP_ratings.pdf",width=6,height=3)
+
+# look at differences in SD 
+ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(ModalPresent~paraphrase) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_context_MP_sd.pdf",width=6,height=3)
+
+# WH
+agr = d %>%
+  group_by(Task,Wh,tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating),sd = sd(rating))
+
+# look at differences in mean_rating
+ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(Wh~paraphrase) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+```
+
+# Calculate KL-Divergence
+
+## Aggregate ratings across subject and convert to wide
+```{r}
+
+d.wide.context <- d %>%
+  filter(Task == "context") %>%
+  group_by(tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating)) %>%
+  select(tgrep_id,paraphrase,mean_rating) %>%
+  pivot_wider(names_from=paraphrase,values_from=mean_rating)
+
+
+d.wide.nocontext <- d %>%
+  filter(Task == "nocontext") %>%
+  group_by(tgrep_id,paraphrase) %>%
+  summarize(mean_rating = mean(rating)) %>%
+  select(tgrep_id,paraphrase,mean_rating) %>%
+  pivot_wider(names_from=paraphrase,values_from=mean_rating)
+
+```
+
+## Calculate KL-Divergence, compare to the uniform distribution
+KLD(P || Q) = sum x in X: (P(x) * log2(P(x)/Q(x)))
+```{r, message=FALSE}
+kls.context <- d.wide.context %>%
+  group_by(tgrep_id) %>%
+  summarize(kld = KL(rbind(c(a,every,other,the),c(.25,.25,.25,.25)),unit="log2"))
+kls.context$Task <- "context"
+
+
+kls.nocontext <- d.wide.nocontext %>%
+  group_by(tgrep_id) %>%
+  summarize(kld = KL(rbind(c(a,every,other,the),c(.25,.25,.25,.25)),unit="log2"))
+kls.nocontext$Task <- "nocontext"
+
+d.kls <- full_join(kls.nocontext,kls.context)
+nrow(kls.context)
+View(d.kls)
+```
+
+# Plot the KLD between context and no context
+
+```{r, include=FALSE}
+
+ggplot(data = d.kls, aes(x = kld, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_kld_context.pdf",width=6,height=3)
+
+d.factors <- unique(d[,c("tgrep_id","ModalPresent","Wh")])
+d.kls.factors <- left_join(d.kls,d.factors,by="tgrep_id")
+
+ggplot(data = d.kls.factors, aes(x = kld, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(Wh~ModalPresent) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+ggsave("graphs/denisty_kld_context_factors.pdf",width=6,height=6)
+```
+
+
+# Remove rhetorical and renormalize
+```{r}
+# remove 'other' ratings
+critical = d %>%
+  filter(paraphrase %in% c("every","a","the"))
+  # filter((MatrixPredParticle == "") & (EmbeddedSQ != "yes"))
+
+# unique by-item/by-participant combo
+critical$ids = paste(critical$workerid,critical$tgrep_id)
+
+critical$ModalPresent = as.factor(critical$ModalPresent)
+critical$Wh = as.factor(critical$Wh)
+# critical$MatrixVerb = as.factor(critical$MatrixVerb)
+critical$paraphrase = as.factor(critical$paraphrase)
+
+# Determine for each observation (by-participant by-item), get the sum of the 
+# 3 ratings
+cr = critical %>%
+  # select(ids,rating) %>%
+  group_by(ids) %>%
+  summarize(rating_sum = sum(rating, na.rm=TRUE))
+
+# Join the dfs together
+critical = critical %>%
+  left_join(cr, by="ids")
+nrow(critical) #205785
+
+# For each of the three paraphrase ratings, divide by sum of ratings for that item
+critical$factors = paste(critical$ids,critical$paraphrase)
+normed_agr = critical %>%
+  group_by(factors) %>%
+  summarise(normed_rating = rating/rating_sum) %>%
+  drop_na() # this removes ALOT of rows (18318)
+
+nrow(normed_agr) #187467
+
+# Merge the dfs together
+d_normed = merge(normed_agr,critical,by='factors')
+d_normed[is.na(d_normed$ModalPresent)] <- "no"
+nrow(d_normed) #187467
+```
+
+# Regression analyses
+
+## Center the data and set the reference levels
+```{r}
+
+a_data <- d_normed %>%
+  filter(paraphrase == "the") %>%
+  mutate(Task = as.factor(Task))
+# center the data
+centered = a_data
+centered$cModalPresent = as.numeric(centered$ModalPresent) - mean(as.numeric(centered$ModalPresent))
+centered$cTask = as.numeric(centered$Task) - mean(as.numeric(centered$Task))
+
+# make relevant columns factors just in case
+centered$Wh = as.factor(centered$Wh)
+centered$workerid = as.factor(centered$workerid)
+centered$tgrep_id = as.factor(centered$tgrep_id)
+centered$paraphrase = as.factor(centered$paraphrase)
+centered$QuestionType = as.factor(centered$QuestionType)
+
+contrasts(centered$Wh) = cbind("how.vs.when"=c(0,1,0,0,0,0),"what.vs.when"=c(1,0,0,0,0,0),
+                "where.vs.when"=c(0,0,0,1,0,0),"who.vs.when"=c(0,0,0,0,1,0),
+                "why.vs.when"=c(0,0,0,0,0,1))
+
+# this won't work if the 'other' category is included, so REDO
+contrasts(centered$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
+```
+# Split models up by paraphrase
+
+## A paraphrase
+```{r, include=FALSE}
+m.a = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
+summary(m.a)
+
+saveRDS(m.a, "model-contexts-a.rds")
+a_model <- readRDS("model-contexts-a.rds")
+```
+## Every paraphrase
+```{r, include=FALSE}
+m.every = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
+summary(m.every)
+
+saveRDS(m.every, "model-contexts-every.rds")
+every_model <- readRDS("model-contexts-every.rds")
+```
+
+## The paraphrase
+```{r, include=FALSE}
+m.the = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
+summary(m.the)
+
+saveRDS(m.the, "model-contexts-the.rds")
+# my_model <- readRDS("model-context-norndm.rds")
+```
