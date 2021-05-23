@@ -43,18 +43,11 @@ d$rating[d$rating < 0] = 0
 ```
 
 ```{r take a look at the raw distribution, include = FALSE}
-# ggplot(d, aes(x=rating)) +
-#   geom_histogram()
+ggplot(d, aes(x=rating)) +
+  geom_histogram()
 
 summary(d) # this doesn't show any negative rating values....
 tail(d)
-
-# But clearly there are negative ratings....
-negs = d %>%
-  filter(rating < 0)
-nrow(negs) # 140 negative ratings
-
-
 ```
 
 
@@ -159,7 +152,8 @@ practice_first = rbind(fixed,prac_agr_keep)
 nrow(practice_first) #320
 ```
 
-```{r Look at control trials}
+# Look at control trials
+```{r}
 controls = d %>%
   filter((grepl("control",tgrep_id)) & (rating >= 0))
 
@@ -172,8 +166,8 @@ names(cntrls)[names(cntrls) == "TGrepID"] <- "tgrep_id"
 # join dfs together
 c <- left_join(controls, cntrls, by="tgrep_id")
 ```
-
-```{r Graph control trials, eval=FALSE, include=FALSE}
+## Graph control trials
+```{r, eval=FALSE, include=FALSE}
 agr = c %>%
   group_by(EntireSentence,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -187,8 +181,8 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 # ggsave("../graphs/main_controls.pdf")
 ```
 
-
-```{r Remove subjects who failed 2/6 controls}
+## Remove subjects who failed 2/6 controls
+```{r}
 # for each control trial type, create a binary measure of whether the
 # trial was passed
 t = c %>%
@@ -227,8 +221,8 @@ failed_controls = con %>%
 # length(unique(failed_controls$workerid))/length(unique(d$workerid))*100 # 3.4%
 
 ```
-
-```{r Look at raw test items}
+# Look at raw test items
+```{r}
 test = d %>%
   # Remove participants who fail 2/6 controls
   filter(!workerid %in% c(failed_controls$workerid)) %>%
@@ -254,7 +248,9 @@ test[is.na(test)] <- 0
 # nrow(test) # 113632
 ```
 
-```{r, Recode 15 cases where MatrixVerbs weren't printed with TDTLite}
+
+## Recode 15 cases where MatrixVerbs weren't printed with TDTLite
+```{r}
 # 61188:30 --> funny 
 test$MatrixVerb[test$tgrep_id == "61188:30"] = "funny"
 test$VerbLemma[test$tgrep_id == "61188:30"] = "funny"
@@ -339,7 +335,8 @@ test$EmbeddedSQ = as.factor(test$EmbeddedSQ)
 test$QuestionType = as.factor(test$QuestionType)
 ```
 
-```{r Graph raw test items, eval=FALSE, include=FALSE}
+## Graph raw test items
+```{r, eval=FALSE, include=FALSE}
 agr = test %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -372,7 +369,9 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
 ```
-```{r Remove rhetorical questions}
+
+## Remove rhetorical questions
+```{r}
 test_agr = test %>%
   group_by(tgrep_id, paraphrase) %>%
   summarize(mean_rating = mean(rating))
@@ -399,10 +398,12 @@ test_norm = test %>%
 
 nrow(test_norm)/nrow(test)*100 # 84%
 
-write.csv(test_norm,"../data/embedded_no_rhetorical.csv")
+# write.csv(test_norm,"../data/embedded_no_rhetorical.csv")
 ```
 
-```{r Look at SAI and Particle Verbs in Rhetorical Qs, include = FALSE}
+# Looing at QuestionType
+## Look at SAI and Particle Verbs in Rhetorical Qs
+```{r, include = FALSE}
 length(unique(test_other$Sentence)) # 159 items
 
 # Rhetorical questions with embedded SAI
@@ -422,7 +423,8 @@ length(unique(test_removed_pp$Sentence)) # 29 items
 nrow(test_removed_pp)/nrow(test_other)*100 #18%
 ```
 
-```{r, Look at SAI and Particle Verbs in Test Qs, include = FALSE}
+## Look at SAI and Particle Verbs in Test Qs
+```{r, include = FALSE}
 # In the test data, look at embedded SAI
 sq = test_norm %>%
   filter(EmbeddedSQ == "yes")
@@ -446,8 +448,9 @@ View(unique(test_norm[,c("tgrep_id","Sentence","Question")]))
 table(test_norm$EmbeddedSQ, test_norm$Wh)
 ```
 
+## Look at questions in test data without embedded SAI
 
-```{r, Look at questions in test data without embedded SAI, include = FALSE}
+```{r, include = FALSE}
 # In the test data questions without embedded SAI
 no_sq = test_norm %>%
   filter(EmbeddedSQ != "yes")
@@ -598,8 +601,8 @@ View(unique(no_pp_no_SAI[,c("VerbLemma","Question","Sentence")]))
 
 ```
 
-
-```{r Graph Embedded Subject-Aux Inversion, include = FALSE}
+## Graph Embedded Subject-Aux Inversion
+```{r, include = FALSE}
 agr = test_norm %>%
   group_by(EmbeddedSQ,paraphrase) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -681,7 +684,8 @@ View(test_norm_noSQ)
 
 ```
 
-```{r Look at Matrix Verbs, eval=FALSE, include=FALSE}
+# Look at Matrix Verbs
+```{r, eval=FALSE, include=FALSE}
 verb_count = test %>%
   group_by(VerbLemma) %>%
   summarize(count = n())
@@ -704,9 +708,10 @@ View(unique(no_verb[,c("tgrep_id","Sentence","Question")]))
 
 ```
 
-
+# Focusing just on "Every", "a" and "the"
+## Normalize ratings to make a probability distribution
   
-```{r Normalize ratings to make a probability distribution}
+```{r }
 # remove 'other' ratings
 # critical with embeddedSQ = 71967
 # critical withOUT embeddedSQ = 66963
@@ -752,12 +757,13 @@ normed[is.na(normed$ModalPresent)] <- "no"
 # by-participant variability using KL divergence from the mean
 
 # save to .csv to load into analysis script
-write.csv(normed,"../data/normed.csv")
+# write.csv(normed,"../data/normed.csv")
 
 
 ```
 
-```{r Graph normed data Overall}
+## Graph normed data Overall
+```{r}
 agr = normed %>%
   group_by(paraphrase) %>%
   summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
@@ -779,7 +785,8 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=paraphrase)) +
 ggsave("../graphs/overall_noSQ.pdf",width=2,height=2)
 ```
 
-```{r Look at Interaction between Modal and Wh}
+## Graph Interaction between Modal and Wh
+```{r}
 
 agr = normed %>%
   group_by(Wh,ModalPresent,paraphrase) %>%
@@ -810,8 +817,8 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)
 # ggsave("../graphs/modxwh_noSQ.pdf",width=3,height=4)
 ```
 
-
-```{r Look at just Wh}
+## Look at just Wh
+```{r}
 agr = normed %>%
   group_by(paraphrase,Wh) %>%
   summarize(mean_rating = mean(rating), CILow = ci.low(rating), CIHigh = ci.high(rating)) %>%
@@ -834,7 +841,8 @@ ggplot(agr,aes(x=Wh, y=mean_rating, fill=paraphrase)) +
 # ggsave("../graphs/final_normed_wh.pdf")
 ```
 
-```{r Look at just ModalPresent}
+## Look at just ModalPresent
+```{r}
 agr = normed %>%
   group_by(paraphrase,ModalPresent) %>%
   summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
@@ -858,7 +866,8 @@ ggplot(agr,aes(x=ModalPresent, y=mean_rating, fill=paraphrase)) +
 
 ```
 
-```{r Graph MatrixVerb only}
+## Graph MatrixVerb only
+```{r}
 verb_count = normed %>%
   group_by(VerbLemma) %>%
   summarize(count = n())
@@ -894,12 +903,13 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)
     scale_color_manual(values=cbPalette) +
     scale_alpha_discrete(range = c(.5,1))
 
-ggsave("../graphs/matrixverbs_threotical.pdf",width=10,height=10)
+# ggsave("../graphs/matrixverbs_threotical.pdf",width=10,height=10)
 ```
 
-```{r Look at individual verbs}
+# Graph individual verbs
+```{r }
 agr = normed %>%
-  filter(VerbLemma == "predict") %>%
+  filter(VerbLemma == "know") %>%
   group_by(Wh,ModalPresent,paraphrase) %>%
   summarize(mean_rating = mean(normed_rating), CILow = ci.low(normed_rating), CIHigh = ci.high(normed_rating)) %>%
   mutate(YMin = mean_rating - CILow, YMax = mean_rating + CIHigh) %>%
@@ -916,7 +926,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)
   ylab("Mean rating") +
   guides(fill=FALSE) +
   guides(alpha=guide_legend(title="Modal present")) +
-  ggtitle("predict") + 
+  ggtitle("Know") + 
   theme(legend.key.size = unit(0.3, "cm"),
         legend.position = "top", # c(.5,1)
         legend.direction = "horizontal",
@@ -926,7 +936,7 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, alpha=ModalPresent, fill=paraphrase)
     scale_color_manual(values=cbPalette) +
     scale_alpha_discrete(range = c(.5,1))
 
-ggsave("../graphs/modwh_remember.pdf",width=3,height=4)
+ggsave("../graphs/modwh_know.pdf",width=3,height=4)
 ```
 
 ```{r Look at individual modals}
