@@ -1,9 +1,10 @@
-# ---
-# title: "Analysis of EMBEDDED QUESTIONS"
-# author: "mcmoyer"
-# date: "March 30, 2021"
-# ---
+---
+title: "Analysis of EMBEDDED QUESTIONS"
+author: "mcmoyer"
+date: "March 30, 2021"
+---
 
+  ```{r}
 ## Step 1: select stimuli for experiment
 library(lme4)
 library(lmerTest)

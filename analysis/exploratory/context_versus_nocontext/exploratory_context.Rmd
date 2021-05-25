@@ -34,16 +34,10 @@ d <- full_join(context,nocontext)
 nrow(context) + nrow(nocontext)
 nrow(d)
 d$rating[d$rating < 0] = 0
-
 ```
 
 # Plot the differences between context and no context
-```{r, include=FALSE}
-names(d)
-ggplot(data = d, aes(x = rating, fill = paraphrase, color=paraphrase)) +
-  geom_density(alpha = .4) +
-  facet_grid(~Task)
- 
+```{r}
 agr = d %>%
   group_by(Task, tgrep_id,paraphrase) %>%
   summarize(mean_rating = mean(rating),sd = sd(rating))
@@ -54,7 +48,7 @@ ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
   facet_grid(~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
-ggsave("graphs/denisty_context_ratings.pdf",width=6,height=3)
+# ggsave("graphs/denisty_context_ratings.pdf",width=6,height=3)
 
 # look at differences in SD 
 ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
@@ -62,7 +56,7 @@ ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
   facet_grid(~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
-ggsave("graphs/denisty_context_sd.pdf",width=6,height=3)
+# ggsave("graphs/denisty_context_sd.pdf",width=6,height=3)
 ```
 
 
@@ -79,7 +73,7 @@ ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
   facet_grid(ModalPresent~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
-ggsave("graphs/denisty_context_MP_ratings.pdf",width=6,height=3)
+# ggsave("graphs/denisty_context_MP_ratings.pdf",width=6,height=3)
 
 # look at differences in SD 
 ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
@@ -87,7 +81,7 @@ ggplot(data = agr, aes(x = sd, fill=Task, color=Task)) +
   facet_grid(ModalPresent~paraphrase) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
-ggsave("graphs/denisty_context_MP_sd.pdf",width=6,height=3)
+# ggsave("graphs/denisty_context_MP_sd.pdf",width=6,height=3)
 
 # WH
 agr = d %>%
@@ -104,7 +98,6 @@ ggplot(data = agr, aes(x = mean_rating, fill=Task, color=Task)) +
 
 # Plot mean by-item differences, ordered by the size of the difference between Task
 ```{r}
-View(d)
 agr = d %>%
   filter(paraphrase == "a") %>%
   group_by(Task,tgrep_id) %>%
@@ -113,27 +106,18 @@ agr = d %>%
   group_by(tgrep_id) %>%
   summarize(difference = abs(context-nocontext))
 
-length(unique(d$tgrep_id)) #1828
-length(unique(agr$tgrep_id)) #1828
-
 #plot all the individuals mean chosen
 ggplot(agr, aes(x=reorder(tgrep_id,difference),y=difference,fill=tgrep_id)) +
   geom_bar(stat="identity") +
   theme(legend.position = "none") +
   xlab("TGrepID") +
-  ylab("Difference between mean MS rating") +
-  ggsave("graphs/by-item_differences.pdf",width=10,height=8)
-
-View(agr)
-
-
-
+  ylab("Difference between mean MS rating")
+# ggsave("graphs/by-item_differences.pdf",width=10,height=8)
 
 ex <- d %>%
   filter(tgrep_id == "74357:139") %>%
   group_by(Sentence,Task,paraphrase) %>%
-  summarize(mean_rating = mean(rating)) %>%
-  View()
+  summarize(mean_rating = mean(rating))
 ```
 74357:139
 
@@ -141,8 +125,6 @@ i think, 0 especially in the younger years you need *-1 to have more of the, the
 
 75114:30
 uh, and they still didn't even know what *t*-1 caused it or anything.
-
-
 
 
 
@@ -176,18 +158,106 @@ kls.context <- d.wide.context %>%
   summarize(kld = KL(rbind(c(a,every,other,the),c(.25,.25,.25,.25)),unit="log2"))
 kls.context$Task <- "context"
 
-
 kls.nocontext <- d.wide.nocontext %>%
   group_by(tgrep_id) %>%
   summarize(kld = KL(rbind(c(a,every,other,the),c(.25,.25,.25,.25)),unit="log2"))
 kls.nocontext$Task <- "nocontext"
 
 d.kls <- full_join(kls.nocontext,kls.context)
-nrow(kls.context)
-View(d.kls)
+
 ```
 
-## Does Task predict KLD?
+## Plot the KLD between context and no context
+
+```{r, include=FALSE}
+ggplot(data = d.kls, aes(x = kld, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+# ggsave("graphs/denisty_kld_context.pdf",width=6,height=3)
+
+d.factors <- unique(d[,c("tgrep_id","ModalPresent","Wh","QuestionType")])
+kls.factors <- left_join(d.kls,d.factors,by="tgrep_id")
+
+ggplot(data = kls.factors, aes(x = kld, fill=Task, color=Task)) +
+  geom_density(alpha = .4) +
+  facet_grid(Wh~ModalPresent) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+# ggsave("graphs/denisty_kld_context_factors.pdf",width=6,height=6)
+```
+
+## Look at kld by item
+```{r, include=FALSE}
+ggplot(d.kls, aes(x=reorder(tgrep_id,kld),y=kld,fill=tgrep_id, alpha=Task)) +
+  geom_bar(stat="identity") +
+  theme(legend.position = "none") +
+  xlab("TGrepID") +
+  ylab("KLD")
+# ggsave("graphs/by-item_kld.pdf",width=10,height=8)
+
+ex <- d %>%
+  filter(tgrep_id == "74357:139") %>%
+  group_by(Sentence,Task,paraphrase) %>%
+  summarize(mean_rating = mean(rating))
+
+```
+# plot by-item, differences in KLD between Task
+```{r}
+kls.difs = d.kls %>%
+  pivot_wider(names_from=Task,values_from=kld) %>%
+  group_by(tgrep_id) %>%
+  summarize(difference_in_kld = abs(context-nocontext))
+
+#plot all the individuals mean chosen
+ggplot(kls.difs, aes(x=reorder(tgrep_id,difference_in_kld),y=difference_in_kld,fill=tgrep_id)) +
+  geom_bar(stat="identity") +
+  theme(legend.position = "none") +
+  xlab("TGrepID") +
+  ylab("Difference in KLD") 
+# ggsave("graphs/difference_in_kld_by-item.pdf",width=10,height=8)
+
+ex <- d %>%
+  filter(tgrep_id == "126136:4") %>%
+  group_by(Sentence,Task,paraphrase) %>%
+  summarize(mean_rating = mean(rating))
+```
+
+132917:4: what do you have *t*-1 now?
+the --> a/every
+  	
+89239:4: what was the last one *t*-1?
+the --> a/other
+
+(weird context)
+11053:4: where do you live *t*-1?
+the --> a/other
+
+126136: 4:how did radio shack work *t*-1?
+the --> a
+
+
+## Difference in KLD by factors
+```{r}
+kls.diffs.factors <- left_join(kls.difs,d.factors,by="tgrep_id")
+
+ggplot(data = kls.diffs.factors, aes(x = difference_in_kld, fill=ModalPresent)) +
+  geom_density(alpha = .4) +
+  facet_grid(QuestionType~Wh) +
+  scale_fill_manual(values=cbPalette) +
+  scale_color_manual(values=cbPalette)
+# ggsave("graphs/difference_in_kld_density.pdf",width=10,height=8)
+
+#plot all the individuals mean chosen
+ggplot(kls.diffs.factors, aes(x=QuestionType,y=difference_in_kld,fill=ModalPresent)) +
+  geom_bar(stat="identity",position="dodge") +
+  facet_wrap(~Wh)
+# ggsave("graphs/difference_in_kld_by-item_factors.pdf",width=10,height=8)
+
+```
+
+
+## Regression: Does Task predict KLD?
 ```{r}
 
 d.kls$tgrep_id = as.factor(d.kls$tgrep_id)
@@ -198,8 +268,6 @@ summary(m.kld)
 
 
 d.kls$Fitted = fitted(m.kld)
-
-View(d.kls)
 
 ggplot(d.kls, aes(x=Fitted,y=kld)) +
   geom_point() +
@@ -214,34 +282,10 @@ cor(d.kls$Fitted,d.kls$kld)
 
 ```
 
-# Plot the KLD between context and no context
 
-```{r, include=FALSE}
+# Preprocessing for regression models
 
-ggplot(data = d.kls, aes(x = kld, fill=Task, color=Task)) +
-  geom_density(alpha = .4) +
-  scale_fill_manual(values=cbPalette) +
-  scale_color_manual(values=cbPalette)
-# ggsave("graphs/denisty_kld_context.pdf",width=6,height=3)
-
-d.factors <- unique(d[,c("tgrep_id","ModalPresent","Wh")])
-d.kls.factors <- left_join(d.kls,d.factors,by="tgrep_id")
-
-ggplot(data = d.kls.factors, aes(x = kld, fill=Task, color=Task)) +
-  geom_density(alpha = .4) +
-  facet_grid(Wh~ModalPresent) +
-  scale_fill_manual(values=cbPalette) +
-  scale_color_manual(values=cbPalette)
-# ggsave("graphs/denisty_kld_context_factors.pdf",width=6,height=6)
-```
-
-
-```{r}
-
-```
-
-
-# Remove rhetorical and renormalize
+## Remove rhetorical and renormalize
 ```{r}
 # remove 'other' ratings
 critical = d %>%
@@ -283,11 +327,8 @@ d_normed[is.na(d_normed$ModalPresent)] <- "no"
 nrow(d_normed) #187467
 ```
 
-# Regression analyses
-
 ## Center the data and set the reference levels
 ```{r}
-
 a_data <- d_normed %>%
   filter(paraphrase == "the") %>%
   mutate(Task = as.factor(Task))
@@ -310,32 +351,42 @@ contrasts(centered$Wh) = cbind("how.vs.when"=c(0,1,0,0,0,0),"what.vs.when"=c(1,0
 # this won't work if the 'other' category is included, so REDO
 contrasts(centered$paraphrase) = cbind("a.vs.every"=c(1,0,0),"the.vs.every"=c(0,0,1))
 ```
-# Split models up by paraphrase
 
-## A paraphrase
-```{r, include=FALSE}
-m.a = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
-summary(m.a)
+## Split models up by paraphrase
 
-saveRDS(m.a, "model-contexts-a.rds")
-a_model <- readRDS("model-contexts-a.rds")
+### A paraphrase
+```{r}
+# m.a = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
+# saveRDS(m.a, "model-contexts-a.rds")
+a.model <- readRDS("model-contexts-a.rds")
+summary(a.model)
 ```
-## Every paraphrase
-```{r, include=FALSE}
-m.every = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
-summary(m.every)
+### Every paraphrase
+```{r}
+# m.every = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
 
-saveRDS(m.every, "model-contexts-every.rds")
-every_model <- readRDS("model-contexts-every.rds")
-```
-
-## The paraphrase
-```{r, include=FALSE}
-m.the = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
-summary(m.the)
-
-saveRDS(m.the, "model-contexts-the.rds")
-the_model <- readRDS("model-contexts-the.rds")
+# saveRDS(m.every, "model-contexts-every.rds")
+every.model <- readRDS("model-contexts-every.rds")
+summary(every.model)
 ```
 
+### The paraphrase
+```{r}
+# m.the = lmer(normed_rating ~ cModalPresent*Wh*cTask + (1+cModalPresent|workerid) + (1+cTask|tgrep_id), data=centered,REML=FALSE) 
+
+# saveRDS(m.the, "model-contexts-the.rds")
+the.model <- readRDS("model-contexts-the.rds")
+summary(the.model)
+
+```
+
+## Compare Context and NoContext models side-by-side
+```{r}
+context.m <- readRDS("../03_04_together/model-context-full.rds")
+nocontext.m <- readRDS("../../05_06_experiment/rscripts/model-nocontext-full.rds")
+
+summary(context.m)
+summary(nocontext.m)
+
+```
 

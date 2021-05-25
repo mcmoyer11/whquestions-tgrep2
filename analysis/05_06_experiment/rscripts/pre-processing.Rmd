@@ -50,7 +50,6 @@ emb = d %>%
 emb$QuestionType <- "embedded"
 
 d <- full_join(root,emb)
-
 ```
 
 ```{r take a look at the raw distribution, include = FALSE}
@@ -264,10 +263,6 @@ test[is.na(test)] <- 0
 ```
 
 
-```{r}
-table(test$proliferate.condition)
-```
-
 ```{r, Recode 15 cases where MatrixVerbs weren't printed with TDTLite}
 # 61188:30 --> funny 
 test$MatrixVerb[test$tgrep_id == "61188:30"] = "funny"
@@ -348,7 +343,7 @@ test$QuestionType = as.factor(test$QuestionType)
 
 test$EmbeddedSQ = as.character(test$EmbeddedSQ)
 test$QuestionType = as.character(test$QuestionType)
-test$QuestionType[test$EmbeddedSQ == "yes"] = "embeddedSAI"
+test$QuestionType[(test$QuestionType == "embedded") & (test$EmbeddedSQ == "yes")] = "embeddedSAI"
 test$EmbeddedSQ = as.factor(test$EmbeddedSQ)
 test$QuestionType = as.factor(test$QuestionType)
 
@@ -388,6 +383,9 @@ ggplot(agr,aes(x=paraphrase, y=mean_rating, fill=ModalPresent)) +
   scale_fill_manual(values=cbPalette) +
   scale_color_manual(values=cbPalette)
 ```
+
+# Remove Rhetorical Questions
+
 ```{r Remove rhetorical questions}
 test_agr = test %>%
   group_by(tgrep_id, paraphrase) %>%
@@ -415,7 +413,7 @@ test_norm = test %>%
 
 nrow(test_norm)/nrow(test)*100 # 82%
 
-write.csv(test_norm,"../data/no_rhetorical.csv")
+# write.csv(test_norm,"../data/no_rhetorical.csv")
 ```
 
 ```{r Look at SAI and Particle Verbs in Rhetorical Qs, include = FALSE}
