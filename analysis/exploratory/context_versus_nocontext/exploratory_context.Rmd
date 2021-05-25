@@ -217,29 +217,56 @@ ggplot(kls.difs, aes(x=reorder(tgrep_id,difference_in_kld),y=difference_in_kld,f
   ylab("Difference in KLD") 
 # ggsave("graphs/difference_in_kld_by-item.pdf",width=10,height=8)
 
+View(kls.difs)
+
 ex <- d %>%
-  filter(tgrep_id == "126136:4") %>%
+  filter(tgrep_id == "5042:13") %>%
   group_by(Sentence,Task,paraphrase) %>%
   summarize(mean_rating = mean(rating))
+View(ex)
 ```
 
-132917:4: what do you have *t*-1 now?
+### Examples with the biggest difference
+* 132917:4: what do you have *t*-1 now?
 the --> a/every
   	
-89239:4: what was the last one *t*-1?
+* 89239:4: what was the last one *t*-1?
 the --> a/other
 
 (weird context)
-11053:4: where do you live *t*-1?
+* 11053:4: where do you live *t*-1?
 the --> a/other
 
-126136: 4:how did radio shack work *t*-1?
+* 126136:4: how did radio shack work *t*-1?
 the --> a
+
+* 49447:4: what did you have *t*-1 before you bought that.
+the --> a
+
+### Embedded question: 
+* 13656:19: uh, i have wondered why they allowed, or let, you know, both the father and mother go *t*-1, uh,
+more even --> strongly the
+
+* 58758:18: and my mother taught me how * to make it *t*-1.
+the --> a
+
+
+
+### Examples with the least difference
+* 148861:4: where do you buy your tole painting paints at *t*-1 around here?
+no real change
+
+* 58058:6: but what did we do *t*-1.
+every --> the
+
+* 5042:13: and he says how do you get that from there to the material *t*-1.
+no real change
 
 
 ## Difference in KLD by factors
 ```{r}
 kls.diffs.factors <- left_join(kls.difs,d.factors,by="tgrep_id")
+View(kls.diffs.factors)
 
 ggplot(data = kls.diffs.factors, aes(x = difference_in_kld, fill=ModalPresent)) +
   geom_density(alpha = .4) +
